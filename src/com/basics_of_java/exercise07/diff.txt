@@ -1,0 +1,16 @@
+Difference between String and stringBuilder Class:
+
+String :
+        1) String is immutable in java ,it means if we change the value of an object then the reference will be change.
+        2) String class is slow.
+        
+
+
+StringBuilder :
+       
+    1) StringBuilder class is mutable .
+    2) StringBuilder class is fast.
+
+
+StringExample1 explains the difference between .
+
