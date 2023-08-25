@@ -1,0 +1,29 @@
+footer{
+    background-color: #0082e6;
+    height: 5rem;
+    width: 100%;
+    position: fixed;
+    bottom: 0;
+    /* display: flex; */
+} 
+p{
+    color: white;
+    flex-direction: row;
+    font-size: 1.5rem;
+     /* padding: 0 15rem ; */
+} 
+footer .p1{
+    float: left;
+    margin-left: 3%;
+}
+footer .p2{
+    float: right;
+    margin-right: 3%;
+}
+
+@media(max-width:910px){
+   
+ }
+@media(max-width:802px){
+   
+} 
