@@ -9,7 +9,19 @@ import com.gms.entity.User;
 
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
-	boolean existsByEmail(String email);
+    /**
+     * @param email
+     * @return boolean
+     */
+    boolean existsByEmail(String email);
+    /**
+     * @param password
+     * @return boolean
+     */
     boolean existsByPassword(String password);
+    /**
+     * @param email
+     * @return Optional<User>
+     */
     Optional<User> findByEmail(String email);
 }

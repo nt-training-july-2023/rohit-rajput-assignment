@@ -3,115 +3,217 @@ package com.gms.entity;
 import java.sql.Date;
 import java.util.List;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.PrePersist;
-import jakarta.persistence.Table;
-import jakarta.validation.constraints.NotEmpty;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.PrePersist;
+import javax.persistence.Table;
+import javax.validation.constraints.NotEmpty;
 
 
+/**
+ * <p>This is @Ticket class for representing ticket_details
+ * in database<p>.
+ */
 @Entity
 @Table(name = "ticket_details")
-
 public class Ticket {
+    /**
+     * <p>This is @ticketId of Ticket table which is primary key of
+     * ticket_details table<p>.
+     */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long ticketId;
+    /**
+     * This is title of our ticket.
+     */
     @NotEmpty(message = "title can't be blank")
     private String title;
+    /**
+     * This is description of ticket.
+     */
     @NotEmpty(message = "please describe the problem")
     private String description;
+    /**
+     * This is status of ticket.
+     */
     private String status;
-    private Date creationTime;
-    private Date lastUpdationTime;
+    /**
+     * This is type of ticket.
+     */
+    @Enumerated(EnumType.STRING)
+    private TicketType ticketType;
+    /**
+     * This is creation time of ticket.
+     */
+    private String creationTime;
+    /**
+     * This is last updated time of ticket.
+     */
+    private String lastUpdationTime;
+    /**
+     * This is the user who generate ticket.
+     */
     @ManyToOne
     private User user;
+    /**
+     * This is the department to which ticket is assigned.
+     */
     @ManyToOne
     @JoinColumn(name = "assigned_to")
     private Department department;
+    /**
+     * This is the list of comment belongs to a ticket.
+     */
     @OneToMany(mappedBy = "ticket")
     private List<Comment> comments;
-
+    /**
+     * getter method for @getTicketId.
+     * @return long - ticketId
+     */
     public long getTicketId() {
         return ticketId;
     }
-
-    public void setTicketId(long ticketId) {
+    /**
+     * setter method for @setTicketId.
+     * @param ticketId
+     */
+    public void setTicketId(final long ticketId) {
         this.ticketId = ticketId;
     }
-
+    /**
+     * getter method for @getTitle.
+     * @return String - title
+     */
     public String getTitle() {
         return title;
     }
-
-    public void setTitle(String title) {
+    /**
+     * setter method for @setTitle.
+     * @param title
+     */
+    public void setTitle(final String title) {
         this.title = title;
     }
-
+    /**
+     * getter method for @getDescription.
+     * @return String - description
+     */
     public String getDescription() {
         return description;
     }
-
-    public void setDescription(String description) {
+    /**
+     * setter method for @setDescription.
+     * @param description
+     */
+    public void setDescription(final String description) {
         this.description = description;
     }
-
+    /**
+     * getter method for @getStatus.
+     * @return String - status
+     */
     public String getStatus() {
         return status;
     }
-
-    public void setStatus(String status) {
+    public TicketType getTicketType() {
+        return ticketType;
+    }
+    public void setTicketType(TicketType ticketType) {
+        this.ticketType = ticketType;
+    }
+    /**
+     * setter method for @setStatus.
+     * @param status
+     */
+    public void setStatus(final String status) {
         this.status = status;
     }
-
-    public Date getCreationTime() {
+    /**
+     * getter method for @getCreationTime.
+     * @return String - creationTime
+     */
+    public String getCreationTime() {
         return creationTime;
     }
-
-    public void setCreationTime(Date creationTime) {
+    /**
+     * setter method for @setCreationTime.
+     * @param creationTime
+     */
+    public void setCreationTime(final String creationTime) {
         this.creationTime = creationTime;
     }
-
-    public Date getLastUpdationTime() {
+    /**
+     * getter method for @getLastUpdationTime.
+     * @return String - lastUpdationTime
+     */
+    public String getLastUpdationTime() {
         return lastUpdationTime;
     }
-
-    public void setLastUpdationTime(Date lastUpdationTime) {
+    /**
+     * setter method for @setLastUpdationTime.
+     * @param lastUpdationTime
+     */
+    public void setLastUpdationTime(final String lastUpdationTime) {
         this.lastUpdationTime = lastUpdationTime;
     }
-
+    /**
+     * getter method for @getUser.
+     * @return User - user
+     */
     public User getUser() {
         return user;
     }
-
-    public void setUser(User user) {
+    /**
+     * setter method for @setUser.
+     * @param user
+     */
+    public void setUser(final User user) {
         this.user = user;
     }
-
+    /**
+     * getter method for @getDepartment.
+     * @return Department - department
+     */
     public Department getDepartment() {
         return department;
     }
-
-    public void setDepartment(Department department) {
+    /**
+     * setter method for @setDepartment.
+     * @param department
+     */
+    public void setDepartment(final Department department) {
         this.department = department;
     }
-
+    /**
+     * getter method for @getComments.
+     * @return List<Comment> - comments
+     */
     public List<Comment> getComments() {
         return comments;
     }
-
-    public void setComments(List<Comment> comments) {
+    /**
+     * setter method for @setComments.
+     * @param comments
+     */
+    public void setComments(final List<Comment> comments) {
         this.comments = comments;
     }
-
+    /**
+     * <p>This is @persist method for setting default value of status,
+     * creationTime and updationTime<p>.
+     */
     @PrePersist
     public void persist() {
         status = "OPEN";
-        lastUpdationTime = creationTime = new Date(System.currentTimeMillis());
+        lastUpdationTime =  new Date(System.currentTimeMillis()).toString();
+        creationTime = lastUpdationTime;
     }
 }

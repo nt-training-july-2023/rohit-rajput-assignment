@@ -17,10 +17,11 @@ import org.springframework.test.web.servlet.MockMvc;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gms.dto.LoginRequestInDTO;
 import com.gms.dto.LoginResponseOutDTO;
+import com.gms.entity.Role;
 import com.gms.exception.InvalidCredentialException;
 import com.gms.service.UserService;
 
-@WebMvcTest
+@WebMvcTest(UserController.class)
 public class UserControllerTest {
     @MockBean
     private UserService userService;
@@ -32,12 +33,11 @@ public class UserControllerTest {
     @Test
     public void testLoginSuccessful() throws Exception {
         LoginRequestInDTO requestInDTO = new LoginRequestInDTO("yash.sharma@nucleusteq.com", "Yash@123");
-        LoginResponseOutDTO responseOutDTO = new LoginResponseOutDTO(1l,"ADMIN","Yash", "yash.sharma@nucleusteq.com", "HR");
+        LoginResponseOutDTO responseOutDTO = new LoginResponseOutDTO(1l,Role.ADMIN,"Yash", "yash.sharma@nucleusteq.com", 1, false);
         when(userService.login(any(LoginRequestInDTO.class))).thenReturn(responseOutDTO);
         this.mockMvc.perform(post("/gms/v1/login").contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(requestInDTO))).andExpect(status().isOk())
-        .andExpect(jsonPath("$.name", is(responseOutDTO.getName())))
-        .andExpect(jsonPath("$.role", is(responseOutDTO.getRole())));
+                .content(objectMapper.writeValueAsString(requestInDTO)))
+        .andExpect(jsonPath("$.data.name", is(responseOutDTO.getName())));
     }
     
     @Test

@@ -1,0 +1,66 @@
+.add-new-ticket-container{
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    font-size: 10px;
+    width: 100vw;
+    justify-content: center;
+    box-sizing: border-box;
+    /* margin: 1% 0; */
+}
+.add-new-ticket-container .new-ticket-container{
+    margin: 1% 0;
+    position: relative;
+    max-width: 60rem;
+    width: 100%;
+    background: #fff;
+    padding:1.5rem;
+    border-radius: 1rem;
+    box-shadow: 0 0 1.5rem rgba(0, 0, 0, 0.1);
+    border: 1px solid #024074;
+     box-shadow: 0 0 1.5rem grey;
+}
+.new-ticket-container .heading{
+    font-size: 1.5rem;
+    text-align: center;
+}
+.new-ticket-container .input-box{
+    width: 100%;
+    margin-top: 1.5rem;
+}
+
+.new-ticket-container .addTicket_label{
+    font-size: 2rem;
+    font-weight: 500;
+    padding-left: 5px;
+    margin-bottom: 1rem;
+}
+.new-ticket-container .addTicket_input{
+    font-size: 1.5rem; 
+    margin-top: 1rem;
+}
+.new-ticket-container .column{
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+    column-gap: 10px;
+}
+.new-ticket-container .column :where(.assigned-to,.status){
+    width: 48%;
+    margin-top: 1rem;
+}
+
+.new-ticket-container .newticket-btn{
+    height: 4.5rem;
+    width: 100%;
+    color: #fff;
+    font-size: 2rem;
+    border: none;
+    margin-top: 1rem;
+    cursor: pointer;
+    border-radius: 6px;
+    font-weight: 400;
+    /* transition: all 0.2s ease; */
+    background-color: #024074;
+}
+

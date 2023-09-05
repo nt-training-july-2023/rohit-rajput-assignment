@@ -10,27 +10,53 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [show, setShow] = useState(false);
+  const [alertMessage, setAlertMessage] = useState("");
   const navigate = useNavigate();
-  const handleSubmit = (e) => {
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (!validateEmail(email)) {
       setEmailErr("Invalid username");
     } else {
       console.log(email);
-      loginService
+      await loginService
         .login({ email, password })
         .then((res) => {
-          navigate("/");
+          console.log(res);
+          if (res.data.success) {
+            localStorage.setItem("user", JSON.stringify(res.data));
+            navigate("/admin");
+          } else {
+            setShow(true);
+            setAlertMessage(res.data.message);
+            // alert(res.data.message);
+          }
         })
         .catch((error) => {
-          setEmailErr("")
-          setError("Invalid credential");
+          alert(error);
         });
       setEmailErr("");
     }
+    // else{
+    //   console.log(email);
+    //   const res=loginService.login({email,password});
+    //   if(res.data.success){
+    //     localStorage.setItem(res.data);
+    //     navigate("/admin")
+    //   }
+    //   else{
+    //     alert(res.data.message);
+    //   }
+    // }
 
     setEmail("");
     setPassword("");
+  };
+
+  const closeAlert = () => {
+    setAlertMessage("");
+    setShow(false);
   };
 
   const validateEmail = (email) => {
@@ -51,9 +77,9 @@ const Login = () => {
     <>
       <Header />
 
-      {/* {error && <Alert message={"Invalid credential"} onClose={true} />} */}
+      {/* {show && <Alert message={alertMessage} close={closeAlert} />} */}
       <div className="parent-container">
-        <div className="container">
+        <div className="login-container">
           <form onSubmit={handleSubmit}>
             <h1>Login</h1>
             <div>
@@ -89,6 +115,7 @@ const Login = () => {
         </div>
       </div>
       <Footer />
+      {show && <Alert message={alertMessage} close={closeAlert} />}
     </>
   );
 };

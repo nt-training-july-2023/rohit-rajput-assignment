@@ -1,0 +1,129 @@
+.parent-register-container {
+  min-height: 85vh;
+  display: flex;
+  align-items: center;
+  font-size: 10px;
+  justify-content: center;
+  box-sizing: border-box;
+  /* margin: 1% 0; */
+}
+.parent-register-container .register-container {
+  margin: 1% 0;
+  position: relative;
+  max-width: 45rem;
+  /* max-width: 60rem; */
+  height: 0%;
+  width: 100%;
+  background: #fff;
+  padding: 4rem;
+  padding-bottom: 1rem;
+  padding-top: 1rem;
+  /* padding:1.5rem; */
+  border-radius: 1rem;
+  box-shadow: 0 0 1.5rem grey;
+  /* border: 1px solid blue; */
+}
+.register-container header {
+  /* font-size: 1.5rem; */
+  color: #333;
+  font-weight: 800;
+  text-align: center;
+}
+.register-container .from {
+  box-sizing: border-box;
+}
+.register-container .form .input-box {
+  width: 100%;
+  margin-top: 0.8rem;
+}
+.input-box label {
+  color: #333;
+}
+.form :where(.input-box input, .select-box) {
+  position: relative;
+  height: 4rem;
+  width: 100%;
+  outline: none;
+  font-size: 1rem;
+  color: #707070;
+  /* margin-top: 8px; */
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  padding: 0 15px;
+}
+.form .column {
+  display: flex;
+  column-gap: 15px;
+}
+.form .role-option {
+  margin-top: 1rem;
+}
+.role-option h3 {
+  color: #333;
+  font-size: 2rem;
+  font-weight: 400;
+  margin-bottom: 4px;
+}
+
+.form :where(.role-option, .role) {
+  display: flex;
+  align-items: center;
+  column-gap: 5rem;
+}
+.form .role {
+  column-gap: 5px;
+}
+.form :where(.role input, .role label) {
+  cursor: pointer;
+}
+.select-box {
+  margin-top: 1.5rem;
+}
+.select-box select {
+  height: 100%;
+  width: 100%;
+  outline: none;
+  border: none;
+  color: #707070;
+  font-size: 1rem;
+}
+.form .add-user-btn {
+  height: 4.5rem;
+  width: 100%;
+  color: #fff;
+  font-size: 2rem;
+  border: none;
+  margin-top: 1rem;
+  cursor: pointer;
+  border-radius: 6px;
+  font-weight: 400;
+  /* transition: all 0.2s ease; */
+  background-color: #024074;
+  /* background-color: black; */
+}
+.form .add-user-btn:hover {
+  background-color: #084b83;
+}
+
+.addUser_lable {
+  font-size: 18px;
+  font-weight: 700;
+}
+.addUser_input {
+  font-size: 15px;
+  border: 0.1px solid black;
+}
+
+.addUser_heading {
+  font-size: 3rem !important;
+  font-weight: 700;
+}
+/* .addUser_option{
+    font-size: 18px;
+} */
+
+.select-box .addnewuser_option {
+  font-size: 1rem;
+  font-weight: 600;
+  background-color: #084b83;
+}

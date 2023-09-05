@@ -1,64 +1,127 @@
 package com.gms.dto;
 
-public class LoginResponseOutDTO {
-    private long id;
-    private String role;
-    private String name;
-    private String email;
-    private String departmentName;
+import com.gms.entity.Role;
 
+/**
+ *<p> This is LoginResponseOutDTO for returning the values of
+ * user after successful login<p>.
+ */
+public class LoginResponseOutDTO {
+    /**
+     * id of login user.
+     */
+    private long id;
+    /**
+     * role of the user.
+     */
+    private Role role;
+    /**
+     * name of the user.
+     */
+    private String name;
+    private boolean firstLogin;
+    /**
+     * user email.
+     */
+    private String email;
+    /**
+     * departmentId user belongs to.
+     */
+    private long departmentId;
+    /**
+     * LoginResponseOutDTO no-argument constructor.
+     */
     public LoginResponseOutDTO() {
         super();
     }
 
-    public LoginResponseOutDTO(long id, String role, String name, String email, String departmentName) {
+    /**
+     * @param id
+     * @param role
+     * @param name
+     * @param email
+     * @param departmentName
+     */
+    public LoginResponseOutDTO(final long id, final Role role, final String name,
+            final String email, final long departmentId, boolean firstLogin) {
         super();
         this.id = id;
         this.role = role;
         this.name = name;
         this.email = email;
-        this.departmentName = departmentName;
+        this.departmentId = departmentId;
+        this.firstLogin = firstLogin;
     }
-
+    /**
+     * getter method for @getName.
+     * @return String - name
+     */
     public String getName() {
         return name;
     }
-
-    public void setName(String name) {
+    /**
+     * setter method for @setName.
+     * @param name
+     */
+    public void setName(final String name) {
         this.name = name;
     }
-
+    /**
+     * getter method for @getEmail.
+     * @return String - email
+     */
     public String getEmail() {
         return email;
     }
-
-    public void setEmail(String email) {
+    /**
+     * setter method for @setEmail.
+     * @param email
+     */
+    public void setEmail(final String email) {
         this.email = email;
     }
-
-    public String getDepartmentName() {
-        return departmentName;
+    /**
+     * getter method for @getDepartmnetName.
+     * @return long - departmentId
+     */
+    public long getDepartmentId() {
+        return departmentId;
     }
-
-    public void setDepartmentName(String departmentName) {
-        this.departmentName = departmentName;
+    /**
+     * setter method for @setDepartmentName.
+     * @param departmentName
+     */
+    public void setDepartmentId(final long departmentId) {
+        this.departmentId = departmentId;
     }
-
+    /**
+     * getter method for @getId.
+     * @return long - id
+     */
     public long getId() {
         return id;
     }
-
-    public void setId(long id) {
+    /**
+     * setter method for @setId.
+     * @param id
+     */
+    public void setId(final long id) {
         this.id = id;
     }
 
-    public String getRole() {
+    public Role getRole() {
         return role;
     }
 
-    public void setRole(String role) {
-        this.role = role;
+    public void setRole(Role string) {
+        this.role = string;
     }
-    
 
+    public boolean isFirstLogin() {
+        return firstLogin;
+    }
+
+    public void setFirstLogin(boolean firstLogin) {
+        this.firstLogin = firstLogin;
+    }
 }

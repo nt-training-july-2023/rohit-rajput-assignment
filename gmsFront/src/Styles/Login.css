@@ -1,36 +1,38 @@
-* {
+ * {
   box-sizing: border-box;
-}
+} 
 
 .parent-container {
-  height: 90vh;
+  height: 80vh;
   display: flex;
   justify-content: center;
   align-items: center;
+  box-sizing: border-box;
 }
 
-.container {
+.login-container {
   margin: auto;
   padding-top: 5%;
   width: 50rem;
   max-width: 90%;
 }
-.container form {
+.login-container form {
   width: 100%;
   height: 100%;
   padding: 2rem;
   border-radius: 0.4rem;
-  box-shadow: 0 0.8rem 1.6rem rgba(0, 0, 0, 0.3);
+  box-shadow: 0 0 1.5rem grey;
+  border: 1px solid #024074;
 }
-.container form h1 {
+.login-container form h1 {
   text-align: center;
   margin-bottom: 2.4rem;
   color: black;
 }
-.container form label {
+.login-container form label {
   font-size: 1.5rem;
 }
-.container form .form-control {
+.login-container form .form-control {
   width: 100%;
   height: 4rem;
   /* background: white; */
@@ -39,14 +41,14 @@
   margin: 1rem 0 1.8rem 0;
   padding: 0 1rem;
 }
-.container form .btn {
+.login-container form .btn {
   margin-left: 50%;
   transform: translateX(-50%);
   width: 12rem;
   height: 3.4rem;
   border: none;
   /* outline: none; */
-  background: blue;
+  background: #024074;
   cursor: pointer;
   font-size: 1.6rem;
   text-transform: uppercase;
@@ -54,10 +56,10 @@
   border-radius: 0.4rem;
   /* transition: .3s; */
 }
-.container form .btn:hover {
+.login-container form .btn:hover {
   opacity: 0.7;
 }
-.container form a {
+.login-container form a {
   padding-left: 34rem;
   font-size: 1.5rem;
   text-decoration: none;
