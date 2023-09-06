@@ -2,23 +2,18 @@ package com.gms.serviceImpl;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.util.Optional;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.gms.dto.TicketSaveInDTO;
@@ -42,12 +37,6 @@ public class TicketServiceImplTest {
     private DepartmentRepository departmentRepository;
     @InjectMocks
     private TicketServiceImpl ticketServiceImpl;
-
-//    @BeforeEach
-//    public void setUp() {
-//        MockitoAnnotations.openMocks(this);
-//    }
-
     @Test
     public void saveTicketIfUserNotFound() {
         when(userRepository.findById(anyLong())).thenReturn(Optional.empty());
@@ -84,7 +73,6 @@ public class TicketServiceImplTest {
         when(ticketRepository.save(any(Ticket.class))).thenReturn(ticket);
         Ticket ticket2 = ticketServiceImpl.saveTicket(ticketSaveInDTO);
         assertNotNull(ticket2);
-        System.out.println(ticket2);
         assertEquals(ticket.getTicketType(), ticket2.getTicketType());
         assertSame(ticket, ticket2);
         assertEquals(user, ticket2.getUser());

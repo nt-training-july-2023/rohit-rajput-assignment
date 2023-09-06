@@ -4,6 +4,7 @@ import com.gms.dto.AddUserInDTO;
 import com.gms.dto.LoginRequestInDTO;
 import com.gms.dto.LoginResponseOutDTO;
 import com.gms.dto.UpdatePasswordInDTO;
+import com.gms.entity.User;
 
 public interface UserService {
   /**
@@ -12,7 +13,7 @@ public interface UserService {
  */
 LoginResponseOutDTO login(LoginRequestInDTO loginDTO);
 
-void save(AddUserInDTO addUserInDTO);
+User save(AddUserInDTO addUserInDTO);
 
 void updatePassword(UpdatePasswordInDTO updatePasswordInDTO);
 }

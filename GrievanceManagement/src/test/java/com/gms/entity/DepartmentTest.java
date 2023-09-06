@@ -1,8 +1,10 @@
 package com.gms.entity;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,10 +12,6 @@ import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-
-import com.gms.entity.Department;
-import com.gms.entity.Ticket;
-import com.gms.entity.User;
 
 public class DepartmentTest {
     Department department;
@@ -44,5 +42,23 @@ public class DepartmentTest {
         assertNull(department.getTickets());
         department.setTickets(list2);
         assertEquals(1, department.getTickets().size());
+    }
+    @Test
+    public void testEqualsAndHashCode() {
+        Department department1 = new Department();
+        department1.setDepartmentName("HR");
+        department1.setDepartmentId(1);;
+        Department department2 = new Department();
+        department2.setDepartmentName("HR");
+        department2.setDepartmentId(1);;
+        Department department3 = new Department();
+        department3.setDepartmentName("Finance");
+        department3.setDepartmentId(2);;
+        assertTrue(department1.equals(department2));
+        assertEquals(department1, department2);
+        assertFalse(department1.equals(department3));
+        assertNotEquals(department1, department3);
+        assertEquals(department1.hashCode(),department2.hashCode());
+        assertNotEquals(department1.hashCode(), department3.hashCode());
     }
 }

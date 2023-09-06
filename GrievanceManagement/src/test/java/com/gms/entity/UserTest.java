@@ -2,6 +2,7 @@ package com.gms.entity;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -64,5 +65,26 @@ public class UserTest {
     @Test
     public void testPersist() {
         
+    }
+    @Test
+    public void testEqualsAndHashCode() {
+        User user1 = new User();
+        user1.setName("Rohit");
+        user1.setRole(Role.ADMIN);
+        user1.setPassword("Rohit@123");
+        User user2 = new User();
+        user2.setName("Rohit");
+        user2.setRole(Role.ADMIN);
+        user2.setPassword("Rohit@123");
+        User user3 = new User();
+        user3.setName("Rohit");
+        user3.setRole(Role.ADMIN);
+        user3.setPassword("Rohit@1234");
+        assertTrue(user1.equals(user2));
+        assertEquals(user1, user2);
+        assertFalse(user1.equals(user3));
+        assertNotEquals(user1, user3);
+        assertEquals(user1.hashCode(),user2.hashCode());
+        assertNotEquals(user1.hashCode(), user3.hashCode());
     }
 }

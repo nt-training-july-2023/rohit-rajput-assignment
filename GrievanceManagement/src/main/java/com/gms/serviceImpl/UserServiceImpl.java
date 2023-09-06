@@ -73,7 +73,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void save(AddUserInDTO addUserInDTO) {
+    public User save(AddUserInDTO addUserInDTO) {
         Optional<Department> departmentOptional = departmentRepository.findById(addUserInDTO.getDepartmentId());
         if(!departmentOptional.isPresent()) {
             throw new DepartmentsNotFoundException("Department id not found");
@@ -87,8 +87,8 @@ public class UserServiceImpl implements UserService {
         user.setPassword(addUserInDTO.getPassword());
         user.setRole(addUserInDTO.getUserType());
         user.setEmail(addUserInDTO.getUsername());
-        userRepository.save(user);
         LOGGER.info("user saved ....");
+        return userRepository.save(user);
     }
 
     @Override

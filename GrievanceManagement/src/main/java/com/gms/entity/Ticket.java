@@ -2,6 +2,7 @@ package com.gms.entity;
 
 import java.sql.Date;
 import java.util.List;
+import java.util.Objects;
 
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -15,6 +16,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.PrePersist;
 import javax.persistence.Table;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 
 /**
@@ -48,6 +50,7 @@ public class Ticket {
     /**
      * This is type of ticket.
      */
+    @NotNull(message = "ticket type can not be null")
     @Enumerated(EnumType.STRING)
     private TicketType ticketType;
     /**
@@ -216,4 +219,25 @@ public class Ticket {
         lastUpdationTime =  new Date(System.currentTimeMillis()).toString();
         creationTime = lastUpdationTime;
     }
+    @Override
+    public int hashCode() {
+        return Objects.hash(comments, creationTime, department, description, lastUpdationTime, status, ticketId,
+                ticketType, title, user);
+    }
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        Ticket other = (Ticket) obj;
+        return Objects.equals(comments, other.comments) && Objects.equals(creationTime, other.creationTime)
+                && Objects.equals(department, other.department) && Objects.equals(description, other.description)
+                && Objects.equals(lastUpdationTime, other.lastUpdationTime) && Objects.equals(status, other.status)
+                && ticketId == other.ticketId && ticketType == other.ticketType && Objects.equals(title, other.title)
+                && Objects.equals(user, other.user);
+    }
+    
 }

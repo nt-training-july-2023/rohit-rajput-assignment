@@ -1,10 +1,14 @@
 package com.gms.dto;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+
+import com.gms.entity.Role;
 
 public class DepartmentOutDTOTest {
 
@@ -14,6 +18,7 @@ public class DepartmentOutDTOTest {
         departmentOutDTO = new DepartmentOutDTO();
     }
     @Test
+    @DisplayName("DepartmentOutDTO getter & setter")
     public void testGetterAndSetter() {
         assertEquals(0, departmentOutDTO.getId());
         departmentOutDTO.setId(1);
@@ -25,9 +30,25 @@ public class DepartmentOutDTOTest {
     }
     
     @Test
+    @DisplayName("DepartmentOutDTO constructor")
     public void testConstructor() {
         DepartmentOutDTO departmentOutDTO = new DepartmentOutDTO(1, "HR");
         assertEquals(1, departmentOutDTO.getId());
         assertEquals("HR", departmentOutDTO.getDepartmentName());
+    }
+    @Test
+    @DisplayName("DepartmentOutDTO toString, equals&hashCode")
+    public void testEqualAndHashCodeAndToString() {
+        AddUserInDTO addUserInDTO1 = new AddUserInDTO("Rohit", "rohit.rajput@nucleusteq.com", Role.ADMIN, "Rohit@123",
+                1);
+        AddUserInDTO addUserInDTO2 = new AddUserInDTO("Rohit", "rohit.rajput@nucleusteq.com", Role.ADMIN, "Rohit@123",
+                1);
+        AddUserInDTO addUserInDTO3 = new AddUserInDTO("Rohit Rajput", "rohit.rajput@nucleusteq.com", Role.ADMIN, "Rohit@123",
+                1);
+        assertEquals(addUserInDTO1, addUserInDTO2);
+        assertNotEquals(addUserInDTO1, addUserInDTO3);
+        assertEquals(addUserInDTO1.hashCode(), addUserInDTO2.hashCode());
+        assertNotEquals(addUserInDTO1.hashCode(), addUserInDTO3.hashCode());
+        System.out.println(addUserInDTO1);
     }
 }

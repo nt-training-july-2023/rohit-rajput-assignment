@@ -1,8 +1,11 @@
 package com.gms.dto;
 
+import java.util.Objects;
+
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
 import com.gms.entity.Role;
@@ -15,6 +18,7 @@ public class AddUserInDTO {
     @Pattern(regexp = "^[a-z]{2,}[.][a-z]{2,}+@nucleusteq.com$",
     message = "please enter valid username")
     private String username; 
+    @NotNull(message = "role required")
     @Enumerated(EnumType.STRING)
     private Role userType;
     @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])"
@@ -67,4 +71,27 @@ public class AddUserInDTO {
         this.password = password;
         this.departmentId = departmentId;
     }
+    @Override
+    public String toString() {
+        return "AddUserInDTO [name=" + name + ", username=" + username + ", userType=" + userType + ", password="
+                + password + ", departmentId=" + departmentId + "]";
+    }
+    @Override
+    public int hashCode() {
+        return Objects.hash(departmentId, name, password, userType, username);
+    }
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        AddUserInDTO other = (AddUserInDTO) obj;
+        return departmentId == other.departmentId && Objects.equals(name, other.name)
+                && Objects.equals(password, other.password) && userType == other.userType
+                && Objects.equals(username, other.username);
+    }
+    
 }

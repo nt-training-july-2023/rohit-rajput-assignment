@@ -1,5 +1,7 @@
 package com.gms.dto;
 
+import java.util.Objects;
+
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
@@ -80,5 +82,24 @@ public class LoginRequestInDTO {
      */
     public void setPassword(final String password) {
         this.password = password;
+    }
+    @Override
+    public int hashCode() {
+        return Objects.hash(email, password);
+    }
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        LoginRequestInDTO other = (LoginRequestInDTO) obj;
+        return Objects.equals(email, other.email) && Objects.equals(password, other.password);
+    }
+    @Override
+    public String toString() {
+        return "LoginRequestInDTO [email=" + email + ", password=" + password + "]";
     }
 }

@@ -1,6 +1,7 @@
 package com.gms.entity;
 
 import java.sql.Date;
+import java.util.Objects;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -124,5 +125,21 @@ public class Comment {
     public void persist() {
         commentTime = new Date(System.currentTimeMillis()).toString();
     }
-
+    @Override
+    public int hashCode() {
+        return Objects.hash(comment, commentId, commentTime, ticket, user);
+    }
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        Comment other = (Comment) obj;
+        return Objects.equals(comment, other.comment) && commentId == other.commentId
+                && Objects.equals(commentTime, other.commentTime) && Objects.equals(ticket, other.ticket)
+                && Objects.equals(user, other.user);
+    }
 }

@@ -1,8 +1,7 @@
 package com.gms.entity;
 
 import java.util.List;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import java.util.Objects;
 
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -16,8 +15,11 @@ import javax.persistence.PrePersist;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 /**
  * <p>This is User class for representing user_details
@@ -69,6 +71,7 @@ public class User {
     /**
      * This is user role.
      */
+    @NotNull(message = "role can not be null")
     @Enumerated(EnumType.STRING)
     private Role role;
     /**
@@ -226,5 +229,23 @@ public class User {
     @PrePersist
     public void persist() {
         isFirst = true;
+    }
+    @Override
+    public int hashCode() {
+        return Objects.hash(comments, department, email, id, isFirst, name, password, role, ticket);
+    }
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        User other = (User) obj;
+        return Objects.equals(comments, other.comments) && Objects.equals(department, other.department)
+                && Objects.equals(email, other.email) && id == other.id && isFirst == other.isFirst
+                && Objects.equals(name, other.name) && Objects.equals(password, other.password) && role == other.role
+                && Objects.equals(ticket, other.ticket);
     }
 }

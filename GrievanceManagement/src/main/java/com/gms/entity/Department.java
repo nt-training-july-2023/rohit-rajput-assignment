@@ -1,6 +1,7 @@
 package com.gms.entity;
 
 import java.util.List;
+import java.util.Objects;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -97,4 +98,21 @@ public class Department {
     public void setTickets(final List<Ticket> tickets) {
         this.tickets = tickets;
     }
+    @Override
+    public int hashCode() {
+        return Objects.hash(departmentId, departmentName, tickets, users);
+    }
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        Department other = (Department) obj;
+        return departmentId == other.departmentId && Objects.equals(departmentName, other.departmentName)
+                && Objects.equals(tickets, other.tickets) && Objects.equals(users, other.users);
+    }
+    
 }

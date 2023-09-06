@@ -1,5 +1,7 @@
 package com.gms.dto;
 
+import java.util.Objects;
+
 import com.gms.entity.Role;
 
 /**
@@ -124,4 +126,30 @@ public class LoginResponseOutDTO {
     public void setFirstLogin(boolean firstLogin) {
         this.firstLogin = firstLogin;
     }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(departmentId, email, firstLogin, id, name, role);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        LoginResponseOutDTO other = (LoginResponseOutDTO) obj;
+        return departmentId == other.departmentId && Objects.equals(email, other.email)
+                && firstLogin == other.firstLogin && id == other.id && Objects.equals(name, other.name)
+                && role == other.role;
+    }
+
+    @Override
+    public String toString() {
+        return "LoginResponseOutDTO [id=" + id + ", role=" + role + ", name=" + name + ", firstLogin=" + firstLogin
+                + ", email=" + email + ", departmentId=" + departmentId + "]";
+    }
+    
 }
