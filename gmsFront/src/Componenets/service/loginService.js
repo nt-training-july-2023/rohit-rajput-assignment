@@ -8,6 +8,24 @@ const loginService = {
   },
     getAllDepartment(){
       return axios.get("http://localhost:8080/department");
+    },
+    changePassword(newPassword){
+      const userId = localStorage.getItem('userId')
+      console.log(userId);
+      console.log(newPassword);
+      return axios.post("http://localhost:8080/gms/v1/change-password",{userId, newPassword})
+    },
+    addDepartment(departmentName){
+      console.log(departmentName);
+      return axios.post(`http://localhost:8080/department?departmentName=${departmentName}`)
+    },
+    addNewUser(user){
+      console.log(user)
+      return axios.post("http://localhost:8080/gms/v1/adduser",user)
+    },
+    addNewTicket(ticket){
+      console.log(ticket)
+      return axios.post("http://localhost:8080/ticket",ticket);
     }
 };
 

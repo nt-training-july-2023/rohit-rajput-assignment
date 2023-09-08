@@ -7,13 +7,20 @@ import com.gms.dto.UpdatePasswordInDTO;
 import com.gms.entity.User;
 
 public interface UserService {
-  /**
- * @param loginDTO
- * @return LoginResponseOutDTO
- */
-LoginResponseOutDTO login(LoginRequestInDTO loginDTO);
+    /**
+     * @param loginDTO
+     * @return LoginResponseOutDTO
+     */
+    LoginResponseOutDTO login(LoginRequestInDTO loginDTO);
 
-User save(AddUserInDTO addUserInDTO);
+    /**
+     * @param addUserInDTO
+     * @return User
+     */
+    User save(AddUserInDTO addUserInDTO);
 
-void updatePassword(UpdatePasswordInDTO updatePasswordInDTO);
+    /**
+     * @param updatePasswordInDTO
+     */
+    void updatePassword(UpdatePasswordInDTO updatePasswordInDTO);
 }

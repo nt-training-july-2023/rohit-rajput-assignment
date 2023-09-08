@@ -7,9 +7,9 @@ const Header =()=>{
         <nav >
             <label className="logo">Grievance Management</label>
             <ul>
-                <li><a className="active" href="#">Home</a></li>
+                <li><Link to="/">Home</Link></li>
                 <li><Link to="/login">Login</Link></li>
-                <li><a href="#">About</a></li>
+                <li><a>About</a></li>
             </ul>
         </nav>
         </>

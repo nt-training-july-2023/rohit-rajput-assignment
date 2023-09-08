@@ -39,6 +39,9 @@ public class UserServiceImpl implements UserService {
      */
     @Autowired
     private UserRepository userRepository;
+    /**
+     * This is @DepartmentRepository object.
+     */
     @Autowired
     private DepartmentRepository departmentRepository;
 
@@ -48,15 +51,6 @@ public class UserServiceImpl implements UserService {
     @Override
     public LoginResponseOutDTO login(final LoginRequestInDTO loginDTO) {
         Optional<User> user = userRepository.findByEmail(loginDTO.getEmail());
-//        boolean isFirstLogin = false;
-//        if (user.isPresent() && loginDTO.getPassword().equals(user.get().getPassword()) && user.get().isFirst()) {
-//            LOGGER.info("User login first time");
-//            isFirstLogin = user.get().isFirst();
-//            user.get().setFirst(false);
-//            LOGGER.info("Updating user loginFirstTime field in database");
-//            userRepository.save(user.get());
-//            
-//        }
         if (user.isPresent() && loginDTO.getPassword().equals(user.get().getPassword())) {
             LOGGER.info("user is present");
             LoginResponseOutDTO responseOutDTO = new LoginResponseOutDTO();
@@ -72,10 +66,13 @@ public class UserServiceImpl implements UserService {
         throw new InvalidCredentialException("Username or password incorrect!");
     }
 
+    /**
+     * this is @save method for saving a new user.
+     */
     @Override
-    public User save(AddUserInDTO addUserInDTO) {
+    public User save(final AddUserInDTO addUserInDTO) {
         Optional<Department> departmentOptional = departmentRepository.findById(addUserInDTO.getDepartmentId());
-        if(!departmentOptional.isPresent()) {
+        if (!departmentOptional.isPresent()) {
             throw new DepartmentsNotFoundException("Department id not found");
         }
         if (userRepository.existsByEmail(addUserInDTO.getUsername())) {
@@ -91,15 +88,18 @@ public class UserServiceImpl implements UserService {
         return userRepository.save(user);
     }
 
+    /**
+     * this is @updatePassword method for updating a password at firstTime login.
+     */
     @Override
-    public void updatePassword(UpdatePasswordInDTO passwordInDTO) {
-       Optional<User> user = userRepository.findById(passwordInDTO.getUserId());
-       if(user.isPresent()) {
-           user.get().setFirst(false);
-           user.get().setPassword(passwordInDTO.getNewPassword());
-           userRepository.save(user.get());
-       }else {
-       throw new UserNotFoundException("User not Found");
-       }
+    public void updatePassword(final UpdatePasswordInDTO passwordInDTO) {
+        Optional<User> user = userRepository.findById(passwordInDTO.getUserId());
+        if (user.isPresent()) {
+            user.get().setFirst(false);
+            user.get().setPassword(passwordInDTO.getNewPassword());
+            userRepository.save(user.get());
+        } else {
+            throw new UserNotFoundException("User not Found");
+        }
     }
 }

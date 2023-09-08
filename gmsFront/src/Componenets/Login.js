@@ -23,35 +23,40 @@ const Login = () => {
       await loginService
         .login({ email, password })
         .then((res) => {
-          console.log(res);
-          if (res.data.success) {
-            localStorage.setItem("user", JSON.stringify(res.data));
-            navigate("/admin");
+          // console.log(res.data.data.firstLogin);
+          if (res.data.data.firstLogin) {
+            localStorage.setItem('userId',res.data.data.id);
+           
+            // role(res.data.data.role);
+            navigate("/change-password");
           } else {
-            setShow(true);
-            setAlertMessage(res.data.message);
-            // alert(res.data.message);
+            // role(res.data.data.role);            
+            const mockdata = res.data.data;
+            if (mockdata.hasOwnProperty("firstLogin")) {
+              delete mockdata.firstLogin;
+            }
+            console.log(mockdata);
+            localStorage.setItem("user", JSON.stringify(mockdata));
+            localStorage.setItem("role", mockdata.role);
+            if(localStorage.getItem("role")==="ADMIN"){
+              navigate("/admin")
+            }
+            else{
+              navigate("/member")
+            }
           }
         })
         .catch((error) => {
-          alert(error);
+          console.log(error);
+          setShow(true);
+          if (error.code === "ERR_NETWORK") {
+            setAlertMessage(error.message);
+          } else {
+            setAlertMessage(error.response.data.message);
+          }
         });
       setEmailErr("");
     }
-    // else{
-    //   console.log(email);
-    //   const res=loginService.login({email,password});
-    //   if(res.data.success){
-    //     localStorage.setItem(res.data);
-    //     navigate("/admin")
-    //   }
-    //   else{
-    //     alert(res.data.message);
-    //   }
-    // }
-
-    setEmail("");
-    setPassword("");
   };
 
   const closeAlert = () => {
@@ -60,10 +65,12 @@ const Login = () => {
   };
 
   const validateEmail = (email) => {
-    if (email.endsWith("@nucleusteq.com")) {
+    const emailRegex = /^[a-z]{2,}\.[a-z]{2,}@nucleusteq\.com$/;
+    if (emailRegex.test(email)) {
       return true;
+    } else {
+      return false;
     }
-    return false;
   };
 
   const handleEmail = (e) => {
@@ -105,12 +112,14 @@ const Login = () => {
                 required
               />
             </div>
-            {emailErr !== "" && <p style={{ color: "red" }}>{emailErr}</p>}
+            {emailErr !== "" && (
+              <p style={{ color: "red", fontSize: "1.5rem" }}>{emailErr}</p>
+            )}
             {error && <p style={{ color: "red" }}>{error}</p>}
             <input type="submit" className="btn" value="Login" />
-            <a id="forgot" href="">
+            {/* <a id="forgot" href="">
               Forgot Password ?
-            </a>
+            </a> */}
           </form>
         </div>
       </div>

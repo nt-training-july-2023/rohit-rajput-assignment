@@ -1,5 +1,12 @@
 package com.gms.entity;
 
 public enum Role {
-    ADMIN, MEMBER
+    /**
+     *this is admin role.
+     */
+    ADMIN,
+    /**
+     * this is member role.
+     */
+    MEMBER
 }

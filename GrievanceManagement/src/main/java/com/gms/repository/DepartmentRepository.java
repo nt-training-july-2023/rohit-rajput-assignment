@@ -11,9 +11,18 @@ import com.gms.entity.Department;
 @Repository
 public interface DepartmentRepository extends JpaRepository<Department, Long> {
 
+    /**
+     * this is returning list  of DepartmentOutDTO with two field departmentId
+     * and DepartmentName.
+     * @return List<DepartmentOutDTO>
+     */
     @Query("select new com.gms.dto.DepartmentOutDTO(d.departmentId, d.departmentName) from Department d")
     List<DepartmentOutDTO> findAllDepartmentName();
 
+    /**
+     * this method is checks that a particular email is exists are not.
+     * @param departmentName
+     * @return boolean
+     */
     boolean existsByDepartmentName(String departmentName);
-     
 }

@@ -1,7 +1,5 @@
 package com.gms.controller;
 
-
-
 import javax.validation.Valid;
 
 import org.apache.logging.log4j.LogManager;
@@ -39,23 +37,30 @@ public class UserController {
     private UserService userService;
     /**
      * @param loginRequestInDTO
-     * @return APIResponseEntity<>
+     * @return APIResponseEntity
      */
     @PostMapping("/login")
     public APIResponseEntity login(@RequestBody @Valid final LoginRequestInDTO loginRequestInDTO) {
         LOGGER.info("request for login");
-        return new APIResponseEntity(true,
-                userService.login(loginRequestInDTO),"Login Successful");
+        return new APIResponseEntity(true, userService.login(loginRequestInDTO), "Login Successful");
     }
+    /**
+     * @param addUserInDTO
+     * @return APIResponseEntity
+     */
     @PostMapping("/adduser")
     public APIResponseEntity save(@RequestBody @Valid final AddUserInDTO addUserInDTO) {
+        System.out.println(addUserInDTO);
         userService.save(addUserInDTO);
         return new APIResponseEntity(false, null, "User added successfully");
     }
+    /**
+     * @param updatePasswordInDTO
+     * @return APIResponseEntity
+     */
     @PostMapping("/change-password")
-    public APIResponseEntity updatePassword(@RequestBody @Valid UpdatePasswordInDTO updatePasswordInDTO) {
+    public APIResponseEntity updatePassword(@RequestBody @Valid final UpdatePasswordInDTO updatePasswordInDTO) {
         userService.updatePassword(updatePasswordInDTO);
         return new APIResponseEntity(false, null, "Password updated");
     }
-
 }

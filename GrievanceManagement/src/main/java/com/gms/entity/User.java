@@ -147,9 +147,17 @@ public class User {
     public void setEmail(final String email) {
         this.email = email;
     }
+    /**
+     * getter method for @getRole.
+     * @return Role - role
+     */
     public Role getRole() {
         return role;
     }
+    /**
+     * setter method for @setRole.
+     * @param role
+     */
     public void setRole(final Role role) {
         this.role = role;
     }
@@ -230,18 +238,27 @@ public class User {
     public void persist() {
         isFirst = true;
     }
+    /**
+     *this is hashCode method.
+     */
     @Override
     public int hashCode() {
         return Objects.hash(comments, department, email, id, isFirst, name, password, role, ticket);
     }
+    /**
+     *this is equals method.
+     */
     @Override
-    public boolean equals(Object obj) {
-        if (this == obj)
+    public boolean equals(final Object obj) {
+        if (this == obj) {
             return true;
-        if (obj == null)
+        }
+        if (obj == null) {
             return false;
-        if (getClass() != obj.getClass())
+        }
+        if (getClass() != obj.getClass()) {
             return false;
+        }
         User other = (User) obj;
         return Objects.equals(comments, other.comments) && Objects.equals(department, other.department)
                 && Objects.equals(email, other.email) && id == other.id && isFirst == other.isFirst

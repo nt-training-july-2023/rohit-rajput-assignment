@@ -5,5 +5,9 @@ import com.gms.entity.Ticket;
 
 public interface TicketService {
 
+    /**
+     * @param ticketSaveInDTO
+     * @return Ticket
+     */
     Ticket saveTicket(TicketSaveInDTO ticketSaveInDTO);
 }

@@ -3,12 +3,19 @@ import "../Styles/AddNewUser.css";
 import Footer from "./Footer";
 import Header from "./Header";
 import loginService from "./service/loginService";
+import Alert from "./Alert";
+import AdminDashboard from "./AdminDashboard";
+import { useNavigate } from "react-router-dom";
 const AddNewUser = () => {
+  const [show, setShow] = useState(false);
+  const [alertMessage, setAlertMessage] = useState("");
   const [usernameErr, setUsernameErr] = useState("");
   const [nameErr, setNameErr] = useState("");
   const [passwordErr, setPasswordErr] = useState("");
+  const[isNavigate,setIsNavigate]=useState(false);
   const [departmentErr, setDepartmentErr] = useState("");
   const [department, setDepartment] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetchDepartment();
@@ -18,22 +25,39 @@ const AddNewUser = () => {
     name: "",
     username: "",
     password: "",
-    userType: "",
+    userType: "MEMBER",
     departmentId: 0,
   });
 
-  const fetchDepartment = async () => {
-    try {
-      const res = await loginService.getAllDepartment();
-      console.log(res);
-      if (res.data.success) {
-        setDepartment(res.data.data);
-      }
-    } catch (error) {
-      alert(error);
-    }
-    // console.log(department);
-  };
+  // const fetchDepartment = async () => {
+  //   try {
+  //     const res = await loginService.getAllDepartment();
+  //     console.log(res);
+  //     if (res.data.hasdata) {
+  //       setDepartment(res.data.data);
+  //     }
+  //   } catch (error) {
+  //     alert(error);
+  //   }
+  //   // console.log(department);
+  // };
+
+  const fetchDepartment = async () =>{
+       await loginService.getAllDepartment()
+       .then((res)=>{
+          if(res.data.hasdata){
+            setDepartment(res.data.data)
+          }
+       })
+       .catch((error)=>{
+        setShow(true);
+        if(error.code==="ERR_NETWORK"){
+             setAlertMessage(error.message);
+        }else{
+        setAlertMessage(error.response.data.message);
+        }
+       })
+  }
 
   const validateUsername = (username) => {
     const usernameRegex = /^[a-z]{2,}\.[a-z]{2,}@nucleusteq\.com$/;
@@ -64,11 +88,11 @@ const AddNewUser = () => {
     return isValid;
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async(e) => {
     e.preventDefault();
     console.log(user);
     if (!validateUsername(user.username)) {
-      setUsernameErr("Please Enter valid username");
+       setUsernameErr("Please Enter valid username");
     } else {
       setUsernameErr("");
     }
@@ -87,6 +111,34 @@ const AddNewUser = () => {
     } else {
       setPasswordErr("");
     }
+    if(validateName(user.name) && validateDepartment(user,department) && validatePassword(user.password) && validateUsername(user.username)){
+      console.log(user);
+      await loginService.addNewUser(user)
+      .then((res)=>{
+        e.preventDefault();
+        setShow(true)
+        setAlertMessage(res.data.message);
+        setIsNavigate(true);
+        // navigate("/add-user");
+      }).catch((error)=>{
+        setShow(true)
+        if(error.code==="ERR_NETWORK"){
+           setAlertMessage(error.message);
+        }
+        else{
+          setAlertMessage(error.response.data.message);
+        }
+      })
+    }
+
+  };
+
+  const closeAlert = () => {
+    setAlertMessage("");
+    setShow(false);
+    if(isNavigate){
+    navigate("/add-user");
+    }
   };
 
   const handleChange = (e) => {
@@ -97,7 +149,7 @@ const AddNewUser = () => {
 
   return (
     <>
-      <Header />
+      <AdminDashboard/>
       <div className="parent-register-container">
         <div className="register-container">
           <form onSubmit={handleSubmit} className="form">
@@ -168,7 +220,7 @@ const AddNewUser = () => {
                   </option>
                   {department.map((dept) => (
                     <option
-                      classname="addnewuser_option"
+                      className="addnewuser_option"
                       value={dept.id}
                       key={dept.id}
                     >
@@ -196,9 +248,11 @@ const AddNewUser = () => {
                   <input
                     type="radio"
                     name="userType"
-                    value={"MEMBER"}
+                    value="MEMBER"
                     id="check-member"
-                    onChange={handleChange}
+                    onChange={(e)=>{handleChange(e)}}
+                    // onChange={handleChange}
+
                     defaultChecked
                   />
                   <label className="addUser_lable" htmlFor="check-member">
@@ -209,8 +263,8 @@ const AddNewUser = () => {
                   <input
                     type="radio"
                     name="userType"
-                    value={"ADMIN"}
-                    onChange={handleChange}
+                    value="ADMIN"
+                    onChange={(e)=>{handleChange(e)}}
                     // onChange={(e) => handleChange(e)}
                     id="check-admin"
                   />
@@ -226,7 +280,8 @@ const AddNewUser = () => {
           </form>
         </div>
       </div>
-      <Footer />
+      {/* <Footer /> */}
+      {show && <Alert message={alertMessage} close={closeAlert} />}
     </>
   );
 };

@@ -126,10 +126,18 @@ public class Ticket {
     public String getStatus() {
         return status;
     }
+    /**
+     * getter method for @getTicketType.
+     * @return TicketType - ticketType
+     */
     public TicketType getTicketType() {
         return ticketType;
     }
-    public void setTicketType(TicketType ticketType) {
+    /**
+     * setter method for @setTicketType.
+     * @param ticketType
+     */
+    public void setTicketType(final TicketType ticketType) {
         this.ticketType = ticketType;
     }
     /**
@@ -219,19 +227,28 @@ public class Ticket {
         lastUpdationTime =  new Date(System.currentTimeMillis()).toString();
         creationTime = lastUpdationTime;
     }
+    /**
+     *this is hashCode method.
+     */
     @Override
     public int hashCode() {
         return Objects.hash(comments, creationTime, department, description, lastUpdationTime, status, ticketId,
                 ticketType, title, user);
     }
+    /**
+     *this is equals method.
+     */
     @Override
-    public boolean equals(Object obj) {
-        if (this == obj)
+    public boolean equals(final Object obj) {
+        if (this == obj) {
             return true;
-        if (obj == null)
+        }
+        if (obj == null) {
             return false;
-        if (getClass() != obj.getClass())
+        }
+        if (getClass() != obj.getClass()) {
             return false;
+        }
         Ticket other = (Ticket) obj;
         return Objects.equals(comments, other.comments) && Objects.equals(creationTime, other.creationTime)
                 && Objects.equals(department, other.department) && Objects.equals(description, other.description)
@@ -239,5 +256,4 @@ public class Ticket {
                 && ticketId == other.ticketId && ticketType == other.ticketType && Objects.equals(title, other.title)
                 && Objects.equals(user, other.user);
     }
-    
 }

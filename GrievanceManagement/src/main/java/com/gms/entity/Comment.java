@@ -125,18 +125,27 @@ public class Comment {
     public void persist() {
         commentTime = new Date(System.currentTimeMillis()).toString();
     }
+    /**
+     *this is hashCode method.
+     */
     @Override
     public int hashCode() {
         return Objects.hash(comment, commentId, commentTime, ticket, user);
     }
+    /**
+     *this is equals method.
+     */
     @Override
-    public boolean equals(Object obj) {
-        if (this == obj)
+    public boolean equals(final Object obj) {
+        if (this == obj) {
             return true;
-        if (obj == null)
+        }
+        if (obj == null) {
             return false;
-        if (getClass() != obj.getClass())
+        }
+        if (getClass() != obj.getClass()) {
             return false;
+        }
         Comment other = (Comment) obj;
         return Objects.equals(comment, other.comment) && commentId == other.commentId
                 && Objects.equals(commentTime, other.commentTime) && Objects.equals(ticket, other.ticket)

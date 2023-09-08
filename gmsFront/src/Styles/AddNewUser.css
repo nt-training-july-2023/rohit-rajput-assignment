@@ -1,16 +1,19 @@
 .parent-register-container {
-  min-height: 85vh;
+  min-height: 100vh;
   display: flex;
   align-items: center;
   font-size: 10px;
-  justify-content: center;
+  justify-content: end;
+  padding-right: 15vw;
   box-sizing: border-box;
+  /* background-color: #002d52; */
   /* margin: 1% 0; */
 }
 .parent-register-container .register-container {
+  margin-left: 25%;
   margin: 1% 0;
   position: relative;
-  max-width: 45rem;
+  max-width: 65rem;
   /* max-width: 60rem; */
   height: 0%;
   width: 100%;
@@ -29,7 +32,8 @@
   font-weight: 800;
   text-align: center;
 }
-.register-container .from {
+.register-container .form {
+  padding: 3rem 0;
   box-sizing: border-box;
 }
 .register-container .form .input-box {
@@ -123,7 +127,7 @@
 } */
 
 .select-box .addnewuser_option {
-  font-size: 1rem;
+  font-size: 1.5rem;
   font-weight: 600;
-  background-color: #084b83;
+  background-color: #6caee4;
 }

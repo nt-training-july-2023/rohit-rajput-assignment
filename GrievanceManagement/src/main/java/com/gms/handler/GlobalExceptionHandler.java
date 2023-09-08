@@ -22,8 +22,11 @@ import com.gms.response.APIResponseEntity;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
     /**
-     * <p>This is @handleInvalidException method for
-     * handle @MethodArgumentNotValidException exception<p>.
+     * <p>
+     * This is @handleInvalidException method for
+     * handle @MethodArgumentNotValidException exception
+     * <p>
+     * .
      * @param exception
      * @return Map<String, String> - {field, Error}
      */
@@ -31,12 +34,18 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public APIResponseEntity handleInvalidException(final MethodArgumentNotValidException exception) {
         Map<String, String> errMap = new HashMap<>();
-        exception.getBindingResult().getFieldErrors().forEach(err -> errMap.put(err.getField(), err.getDefaultMessage()));
+        exception.getBindingResult().getFieldErrors()
+                .forEach(err -> errMap.put(err.getField(), err.getDefaultMessage()));
+        System.out.println(errMap);
         return new APIResponseEntity(true, errMap, "Invalid data");
     }
+
     /**
-     * <p>This is @invlaidCredentialHandler method for
-     * handle @InvalidCredentialException custom exception<p>.
+     * <p>
+     * This is @invlaidCredentialHandler method for
+     * handle @InvalidCredentialException custom exception
+     * <p>
+     * .
      * @param exception
      * @return String - exception message
      */
@@ -45,25 +54,47 @@ public class GlobalExceptionHandler {
     public APIResponseEntity invlaidCredentialHandler(final InvalidCredentialException exception) {
         return new APIResponseEntity(false, null, exception.getMessage());
     }
+
+    /**
+     * @param exception
+     * @return APIResponseEntity
+     */
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(DepartmentValidationException.class)
-    public APIResponseEntity departmentExistsExceptionHandler(DepartmentValidationException ex) {
-        return new APIResponseEntity(false, null, ex.getMessage());
+    public APIResponseEntity departmentExistsExceptionHandler(final DepartmentValidationException exception) {
+        return new APIResponseEntity(false, null, exception.getMessage());
     }
+
+    /**
+     * @param exception
+     * @return APIResponseEntity
+     */
     @ResponseStatus(HttpStatus.CONFLICT)
     @ExceptionHandler(EmailExistsException.class)
-    public APIResponseEntity emailExistsExceptionHandler(EmailExistsException ex) {
-        return new APIResponseEntity(false, null, ex.getMessage());
+    public APIResponseEntity emailExistsExceptionHandler(final EmailExistsException exception) {
+        return new APIResponseEntity(false, null, exception.getMessage());
     }
+
+    /**
+     * this method is for handling @DepartmentsNotFoundException.
+     * @param exception
+     * @return APIResponseEntity
+     */
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @ExceptionHandler(DepartmentsNotFoundException.class)
-    public APIResponseEntity departmentsNotFoundExceptionHandler(DepartmentsNotFoundException ex) {
-        return new APIResponseEntity(false, null, ex.getMessage());
+    public APIResponseEntity departmentsNotFoundExceptionHandler(final DepartmentsNotFoundException exception) {
+        return new APIResponseEntity(false, null, exception.getMessage());
     }
+
+    /**
+     * this method is for handling @UserNotFoundException.
+     * @param exception
+     * @return APIResponseEntity
+     */
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @ExceptionHandler(UserNotFoundException.class)
-    public APIResponseEntity userNotFoundExceptionHandler(UserNotFoundException ex) {
-        return new APIResponseEntity(false, null, ex.getMessage());
+    public APIResponseEntity userNotFoundExceptionHandler(final UserNotFoundException exception) {
+        return new APIResponseEntity(false, null, exception.getMessage());
     }
-    
+
 }

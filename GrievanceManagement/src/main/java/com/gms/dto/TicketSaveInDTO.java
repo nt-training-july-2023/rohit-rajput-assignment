@@ -10,50 +10,127 @@ import javax.validation.constraints.NotNull;
 import com.gms.entity.TicketType;
 
 public class TicketSaveInDTO {
+    /**
+     * this is title of ticket.
+     */
     @NotEmpty(message = "please enter ticket title")
     private String title;
+    /**
+     * this is type of ticket.
+     */
     @NotNull(message = "please specify ticket type")
     @Enumerated(EnumType.STRING)
     private TicketType ticketType;
+    /**
+     * this is description of ticket.
+     */
     @NotEmpty(message = "add description of ticket")
     private String description;
+    /**
+     * this is departmentId ticket to be assigned.
+     */
     private long departmentId;
+    /**
+     *this is userId how raised ticket.
+     */
     private long userId;
+
+    /**
+     * getter method for @getTitle.
+     * @return String - title
+     */
     public String getTitle() {
         return title;
     }
-    public void setTitle(String title) {
+
+    /**
+     * setter method for @setTitle.
+     * @param title
+     */
+    public void setTitle(final String title) {
         this.title = title;
     }
+
+    /**
+     * getter method for @getTicketType.
+     * @return TicketType - ticketType
+     */
     public TicketType getTicketType() {
         return ticketType;
     }
-    public void setTicketType(TicketType ticketType) {
+
+    /**
+     * setter method for @setTicketType.
+     * @param ticketType
+     */
+    public void setTicketType(final TicketType ticketType) {
         this.ticketType = ticketType;
     }
+
+    /**
+     * getter method for @getTicketType.
+     * @return String - description
+     */
     public String getDescription() {
         return description;
     }
-    public void setDescription(String description) {
+
+    /**
+     * setter method for @setDescription.
+     * @param description
+     */
+    public void setDescription(final String description) {
         this.description = description;
     }
+
+    /**
+     * getter method for @getDepartmentId.
+     * @return long - departmentId.
+     */
     public long getDepartmentId() {
         return departmentId;
     }
-    public void setDepartmentId(long departmentId) {
+
+    /**
+     * setter method for @setDepartmentId.
+     * @param departmentId
+     */
+    public void setDepartmentId(final long departmentId) {
         this.departmentId = departmentId;
     }
+
+    /**
+     * getter method for @getTicketType.
+     * @return long - userId
+     */
     public long getUserId() {
         return userId;
     }
-    public void setUserId(long userId) {
+    /**
+     *  setter method for @setUserId.
+     * @param userId
+     */
+    public void setUserId(final long userId) {
         this.userId = userId;
-    }    
+    }
+
+    /**
+     * this is no-argument constructor.
+     */
     public TicketSaveInDTO() {
         super();
     }
-    public TicketSaveInDTO(@NotEmpty(message = "please enter ticket title") String title, TicketType ticketType,
-            @NotEmpty(message = "add description of ticket") String description, long departmentId, long userId) {
+
+    /**
+     * @param title
+     * @param ticketType
+     * @param description
+     * @param departmentId
+     * @param userId
+     */
+    public TicketSaveInDTO(@NotEmpty(message = "please enter ticket title") final String title, final TicketType ticketType,
+            @NotEmpty(message = "add description of ticket") final String description,
+            final long departmentId, final long userId) {
         super();
         this.title = title;
         this.ticketType = ticketType;
@@ -61,26 +138,41 @@ public class TicketSaveInDTO {
         this.departmentId = departmentId;
         this.userId = userId;
     }
+
+    /**
+     *this is @hashCode method.
+     */
     @Override
     public int hashCode() {
         return Objects.hash(departmentId, description, ticketType, title, userId);
     }
+
+    /**
+     *this is @equals method.
+     */
     @Override
-    public boolean equals(Object obj) {
-        if (this == obj)
+    public boolean equals(final Object obj) {
+        if (this == obj) {
             return true;
-        if (obj == null)
+        }
+        if (obj == null) {
             return false;
-        if (getClass() != obj.getClass())
+        }
+        if (getClass() != obj.getClass()) {
             return false;
+        }
         TicketSaveInDTO other = (TicketSaveInDTO) obj;
         return departmentId == other.departmentId && Objects.equals(description, other.description)
                 && ticketType == other.ticketType && Objects.equals(title, other.title) && userId == other.userId;
     }
+
+    /**
+     *this is @toString method.
+     */
     @Override
     public String toString() {
         return "TicketSaveInDTO [title=" + title + ", ticketType=" + ticketType + ", description=" + description
                 + ", departmentId=" + departmentId + ", userId=" + userId + "]";
     }
-    
+
 }

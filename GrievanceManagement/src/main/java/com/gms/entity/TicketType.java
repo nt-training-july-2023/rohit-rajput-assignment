@@ -2,5 +2,12 @@ package com.gms.entity;
 
 public enum TicketType {
 
-    Grievance,Feedback
+    /**
+     * this is Grievance ticketType.
+     */
+    Grievance,
+    /**
+     * this is Feedback ticketType.
+     */
+    Feedback
 }

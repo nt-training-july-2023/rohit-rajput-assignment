@@ -1,0 +1,70 @@
+.admin-parent-container{
+    position: fixed;
+    width:20vw;
+    height:100vh;
+    background-color: #024074;
+    box-shadow: 0 0;
+    box-shadow: 0 0 1.5rem grey;
+}
+.admin-parent-container .admin-container{
+     padding: 1rem; 
+}
+.admin-parent-container .admin-container .admin-heading{
+    color: beige;
+    font-size: 3rem;
+    font-weight: 800;
+}
+.admin-parent-container .admin-container hr{
+    width: 100%;
+    height: 3px;
+    border: 1px solid beige;
+    background-color: black;
+}
+.admin-parent-container .admin-container ul{
+   margin-top: 2rem;
+}
+.admin-parent-container .admin-container ul li{
+    display: list-item;
+    line-height: 1.5rem;
+    margin: 3rem 0;
+    color: white;
+    font-size: 2rem;
+    list-style: none;
+}
+.admin-parent-container .admin-container ul li a {
+    color: white;
+    font-size: 1.7rem;
+    padding: 0.7rem 1.3rem;
+    border-radius: 0.3rem;
+    /* text-transform: uppercase; */
+    text-decoration: none;
+  }
+  .admin-parent-container .admin-container ul li a:hover {
+    /* background: black; */
+    background: #045faa;
+    transition: 0.5s;
+  }
+.admin-dashboard-btn{
+    display: block;
+    width: 50%;
+    height: 30px;
+    font-size: 15px;
+    font-weight: 600;
+    margin-top: 40%;
+    margin-left: 20%;
+    border-radius: 5px;
+    justify-content: center;
+    cursor: pointer;
+    background-color: beige;
+    border: 1px solid black;
+
+}
+.admin-dashboard-btn:hover{
+    border: none;
+}
+
+
+
+
+
+
