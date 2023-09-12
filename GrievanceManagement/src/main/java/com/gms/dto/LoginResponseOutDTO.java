@@ -36,6 +36,8 @@ public class LoginResponseOutDTO {
      * departmentId user belongs to.
      */
     private long departmentId;
+    
+    private String encodePassword;
 
     /**
      * LoginResponseOutDTO no-argument constructor.
@@ -43,24 +45,28 @@ public class LoginResponseOutDTO {
     public LoginResponseOutDTO() {
         super();
     }
+    
     /**
      * @param id
      * @param role
      * @param name
+     * @param firstLogin
      * @param email
      * @param departmentId
-     * @param firstLogin
+     * @param encodePassword
      */
-    public LoginResponseOutDTO(final long id, final Role role, final String name, final String email,
-            final long departmentId, final boolean firstLogin) {
+    public LoginResponseOutDTO(long id, Role role, String name, boolean firstLogin, String email, long departmentId,
+            String encodePassword) {
         super();
         this.id = id;
         this.role = role;
         this.name = name;
+        this.firstLogin = firstLogin;
         this.email = email;
         this.departmentId = departmentId;
-        this.firstLogin = firstLogin;
+        this.encodePassword = encodePassword;
     }
+
     /**
      * getter method for @getName.
      * @return String - name
@@ -145,38 +151,41 @@ public class LoginResponseOutDTO {
     public void setFirstLogin(final boolean firstLogin) {
         this.firstLogin = firstLogin;
     }
-    /**
-     *this is @hashCode method.
-     */
+    
+    public String getEncodePassword() {
+        return encodePassword;
+    }
+
+    public void setEncodePassword(String encodePassword) {
+        this.encodePassword = encodePassword;
+    }
+
     @Override
     public int hashCode() {
-        return Objects.hash(departmentId, email, firstLogin, id, name, role);
+        return Objects.hash(departmentId, email, encodePassword, firstLogin, id, name, role);
     }
-    /**
-     *this is @equals method.
-     */
+
     @Override
-    public boolean equals(final Object obj) {
-        if (this == obj) {
+    public boolean equals(Object obj) {
+        if (this == obj)
             return true;
-        }
-        if (obj == null) {
+        if (obj == null)
             return false;
-        }
-        if (getClass() != obj.getClass()) {
+        if (getClass() != obj.getClass())
             return false;
-        }
         LoginResponseOutDTO other = (LoginResponseOutDTO) obj;
         return departmentId == other.departmentId && Objects.equals(email, other.email)
-                && firstLogin == other.firstLogin && id == other.id && Objects.equals(name, other.name)
-                && role == other.role;
+                && Objects.equals(encodePassword, other.encodePassword) && firstLogin == other.firstLogin
+                && id == other.id && Objects.equals(name, other.name) && role == other.role;
     }
+
     /**
      *this is @toString method.
      */
     @Override
     public String toString() {
         return "LoginResponseOutDTO [id=" + id + ", role=" + role + ", name=" + name + ", firstLogin=" + firstLogin
-                + ", email=" + email + ", departmentId=" + departmentId + "]";
+                + ", email=" + email + ", departmentId=" + departmentId + ", encodePassword=" + encodePassword + "]";
     }
+    
 }

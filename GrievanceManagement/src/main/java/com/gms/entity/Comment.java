@@ -1,6 +1,6 @@
 package com.gms.entity;
 
-import java.sql.Date;
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 import javax.persistence.Column;
@@ -47,7 +47,7 @@ public class Comment {
      * This is time of comment.
      */
     @Column(name = "comment_time")
-    private String commentTime;
+    private LocalDateTime commentTime;
     /**
      * getter method for @getCommentId.
      * @return long - commentId
@@ -104,18 +104,11 @@ public class Comment {
     public void setUser(final User user) {
         this.user = user;
     }
-    /**
-     * getter method for @getCommentTime.
-     * @return String - commentTime
-     */
-    public String getCommentTime() {
+    
+    public LocalDateTime getCommentTime() {
         return commentTime;
     }
-    /**
-     * setter method for @setCommentTime.
-     * @param commentTime
-     */
-    public void setCommentTime(final String commentTime) {
+    public void setCommentTime(LocalDateTime commentTime) {
         this.commentTime = commentTime;
     }
     /**
@@ -123,32 +116,24 @@ public class Comment {
      */
     @PrePersist
     public void persist() {
-        commentTime = new Date(System.currentTimeMillis()).toString();
+        commentTime = LocalDateTime.now().withNano(0);
     }
-    /**
-     *this is hashCode method.
-     */
     @Override
     public int hashCode() {
         return Objects.hash(comment, commentId, commentTime, ticket, user);
     }
-    /**
-     *this is equals method.
-     */
     @Override
-    public boolean equals(final Object obj) {
-        if (this == obj) {
+    public boolean equals(Object obj) {
+        if (this == obj)
             return true;
-        }
-        if (obj == null) {
+        if (obj == null)
             return false;
-        }
-        if (getClass() != obj.getClass()) {
+        if (getClass() != obj.getClass())
             return false;
-        }
         Comment other = (Comment) obj;
         return Objects.equals(comment, other.comment) && commentId == other.commentId
                 && Objects.equals(commentTime, other.commentTime) && Objects.equals(ticket, other.ticket)
                 && Objects.equals(user, other.user);
     }
+    
 }

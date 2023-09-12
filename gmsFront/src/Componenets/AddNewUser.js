@@ -60,7 +60,7 @@ const AddNewUser = () => {
   }
 
   const validateUsername = (username) => {
-    const usernameRegex = /^[a-z]{2,}\.[a-z]{2,}@nucleusteq\.com$/;
+    const usernameRegex = /^[a-z0-9]{2,}\.[a-z]{2,}@nucleusteq\.com$/;
     if (usernameRegex.test(username)) {
       return true;
     } else {
@@ -83,7 +83,7 @@ const AddNewUser = () => {
 
   const validatePassword = (password) => {
     const passwordRegex =
-      /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[@$!%*?&])[A-Za-z0-9@$!%*?&]{8,20}$/;
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[@$!%*?&#])[A-Za-z0-9@$!%*?&#]{8,20}$/;
     const isValid = passwordRegex.test(password);
     return isValid;
   };

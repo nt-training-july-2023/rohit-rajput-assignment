@@ -1,5 +1,6 @@
 package com.gms.serviceImpl;
 
+import java.util.Base64;
 import java.util.Optional;
 
 import org.apache.logging.log4j.LogManager;
@@ -50,14 +51,16 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public LoginResponseOutDTO login(final LoginRequestInDTO loginDTO) {
+        String password = Base64.getEncoder().encodeToString(loginDTO.getPassword().getBytes());
         Optional<User> user = userRepository.findByEmail(loginDTO.getEmail());
-        if (user.isPresent() && loginDTO.getPassword().equals(user.get().getPassword())) {
+        if (user.isPresent() && password.equals(user.get().getPassword())) {
             LOGGER.info("user is present");
             LoginResponseOutDTO responseOutDTO = new LoginResponseOutDTO();
             responseOutDTO.setName(user.get().getName());
             responseOutDTO.setEmail(user.get().getEmail());
             responseOutDTO.setRole(user.get().getRole());
             responseOutDTO.setId(user.get().getId());
+            responseOutDTO.setEncodePassword(user.get().getPassword());
             responseOutDTO.setFirstLogin(user.get().isFirst());
             responseOutDTO.setDepartmentId(user.get().getDepartment().getDepartmentId());
             return responseOutDTO;
@@ -81,7 +84,7 @@ public class UserServiceImpl implements UserService {
         User user = new User();
         user.setName(addUserInDTO.getName());
         user.setDepartment(departmentOptional.get());
-        user.setPassword(addUserInDTO.getPassword());
+        user.setPassword(Base64.getEncoder().encodeToString(addUserInDTO.getPassword().getBytes()));
         user.setRole(addUserInDTO.getUserType());
         user.setEmail(addUserInDTO.getUsername());
         LOGGER.info("user saved ....");
@@ -93,13 +96,27 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public void updatePassword(final UpdatePasswordInDTO passwordInDTO) {
+        String oldPassword = Base64.getEncoder().encodeToString(passwordInDTO.getPassword().getBytes());
         Optional<User> user = userRepository.findById(passwordInDTO.getUserId());
-        if (user.isPresent()) {
+        if (user.isPresent() && user.get().isFirst()) {
             user.get().setFirst(false);
-            user.get().setPassword(passwordInDTO.getNewPassword());
+            user.get().setPassword(Base64.getEncoder().encodeToString(passwordInDTO.getNewPassword().getBytes()));
             userRepository.save(user.get());
-        } else {
+        } else if(!user.isPresent()) {
             throw new UserNotFoundException("User not Found");
+        }else if(oldPassword.equals(user.get().getPassword())) {
+            user.get().setPassword(Base64.getEncoder().encodeToString(passwordInDTO.getNewPassword().getBytes()));
+            userRepository.save(user.get());
+        }else {
+            throw new InvalidCredentialException("Invalid old password");
         }
+    }
+
+    @Override
+    public void deleteUser(long userId) {
+        if(!userRepository.existsById(userId)) {
+            throw new UserNotFoundException("User not exists");
+        }
+        userRepository.deleteById(userId);
     }
 }

@@ -42,12 +42,12 @@ public class User {
      * This is minimum length of password.
      */
     @Transient
-    private static final int PASSWORD_MIN_LENGTH = 8;
+    private static final int PASSWORD_MIN_LENGTH = 11;
     /**
      * This is maximum length of password.
      */
     @Transient
-    private static final int PASSWORD_MAX_LENGTH = 20;
+    private static final int PASSWORD_MAX_LENGTH = 28;
     /**
      * This is user id.
      */
@@ -65,7 +65,7 @@ public class User {
      *This is user email.
      */
     @NotEmpty
-    @Pattern(regexp = "^[a-z]{2,}[.][a-z]{2,}+@nucleusteq.com$",
+    @Pattern(regexp = "^[a-z0-9]{2,}[.][a-z]{2,}+@nucleusteq.com$",
     message = "please enter valid username ")
     private String email;
     /**
@@ -78,11 +78,9 @@ public class User {
      * This is password.
      */
     @Size(min = PASSWORD_MIN_LENGTH, max = PASSWORD_MAX_LENGTH,
-            message = "password must be 8-20 character long")
+            message = "password must be 11-20 character long")
     @NotEmpty(message = "password must be combination of uppercase,"
             + "lowercase and special symbol")
-    @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*[1-9])"
-         + "(?=.*[@$!%*?&])[A-Za-z1-9@$!%*?&]{8,20}$")
     private String password;
     /**
      * This is for checking first time login.

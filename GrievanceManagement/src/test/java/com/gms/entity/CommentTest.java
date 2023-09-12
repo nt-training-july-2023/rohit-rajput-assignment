@@ -8,6 +8,8 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.time.LocalDateTime;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -39,8 +41,8 @@ public class CommentTest {
         assertNotNull(comment.getUser());
    
         assertNull(comment.getCommentTime());
-        comment.setCommentTime("23-05-2023");
-        assertEquals("23-05-2023",comment.getCommentTime());
+        comment.setCommentTime(LocalDateTime.now().withNano(0));
+        assertNotNull(comment.getCommentTime());
     }
     @Test
     public void testEqualsAndHashCode() {

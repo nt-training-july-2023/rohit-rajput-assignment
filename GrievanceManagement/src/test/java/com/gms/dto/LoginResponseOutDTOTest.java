@@ -44,9 +44,9 @@ public class LoginResponseOutDTOTest {
     @Test
     @DisplayName("LoginResponseOutDTO toString, equals&hashCode")
     public void testEqualAndHashCodeAndToString() {
-        LoginResponseOutDTO loginResponseOutDTO1 = new LoginResponseOutDTO(1, Role.ADMIN, "Rohit", "rohit.rajput@nucleusteq.com", 1, false);
-        LoginResponseOutDTO loginResponseOutDTO2 = new LoginResponseOutDTO(1, Role.ADMIN, "Rohit", "rohit.rajput@nucleusteq.com", 1, false);
-        LoginResponseOutDTO loginResponseOutDTO3 = new LoginResponseOutDTO(1, Role.ADMIN, "Rohit", "rohit.rajput@nucleusteq.com", 1, true);
+        LoginResponseOutDTO loginResponseOutDTO1 = new LoginResponseOutDTO(1l, Role.ADMIN, "Rohit", false, "rohit.rajput@nucleusteq.com", 1, "Rohit@123");
+        LoginResponseOutDTO loginResponseOutDTO2 = new LoginResponseOutDTO(1l, Role.ADMIN, "Rohit", false, "rohit.rajput@nucleusteq.com", 1, "Rohit@123");
+        LoginResponseOutDTO loginResponseOutDTO3 = new LoginResponseOutDTO(1l, Role.ADMIN, "Rohit", true, "rohit.rajput@nucleusteq.com", 1, "Rohit@123");
         assertEquals(loginResponseOutDTO1, loginResponseOutDTO2);
         assertNotEquals(loginResponseOutDTO1, loginResponseOutDTO3);
         assertEquals(loginResponseOutDTO1.hashCode(), loginResponseOutDTO2.hashCode());

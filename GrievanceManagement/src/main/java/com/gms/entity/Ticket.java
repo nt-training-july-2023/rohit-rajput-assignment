@@ -1,6 +1,6 @@
 package com.gms.entity;
 
-import java.sql.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 
@@ -46,7 +46,8 @@ public class Ticket {
     /**
      * This is status of ticket.
      */
-    private String status;
+    @Enumerated(EnumType.STRING)
+    private Status status;
     /**
      * This is type of ticket.
      */
@@ -56,11 +57,11 @@ public class Ticket {
     /**
      * This is creation time of ticket.
      */
-    private String creationTime;
+    private LocalDateTime creationTime;
     /**
      * This is last updated time of ticket.
      */
-    private String lastUpdationTime;
+    private LocalDateTime lastUpdationTime;
     /**
      * This is the user who generate ticket.
      */
@@ -120,13 +121,6 @@ public class Ticket {
         this.description = description;
     }
     /**
-     * getter method for @getStatus.
-     * @return String - status
-     */
-    public String getStatus() {
-        return status;
-    }
-    /**
      * getter method for @getTicketType.
      * @return TicketType - ticketType
      */
@@ -140,39 +134,22 @@ public class Ticket {
     public void setTicketType(final TicketType ticketType) {
         this.ticketType = ticketType;
     }
-    /**
-     * setter method for @setStatus.
-     * @param status
-     */
-    public void setStatus(final String status) {
+    public Status getStatus() {
+        return status;
+    }
+    public void setStatus(Status status) {
         this.status = status;
     }
-    /**
-     * getter method for @getCreationTime.
-     * @return String - creationTime
-     */
-    public String getCreationTime() {
+    public LocalDateTime getCreationTime() {
         return creationTime;
     }
-    /**
-     * setter method for @setCreationTime.
-     * @param creationTime
-     */
-    public void setCreationTime(final String creationTime) {
+    public void setCreationTime(LocalDateTime creationTime) {
         this.creationTime = creationTime;
     }
-    /**
-     * getter method for @getLastUpdationTime.
-     * @return String - lastUpdationTime
-     */
-    public String getLastUpdationTime() {
+    public LocalDateTime getLastUpdationTime() {
         return lastUpdationTime;
     }
-    /**
-     * setter method for @setLastUpdationTime.
-     * @param lastUpdationTime
-     */
-    public void setLastUpdationTime(final String lastUpdationTime) {
+    public void setLastUpdationTime(LocalDateTime lastUpdationTime) {
         this.lastUpdationTime = lastUpdationTime;
     }
     /**
@@ -223,8 +200,8 @@ public class Ticket {
      */
     @PrePersist
     public void persist() {
-        status = "OPEN";
-        lastUpdationTime =  new Date(System.currentTimeMillis()).toString();
+        status = Status.OPEN;
+        lastUpdationTime =  LocalDateTime.now().withNano(0);
         creationTime = lastUpdationTime;
     }
     /**
@@ -235,25 +212,21 @@ public class Ticket {
         return Objects.hash(comments, creationTime, department, description, lastUpdationTime, status, ticketId,
                 ticketType, title, user);
     }
-    /**
-     *this is equals method.
-     */
     @Override
-    public boolean equals(final Object obj) {
-        if (this == obj) {
+    public boolean equals(Object obj) {
+        if (this == obj)
             return true;
-        }
-        if (obj == null) {
+        if (obj == null)
             return false;
-        }
-        if (getClass() != obj.getClass()) {
+        if (getClass() != obj.getClass())
             return false;
-        }
         Ticket other = (Ticket) obj;
         return Objects.equals(comments, other.comments) && Objects.equals(creationTime, other.creationTime)
                 && Objects.equals(department, other.department) && Objects.equals(description, other.description)
-                && Objects.equals(lastUpdationTime, other.lastUpdationTime) && Objects.equals(status, other.status)
+                && Objects.equals(lastUpdationTime, other.lastUpdationTime) && status == other.status
                 && ticketId == other.ticketId && ticketType == other.ticketType && Objects.equals(title, other.title)
                 && Objects.equals(user, other.user);
     }
+    
+    
 }

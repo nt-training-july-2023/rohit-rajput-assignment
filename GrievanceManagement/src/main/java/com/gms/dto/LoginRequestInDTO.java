@@ -22,7 +22,7 @@ public class LoginRequestInDTO {
      * This is email of user.
      */
     @NotEmpty(message = "please enter username ")
-    @Pattern(regexp = "^[a-z]{2,}[.][a-z]{2,}+@nucleusteq.com$", message = "please enter valid username")
+    @Pattern(regexp = "^[a-z0-9]{2,}[.][a-z]{2,}+@nucleusteq.com$", message = "please enter valid username")
     private String email;
     /**
      * This is password.
@@ -46,7 +46,7 @@ public class LoginRequestInDTO {
      */
     public LoginRequestInDTO(
             @NotEmpty(message = "please enter username ")
-            @Pattern(regexp = "^[a-z]{2,}[.][a-z]{2,}+@nucleusteq.com$",
+            @Pattern(regexp = "^[a-z0-9]{2,}[.][a-z]{2,}+@nucleusteq.com$",
             message = "please enter valid username ") final String email,
             @Size(min = PASSWORD_MIN_LENGTH, max = PASSWORD_MAX_LENGTH,
             message = "password must be 8-20 character long")

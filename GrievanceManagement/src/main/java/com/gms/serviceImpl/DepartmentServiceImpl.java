@@ -72,12 +72,12 @@ public class DepartmentServiceImpl implements DepartmentService {
      */
     @Override
     public String saveDepartment(final String departmentName) {
-        if (departmentRepository.existsByDepartmentName(departmentName)) {
+        if (departmentRepository.existsByDepartmentName(departmentName.toUpperCase())) {
             LOGGER.warn("departmentName is already exists");
             throw new DepartmentValidationException("Department exists");
         }
         Department department = new Department();
-        department.setDepartmentName(departmentName);
+        department.setDepartmentName(departmentName.toUpperCase());
         LOGGER.info("department saved successfully");
         Department department2 = departmentRepository.save(department);
         return department2.getDepartmentName();

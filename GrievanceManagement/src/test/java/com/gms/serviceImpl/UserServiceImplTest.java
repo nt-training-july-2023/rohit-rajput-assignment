@@ -8,6 +8,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import java.util.Base64;
 import java.util.Optional;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -19,12 +20,14 @@ import org.mockito.MockitoAnnotations;
 import com.gms.dto.AddUserInDTO;
 import com.gms.dto.LoginRequestInDTO;
 import com.gms.dto.LoginResponseOutDTO;
+import com.gms.dto.UpdatePasswordInDTO;
 import com.gms.entity.Department;
 import com.gms.entity.Role;
 import com.gms.entity.User;
 import com.gms.exception.DepartmentsNotFoundException;
 import com.gms.exception.EmailExistsException;
 import com.gms.exception.InvalidCredentialException;
+import com.gms.exception.UserNotFoundException;
 import com.gms.repository.DepartmentRepository;
 import com.gms.repository.UserRepository;
 
@@ -44,12 +47,12 @@ public class UserServiceImplTest {
     @Test
     public void testLoginSuccessful() {
         LoginRequestInDTO requestInDTO = new LoginRequestInDTO("yash.sharma@nucleusteq.com", "Yash@123");
-        LoginResponseOutDTO expected = new LoginResponseOutDTO(1l, Role.ADMIN, "Yash", "yash.sharma@nucleusteq.com", 1,
-                false);
+        LoginResponseOutDTO expected = new LoginResponseOutDTO(1l, Role.ADMIN, "Yash", false,"yash.sharma@nucleusteq.com", 1,
+                "WWFzaEAxMjM=");
         User user = new User();
         user.setName("Yash");
         user.setEmail("yash.sharma@nucleusteq.com");
-        user.setPassword("Yash@123");
+        user.setPassword("WWFzaEAxMjM=");
         user.setId(1l);
         user.setRole(Role.ADMIN);
         user.setDepartment(new Department());
@@ -112,5 +115,52 @@ public class UserServiceImplTest {
         userServiceImpl.save(addUserInDTO);
         verify(userRepository,times(1)).existsByEmail(addUserInDTO.getUsername());
         verify(departmentRepository,times(1)).findById(1l);
+    }
+    
+    @Test
+    public void testChangePasswordIfUserNotPresent() {
+        UpdatePasswordInDTO passwordInDTO = new UpdatePasswordInDTO(1, "Rohit@123", "Rohit@123");
+        when(userRepository.findById(passwordInDTO.getUserId())).thenReturn(Optional.empty());
+        UserNotFoundException exception = assertThrows(UserNotFoundException.class, ()->{
+            userServiceImpl.updatePassword(passwordInDTO);
+        });
+        assertEquals("User not Found", exception.getMessage());
+    }
+    @Test
+    public void testChangePasswordIfUserFirstLogin() {
+        UpdatePasswordInDTO passwordInDTO = new UpdatePasswordInDTO(1, "Rohit@123", "Rohit@123");
+        User user = new User();
+        user.setId(1);
+        user.setFirst(true);
+        when(userRepository.findById(passwordInDTO.getUserId())).thenReturn(Optional.of(user));
+        when(userRepository.save(user)).thenReturn(user);
+        userServiceImpl.updatePassword(passwordInDTO);
+        verify(userRepository, times(1)).save(user);
+    }
+    @Test
+    public void testChangePasswordIfUserFoundAndFirstLoginFalse() {
+        UpdatePasswordInDTO passwordInDTO = new UpdatePasswordInDTO(1, "Rohit@123", "Rohit@1234");
+        String oldPassword = Base64.getEncoder().encodeToString(passwordInDTO.getPassword().getBytes());
+        User user = new User();
+        user.setId(1);
+        user.setFirst(false);
+        user.setPassword(oldPassword);
+        when(userRepository.findById(passwordInDTO.getUserId())).thenReturn(Optional.of(user));
+        when(userRepository.save(user)).thenReturn(user);
+        userServiceImpl.updatePassword(passwordInDTO);
+        verify(userRepository, times(1)).save(user);
+    }
+    @Test
+    public void testChangePasswordIfInvalidCredential() {
+        UpdatePasswordInDTO passwordInDTO = new UpdatePasswordInDTO(1, "Rohit@1234", "Rohit@12345");
+        User user = new User();
+        user.setId(1);
+        user.setFirst(false);
+        user.setPassword("Um9oaXRAMTIz");
+        when(userRepository.findById(passwordInDTO.getUserId())).thenReturn(Optional.of(user));
+        when(userRepository.save(user)).thenReturn(user);
+        InvalidCredentialException exception = assertThrows(InvalidCredentialException.class, ()-> {
+            userServiceImpl.updatePassword(passwordInDTO);});
+        assertEquals("Invalid old password", exception.getMessage());
     }
 }

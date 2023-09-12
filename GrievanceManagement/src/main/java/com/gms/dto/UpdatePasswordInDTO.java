@@ -19,6 +19,11 @@ public class UpdatePasswordInDTO {
      * this is userId.
      */
     private long userId;
+    @Size(min = PASSWORD_MIN_LENGTH, max = PASSWORD_MAX_LENGTH, message = "password must be 8-20 character long")
+    @NotEmpty(message = "please enter your password")
+    @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])"
+            + "(?=.*[@$!%*?&])[A-Za-z0-9@$!%*?&]{8,20}$", message = "enter strong password")
+    private String password;
     /**
      * this is newPassword.
      */
@@ -41,6 +46,12 @@ public class UpdatePasswordInDTO {
     public void setUserId(final long userId) {
         this.userId = userId;
     }
+    public String getPassword() {
+        return password;
+    }
+    public void setPassword(String password) {
+        this.password = password;
+    }
     /**
      * getter method for @getNewPassword.
      * @return String - newPassword
@@ -61,49 +72,35 @@ public class UpdatePasswordInDTO {
     public UpdatePasswordInDTO() {
         super();
     }
-    /**
-     * @param userId
-     * @param newPassword
-     */
-    public UpdatePasswordInDTO(final long userId,
-            @Size(min = PASSWORD_MIN_LENGTH, max = PASSWORD_MAX_LENGTH,
-            message = "password must be 8-20 character long")
-            @NotEmpty(message = "please enter your password")
-            @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[@$!%*?&])[A-Za-z0-9@$!%*?&]{8,20}$",
-            message = "enter strong password") final String newPassword) {
+     
+    public UpdatePasswordInDTO(long userId,
+            @Size(min = 8, max = 20, message = "password must be 8-20 character long") @NotEmpty(message = "please enter your password") @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[@$!%*?&])[A-Za-z0-9@$!%*?&]{8,20}$", message = "enter strong password") String password,
+            @Size(min = 8, max = 20, message = "password must be 8-20 character long") @NotEmpty(message = "please enter your password") @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[@$!%*?&])[A-Za-z0-9@$!%*?&]{8,20}$", message = "enter strong password") String newPassword) {
         super();
         this.userId = userId;
+        this.password = password;
         this.newPassword = newPassword;
     }
-    /**
-     *this is @hashCode method.
-     */
     @Override
     public int hashCode() {
-        return Objects.hash(newPassword, userId);
+        return Objects.hash(newPassword, password, userId);
     }
-    /**
-     *this is @equals method.
-     */
     @Override
-    public boolean equals(final Object obj) {
-        if (this == obj) {
+    public boolean equals(Object obj) {
+        if (this == obj)
             return true;
-        }
-        if (obj == null) {
+        if (obj == null)
             return false;
-        }
-        if (getClass() != obj.getClass()) {
+        if (getClass() != obj.getClass())
             return false;
-        }
         UpdatePasswordInDTO other = (UpdatePasswordInDTO) obj;
-        return Objects.equals(newPassword, other.newPassword) && userId == other.userId;
+        return Objects.equals(newPassword, other.newPassword) && Objects.equals(password, other.password)
+                && userId == other.userId;
     }
-    /**
-     *this is @toString method.
-     */
     @Override
     public String toString() {
-        return "UpdatePasswordInDTO [userId=" + userId + ", newPassword=" + newPassword + "]";
+        return "UpdatePasswordInDTO [userId=" + userId + ", password=" + password + ", newPassword=" + newPassword
+                + "]";
     }
+   
 }

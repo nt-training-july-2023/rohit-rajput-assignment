@@ -23,4 +23,6 @@ public interface UserService {
      * @param updatePasswordInDTO
      */
     void updatePassword(UpdatePasswordInDTO updatePasswordInDTO);
+
+    void deleteUser(long userId);
 }

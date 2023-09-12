@@ -20,9 +20,12 @@ public interface DepartmentRepository extends JpaRepository<Department, Long> {
     List<DepartmentOutDTO> findAllDepartmentName();
 
     /**
-     * this method is checks that a particular email is exists are not.
+     * this method is checks that a particular departmentName is exists are not.
      * @param departmentName
      * @return boolean
      */
     boolean existsByDepartmentName(String departmentName);
+
+    @Query("select d.departmentId from Department d where d.departmentName = ?1")
+    Long findByDepartmentName(String departmentName);
 }

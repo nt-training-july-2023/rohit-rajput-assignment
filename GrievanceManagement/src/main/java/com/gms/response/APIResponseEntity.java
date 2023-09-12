@@ -32,6 +32,12 @@ public class APIResponseEntity {
          this.data = data;
          this.message = message;
     }
+    
+    public APIResponseEntity(boolean hasdata, String message) {
+        super();
+        this.hasdata = hasdata;
+        this.message = message;
+    }
     /**
      * getter method for @isHasdata.
      * @return boolean - hasData

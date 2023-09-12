@@ -9,11 +9,11 @@ const loginService = {
     getAllDepartment(){
       return axios.get("http://localhost:8080/department");
     },
-    changePassword(newPassword){
+    changePassword(password,newPassword){
       const userId = localStorage.getItem('userId')
       console.log(userId);
       console.log(newPassword);
-      return axios.post("http://localhost:8080/gms/v1/change-password",{userId, newPassword})
+      return axios.post("http://localhost:8080/gms/v1/change-password",{userId, password, newPassword})
     },
     addDepartment(departmentName){
       console.log(departmentName);

@@ -13,6 +13,7 @@ import com.gms.exception.DepartmentValidationException;
 import com.gms.exception.DepartmentsNotFoundException;
 import com.gms.exception.EmailExistsException;
 import com.gms.exception.InvalidCredentialException;
+import com.gms.exception.TicketNotFoundException;
 import com.gms.exception.UserNotFoundException;
 import com.gms.response.APIResponseEntity;
 
@@ -94,6 +95,12 @@ public class GlobalExceptionHandler {
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @ExceptionHandler(UserNotFoundException.class)
     public APIResponseEntity userNotFoundExceptionHandler(final UserNotFoundException exception) {
+        return new APIResponseEntity(false, null, exception.getMessage());
+    }
+    
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @ExceptionHandler(TicketNotFoundException.class)
+    public APIResponseEntity ticketNotFoundException(final TicketNotFoundException exception) {
         return new APIResponseEntity(false, null, exception.getMessage());
     }
 

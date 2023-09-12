@@ -7,6 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,16 +38,16 @@ public class TicketTest {
         assertEquals("salary related problem", ticket.getDescription());
    
         assertNull(ticket.getStatus());
-        ticket.setStatus("OPEN");
-        assertEquals("OPEN", ticket.getStatus());
+        ticket.setStatus(Status.OPEN);
+        assertEquals(Status.OPEN, ticket.getStatus());
    
         assertNull(ticket.getCreationTime());
-        ticket.setCreationTime("23-05-2023");
-        assertEquals("23-05-2023", ticket.getCreationTime());
+        ticket.setCreationTime(LocalDateTime.now().withNano(0));
+        assertNotNull( ticket.getCreationTime());
   
         assertNull(ticket.getLastUpdationTime());
-        ticket.setLastUpdationTime("23-05-2023");
-        assertEquals("23-05-2023", ticket.getLastUpdationTime());
+        ticket.setLastUpdationTime(LocalDateTime.now().withNano(0));
+        assertNotNull(ticket.getLastUpdationTime());
 
         assertNull(ticket.getDepartment());
         ticket.setDepartment(new Department());

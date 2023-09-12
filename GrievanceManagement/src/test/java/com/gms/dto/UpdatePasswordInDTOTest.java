@@ -28,9 +28,9 @@ public class UpdatePasswordInDTOTest {
     @Test
     @DisplayName("UpdatePasswordInDTOTest toString, equals&hashCode")
     public void testEqualAndHashCodeAndToString() {
-        UpdatePasswordInDTO updatePasswordInDTO1 = new UpdatePasswordInDTO(1, "Rohit@123");
-        UpdatePasswordInDTO updatePasswordInDTO2 = new UpdatePasswordInDTO(1, "Rohit@123");
-        UpdatePasswordInDTO updatePasswordInDTO3 = new UpdatePasswordInDTO(1, "Rohit@1234");
+        UpdatePasswordInDTO updatePasswordInDTO1 = new UpdatePasswordInDTO(1, "Rohit@123","Rohit@1234");
+        UpdatePasswordInDTO updatePasswordInDTO2 = new UpdatePasswordInDTO(1, "Rohit@123", "Rohit@1234");
+        UpdatePasswordInDTO updatePasswordInDTO3 = new UpdatePasswordInDTO(1, "Rohit@1234","Rohit@1234");
         assertEquals(updatePasswordInDTO1, updatePasswordInDTO2);
         assertNotEquals(updatePasswordInDTO1, updatePasswordInDTO3);
         assertEquals(updatePasswordInDTO1.hashCode(), updatePasswordInDTO2.hashCode());

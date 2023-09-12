@@ -24,7 +24,7 @@ public class AddUserInDTO {
      * this is username which represents email of user.
      */
     @NotEmpty(message = "please enter username ")
-    @Pattern(regexp = "^[a-z]{2,}[.][a-z]{2,}+@nucleusteq.com$", message = "please enter valid username")
+    @Pattern(regexp = "^[a-z0-9]{2,}[.][a-z]{2,}+@nucleusteq.com$", message = "please enter valid username")
     private String username;
     /**
      * this is user role.
@@ -134,7 +134,7 @@ public class AddUserInDTO {
     public AddUserInDTO(@NotEmpty(message = "Please Enter Username")
             @Pattern(regexp = "^[a-zA-Z ]{2,}$")final String name,
             @NotEmpty(message = "please enter username ")
-            @Pattern(regexp = "^[a-z]{2,}[.][a-z]{2,}+@nucleusteq.com$",
+            @Pattern(regexp = "^[a-z0-9]{2,}[.][a-z]{2,}+@nucleusteq.com$",
             message = "please enter valid username")final String username,
             @NotNull(message = "role required")final Role userType,
             @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[@$!%*?&])[A-Za-z0-9@$!%*?&]{8,20}$",
