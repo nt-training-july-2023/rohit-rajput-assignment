@@ -17,46 +17,26 @@ import org.springframework.stereotype.Component;
 import com.gms.entity.Role;
 import com.gms.repository.UserRepository;
 
+/**
+ * This is @MemberFilter for authorize a member to access a end-point.
+ */
 @Component
 public class MemberFilter implements Filter {
 
-    private String header;
-    private String[] elements;
+   
+    /**
+     * This is @UserRepository reference.
+     */
     @Autowired
     private UserRepository userRepository;
 
-//    @Override
-//    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
-//            throws IOException, ServletException {
-//        elements = null;
-//        HttpServletRequest httpServletRequest = (HttpServletRequest) request;
-//        header = httpServletRequest.getHeader("AUTH_TOKEN");
-//        if (header != null) {
-//            System.out.println("line number 35.....");
-//            elements = header.split("GMS_BEARER");            
-//        }
-//        if (header == null || elements.length != 2|| elements[0]=="") {
-//            System.out.println("line number 39.....");
-//            ((HttpServletResponse) response).sendError(HttpServletResponse.SC_UNAUTHORIZED, "Invalid token");
-//        } else {
-//            try {
-////                long id = Long.parseLong(elements[0]);
-////                System.out.println(id);
-////                System.out.println(elements[1]);
-//                if (!userRepository.existsByEmailAndPasswordAndRole(elements[0], elements[1], Role.MEMBER)) {
-//                    System.out.println("line number 44.....");
-//                    ((HttpServletResponse) response).sendError(HttpServletResponse.SC_UNAUTHORIZED, "Invalid token");
-//                }
-//            } catch (NumberFormatException e) {
-//                System.out.println("line number 49.....");
-//                ((HttpServletResponse) response).sendError(HttpServletResponse.SC_UNAUTHORIZED, "Invalid token");
-//            }
-//        }
-//        chain.doFilter(httpServletRequest, response);
-//    }
+    /**
+     *This is @doFilter method for handle request and response.
+     */
     @Override
-    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
+    public void doFilter(final ServletRequest request, final ServletResponse response, final FilterChain chain)
             throws IOException, ServletException {
+        System.out.println("memberfilter");
         HttpServletRequest httpServletRequest = (HttpServletRequest)request;
         String username = httpServletRequest.getHeader("username");
         String password = httpServletRequest.getHeader("encodedPassword");
@@ -67,9 +47,7 @@ public class MemberFilter implements Filter {
         }else if(!userRepository.existsByEmailAndPasswordAndRole(username, password, Role.MEMBER)) {
             ((HttpServletResponse) response).sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized user");
         }
-        chain.doFilter(httpServletRequest, response);
-        
+        chain.doFilter(httpServletRequest, response);        
     }
-
 }
 

@@ -20,8 +20,8 @@ public class AddUserInDTOTest {
     public void setUp() {
         addUserInDTO = new AddUserInDTO();
     }
+    
     @Test
-    @DisplayName("AddUserInDTO getter & setter")
     public void testGetterAndSetter() {
         assertNull(addUserInDTO.getName());
         addUserInDTO.setName("Rohit");
@@ -39,30 +39,30 @@ public class AddUserInDTOTest {
         addUserInDTO.setUserType(Role.ADMIN);
         assertEquals(Role.ADMIN, addUserInDTO.getUserType());
 
-        assertEquals(0, addUserInDTO.getDepartmentId());
-        addUserInDTO.setDepartmentId(1);
+        assertNull(addUserInDTO.getDepartmentId());
+        addUserInDTO.setDepartmentId(1l);
         assertEquals(1, addUserInDTO.getDepartmentId());
     }
+    
     @Test
-    @DisplayName("AddUserInDTO constructor")
     public void testConstructor() {
         AddUserInDTO addUserInDTO = new AddUserInDTO("Rohit", "rohit.rajput@nucleusteq.com", Role.ADMIN, "Rohit@123",
-                1);
+                1l);
         assertEquals("Rohit", addUserInDTO.getName());
         assertEquals("rohit.rajput@nucleusteq.com", addUserInDTO.getUsername());
         assertEquals(Role.ADMIN, addUserInDTO.getUserType());
         assertEquals("Rohit@123", addUserInDTO.getPassword());
         assertEquals(1, addUserInDTO.getDepartmentId());
     }
+    
     @Test
-    @DisplayName("AddUserInDTO toString, equals&hashCode")
     public void testEqualAndHashCodeAndToString() {
         AddUserInDTO addUserInDTO1 = new AddUserInDTO("Rohit", "rohit.rajput@nucleusteq.com", Role.ADMIN, "Rohit@123",
-                1);
+                1l);
         AddUserInDTO addUserInDTO2 = new AddUserInDTO("Rohit", "rohit.rajput@nucleusteq.com", Role.ADMIN, "Rohit@123",
-                1);
+                1l);
         AddUserInDTO addUserInDTO3 = new AddUserInDTO("Rohit Rajput", "rohit.rajput@nucleusteq.com", Role.ADMIN, "Rohit@123",
-                1);
+                1l);
         assertEquals(addUserInDTO1, addUserInDTO2);
         assertNotEquals(addUserInDTO1, addUserInDTO3);
         assertEquals(addUserInDTO1.hashCode(), addUserInDTO2.hashCode());

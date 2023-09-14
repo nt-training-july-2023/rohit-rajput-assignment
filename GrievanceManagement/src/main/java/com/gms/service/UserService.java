@@ -6,23 +6,34 @@ import com.gms.dto.LoginResponseOutDTO;
 import com.gms.dto.UpdatePasswordInDTO;
 import com.gms.entity.User;
 
+/**
+ * This is @UserService interface having all methods related to user table operation.
+ */
 public interface UserService {
+    
     /**
+     * This is @login method.
      * @param loginDTO
      * @return LoginResponseOutDTO
      */
-    LoginResponseOutDTO login(LoginRequestInDTO loginDTO);
+    LoginResponseOutDTO login(final LoginRequestInDTO loginDTO);
 
     /**
+     * This method is for saving a new user.
      * @param addUserInDTO
      * @return User
      */
-    User save(AddUserInDTO addUserInDTO);
+    User save(final AddUserInDTO addUserInDTO);
 
     /**
+     * This method is for updating password.
      * @param updatePasswordInDTO
      */
-    void updatePassword(UpdatePasswordInDTO updatePasswordInDTO);
+    void updatePassword(final UpdatePasswordInDTO updatePasswordInDTO);
 
-    void deleteUser(long userId);
+    /**
+     * This method is for deleting a user.
+     * @param userId
+     */
+    void deleteUser(final Long userId);
 }

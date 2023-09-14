@@ -14,32 +14,29 @@ import com.gms.dto.LoginResponseOutDTO;
 import com.gms.dto.UpdatePasswordInDTO;
 import com.gms.entity.Department;
 import com.gms.entity.User;
-import com.gms.exception.DepartmentsNotFoundException;
-import com.gms.exception.EmailExistsException;
-import com.gms.exception.InvalidCredentialException;
-import com.gms.exception.UserNotFoundException;
+import com.gms.exception.BadRequestException;
+import com.gms.exception.NotFoundException;
 import com.gms.repository.DepartmentRepository;
 import com.gms.repository.UserRepository;
 import com.gms.service.UserService;
 
 /**
- * <p>
- * This is @UserServiceImpl class which is implementation of @UserService
- * interface
- * <p>
- * .
+ * This is @UserServiceImpl class which is implementation of @UserService interface.
  */
 @Service
 public class UserServiceImpl implements UserService {
+    
     /**
      * This is @Logger for logging the information.
      */
     private static final Logger LOGGER = LogManager.getLogger(UserServiceImpl.class);
+    
     /**
      * This is @UserRepository object.
      */
     @Autowired
     private UserRepository userRepository;
+    
     /**
      * This is @DepartmentRepository object.
      */
@@ -66,7 +63,7 @@ public class UserServiceImpl implements UserService {
             return responseOutDTO;
         }
         LOGGER.error("bad credential for login");
-        throw new InvalidCredentialException("Username or password incorrect!");
+        throw new BadRequestException("Username or password incorrect!");
     }
 
     /**
@@ -76,10 +73,10 @@ public class UserServiceImpl implements UserService {
     public User save(final AddUserInDTO addUserInDTO) {
         Optional<Department> departmentOptional = departmentRepository.findById(addUserInDTO.getDepartmentId());
         if (!departmentOptional.isPresent()) {
-            throw new DepartmentsNotFoundException("Department id not found");
+            throw new NotFoundException("Department id not found");
         }
         if (userRepository.existsByEmail(addUserInDTO.getUsername())) {
-            throw new EmailExistsException("Username alredy exist");
+            throw new BadRequestException("Username alredy exist");
         }
         User user = new User();
         user.setName(addUserInDTO.getName());
@@ -103,19 +100,22 @@ public class UserServiceImpl implements UserService {
             user.get().setPassword(Base64.getEncoder().encodeToString(passwordInDTO.getNewPassword().getBytes()));
             userRepository.save(user.get());
         } else if(!user.isPresent()) {
-            throw new UserNotFoundException("User not Found");
-        }else if(oldPassword.equals(user.get().getPassword())) {
+            throw new NotFoundException("User not Found");
+        } else if(oldPassword.equals(user.get().getPassword())) {
             user.get().setPassword(Base64.getEncoder().encodeToString(passwordInDTO.getNewPassword().getBytes()));
             userRepository.save(user.get());
-        }else {
-            throw new InvalidCredentialException("Invalid old password");
+        } else{
+            throw new BadRequestException("Invalid old password");
         }
     }
 
+    /**
+     *This method is for deleting a user by userId.
+     */
     @Override
-    public void deleteUser(long userId) {
+    public void deleteUser(final Long userId) {
         if(!userRepository.existsById(userId)) {
-            throw new UserNotFoundException("User not exists");
+            throw new NotFoundException("User not exists");
         }
         userRepository.deleteById(userId);
     }

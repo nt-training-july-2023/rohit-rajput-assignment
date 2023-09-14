@@ -17,8 +17,8 @@ public class TicketSaveInDTOTest {
     public void setUp() {
         ticketSaveInDTO = new TicketSaveInDTO();
     }
+    
     @Test
-    @DisplayName("TicketSaveInDTO getter & setter")
     public void testGetterAndSetter() {
         assertNull(ticketSaveInDTO.getTitle());
         ticketSaveInDTO.setTitle("Technical Problem");
@@ -27,21 +27,21 @@ public class TicketSaveInDTOTest {
         ticketSaveInDTO.setDescription("keyboard is not working");
         assertEquals("keyboard is not working", ticketSaveInDTO.getDescription());
         assertNull(ticketSaveInDTO.getTicketType());
-        ticketSaveInDTO.setTicketType(TicketType.Feedback);
-        assertEquals(TicketType.Feedback, ticketSaveInDTO.getTicketType());
-        assertEquals(0,ticketSaveInDTO.getDepartmentId());
-        ticketSaveInDTO.setDepartmentId(1);
+        ticketSaveInDTO.setTicketType(TicketType.FEEDBACK);
+        assertEquals(TicketType.FEEDBACK, ticketSaveInDTO.getTicketType());
+        assertNull(ticketSaveInDTO.getDepartmentId());
+        ticketSaveInDTO.setDepartmentId(1l);
         assertEquals(1, ticketSaveInDTO.getDepartmentId());        
-        assertEquals(0,ticketSaveInDTO.getUserId());
-        ticketSaveInDTO.setUserId(1);
+        assertNull(ticketSaveInDTO.getUserId());
+        ticketSaveInDTO.setUserId(1l);
         assertEquals(1, ticketSaveInDTO.getUserId());    
     }
+    
     @Test
-    @DisplayName("TicketSaveInDTOTest toString, equals&hashCode")
     public void testEqualAndHashCodeAndToString() {
-        TicketSaveInDTO ticketSaveInDTO1 = new TicketSaveInDTO("qwerty", TicketType.Feedback, "qwertyu", 1, 1);
-        TicketSaveInDTO ticketSaveInDTO2 = new TicketSaveInDTO("qwerty", TicketType.Feedback, "qwertyu", 1, 1);
-        TicketSaveInDTO ticketSaveInDTO3 = new TicketSaveInDTO("qwerty", TicketType.Feedback, "qwertyu", 1, 2);
+        TicketSaveInDTO ticketSaveInDTO1 = new TicketSaveInDTO("qwerty", TicketType.FEEDBACK, "qwertyu", 1l, 1l);
+        TicketSaveInDTO ticketSaveInDTO2 = new TicketSaveInDTO("qwerty", TicketType.FEEDBACK, "qwertyu", 1l, 1l);
+        TicketSaveInDTO ticketSaveInDTO3 = new TicketSaveInDTO("qwerty", TicketType.FEEDBACK, "qwertyu", 1l, 2l);
         assertEquals(ticketSaveInDTO1, ticketSaveInDTO2);
         assertNotEquals(ticketSaveInDTO1, ticketSaveInDTO3);
         assertEquals(ticketSaveInDTO1.hashCode(), ticketSaveInDTO2.hashCode());

@@ -24,7 +24,6 @@ public class UserTest {
     }
 
     @Test
-    @DisplayName("Getter & Setter for Name")
     public void testGetAndSetName() {
         assertNull(user.getName());
         user.setName("Rohit");
@@ -62,10 +61,12 @@ public class UserTest {
         user.setComments(list2);
         assertEquals(1, user.getComments().size());
     }
+    
     @Test
     public void testPersist() {
         
     }
+    
     @Test
     public void testEqualsAndHashCode() {
         User user1 = new User();

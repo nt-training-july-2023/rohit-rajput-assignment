@@ -5,21 +5,39 @@ import java.util.List;
 import com.gms.dto.TicketInfoOutDTO;
 import com.gms.dto.TicketSaveInDTO;
 import com.gms.dto.TicketTableOutDTO;
+import com.gms.dto.UpdateTicketInDTO;
 import com.gms.entity.Ticket;
 
+/**
+ * This is @TicketService interface having all methods related to ticket table operation.
+ */
 public interface TicketService {
 
     /**
+     * This method is for saving a ticket.
      * @param ticketSaveInDTO
      * @return Ticket
      */
-    Ticket saveTicket(TicketSaveInDTO ticketSaveInDTO);
+    Ticket saveTicket(final TicketSaveInDTO ticketSaveInDTO);
     
-    List<TicketTableOutDTO> getAllTicket();
+    /**
+     * This method is for getting list of @TicketTableOutDTO.
+     * @return List<TicketTableOutDTO>
+     */
+    List<TicketTableOutDTO> getAllTicket(final Long userId, final Boolean myFirst);
 
-    List<TicketTableOutDTO> getAllTicketByDepartment(String departmentName);
+    /**
+     * This method is for getting a @TicketInfoUtDTO by ticketId.
+     * @param id
+     * @return
+     */
+    TicketInfoOutDTO getTicketById(final Long id);
 
-    TicketInfoOutDTO getTicketById(long id);
+    /**
+     * This method is for updating ticket.
+     * @param updateTicketInDTO
+     */
+    String updateTicket(final UpdateTicketInDTO updateTicketInDTO);
 
     
 }

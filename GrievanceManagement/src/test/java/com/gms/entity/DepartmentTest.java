@@ -19,16 +19,15 @@ public class DepartmentTest {
     public void init() {
         department = new Department();
     }
+    
     @Test
-    @DisplayName("Getter & Setter")
     public void testGetAndSetDepartmentName() {
         assertNull(department.getDepartmentName());
         department.setDepartmentName("HR");
         assertEquals("HR", department.getDepartmentName());
-        
-   
-        assertEquals(0,department.getDepartmentId());
-        department.setDepartmentId(1);
+           
+        assertNull(department.getDepartmentId());
+        department.setDepartmentId(1l);
         assertEquals(1, department.getDepartmentId());
     
         List<User> list1 = new ArrayList<>();
@@ -43,17 +42,21 @@ public class DepartmentTest {
         department.setTickets(list2);
         assertEquals(1, department.getTickets().size());
     }
+    
     @Test
     public void testEqualsAndHashCode() {
         Department department1 = new Department();
         department1.setDepartmentName("HR");
-        department1.setDepartmentId(1);;
+        department1.setDepartmentId(1l);;
+        
         Department department2 = new Department();
         department2.setDepartmentName("HR");
-        department2.setDepartmentId(1);;
+        department2.setDepartmentId(1l);;
+        
         Department department3 = new Department();
         department3.setDepartmentName("Finance");
-        department3.setDepartmentId(2);;
+        department3.setDepartmentId(2l);;
+        
         assertTrue(department1.equals(department2));
         assertEquals(department1, department2);
         assertFalse(department1.equals(department3));

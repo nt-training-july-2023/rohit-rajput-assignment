@@ -15,8 +15,8 @@ public class LoginRequestInDTOTest {
     public void init() {
         loginRequestInDTO = new LoginRequestInDTO();
     }
+    
     @Test
-    @DisplayName("LoginRequestInDTO getter & setter")
     public void testGetterAndSetter() {
         assertNull(loginRequestInDTO.getEmail());
         loginRequestInDTO.setEmail("Rohit@gmail.com");
@@ -26,8 +26,8 @@ public class LoginRequestInDTOTest {
         loginRequestInDTO.setPassword("Rohit@123");
         assertEquals("Rohit@123", loginRequestInDTO.getPassword());
     }
+    
     @Test
-    @DisplayName("LoginRequestInDTO toString, equals&hashCode")
     public void testEqualAndHashCodeAndToString() {
         LoginRequestInDTO loginRequestInDTO1 = new LoginRequestInDTO("rohit.rajput@nucleusteq.con", "Rohit@123");
         LoginRequestInDTO loginRequestInDTO2 = new LoginRequestInDTO("rohit.rajput@nucleusteq.con", "Rohit@123");

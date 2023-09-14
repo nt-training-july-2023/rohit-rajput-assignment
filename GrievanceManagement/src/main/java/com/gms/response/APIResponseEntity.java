@@ -5,24 +5,30 @@ package com.gms.response;
  * and HttpStatus code as per requirement.
  */
 public class APIResponseEntity {
+    
     /**
      * this is hasData field to check that data is present or not.
      */
     private boolean hasdata;
+    
     /**
      * this is data.
      */
     private Object data;
+    
     /**
      * this is message.
      */
     private String message;
+    
     /**
      * this is no-argument constructor.
      */
     public APIResponseEntity() {
     }
+    
     /**
+     * This is all argument constructor.
      * @param hasdata
      * @param data
      * @param message
@@ -33,11 +39,17 @@ public class APIResponseEntity {
          this.message = message;
     }
     
-    public APIResponseEntity(boolean hasdata, String message) {
+    /**
+     * This is two parameter constructor.
+     * @param hasdata
+     * @param message
+     */
+    public APIResponseEntity(final boolean hasdata, final String message) {
         super();
         this.hasdata = hasdata;
         this.message = message;
     }
+    
     /**
      * getter method for @isHasdata.
      * @return boolean - hasData
@@ -45,6 +57,7 @@ public class APIResponseEntity {
     public boolean isHasdata() {
         return hasdata;
     }
+    
     /**
      * getter method for @getData.
      * @return Object - data
@@ -52,6 +65,7 @@ public class APIResponseEntity {
     public Object getData() {
         return data;
     }
+    
     /**
      * getter method for @getMessage.
      * @return String - message.

@@ -17,11 +17,11 @@ public class DepartmentOutDTOTest {
     public void setUp() {
         departmentOutDTO = new DepartmentOutDTO();
     }
+    
     @Test
-    @DisplayName("DepartmentOutDTO getter & setter")
     public void testGetterAndSetter() {
-        assertEquals(0, departmentOutDTO.getId());
-        departmentOutDTO.setId(1);
+        assertNull(departmentOutDTO.getId());
+        departmentOutDTO.setId(1l);
         assertEquals(1, departmentOutDTO.getId());
         
         assertNull(departmentOutDTO.getDepartmentName());
@@ -30,21 +30,20 @@ public class DepartmentOutDTOTest {
     }
     
     @Test
-    @DisplayName("DepartmentOutDTO constructor")
     public void testConstructor() {
-        DepartmentOutDTO departmentOutDTO = new DepartmentOutDTO(1, "HR");
+        DepartmentOutDTO departmentOutDTO = new DepartmentOutDTO(1l, "HR");
         assertEquals(1, departmentOutDTO.getId());
         assertEquals("HR", departmentOutDTO.getDepartmentName());
     }
+    
     @Test
-    @DisplayName("DepartmentOutDTO toString, equals&hashCode")
     public void testEqualAndHashCodeAndToString() {
         AddUserInDTO addUserInDTO1 = new AddUserInDTO("Rohit", "rohit.rajput@nucleusteq.com", Role.ADMIN, "Rohit@123",
-                1);
+                1l);
         AddUserInDTO addUserInDTO2 = new AddUserInDTO("Rohit", "rohit.rajput@nucleusteq.com", Role.ADMIN, "Rohit@123",
-                1);
+                1l);
         AddUserInDTO addUserInDTO3 = new AddUserInDTO("Rohit Rajput", "rohit.rajput@nucleusteq.com", Role.ADMIN, "Rohit@123",
-                1);
+                1l);
         assertEquals(addUserInDTO1, addUserInDTO2);
         assertNotEquals(addUserInDTO1, addUserInDTO3);
         assertEquals(addUserInDTO1.hashCode(), addUserInDTO2.hashCode());

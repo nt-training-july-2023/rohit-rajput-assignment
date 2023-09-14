@@ -19,10 +19,9 @@ public class LoginResponseOutDTOTest {
     }
     
     @Test
-    @DisplayName("LoginResponseOutDTO getter & setter")
     public void testGetterAndSetter() {
-        assertEquals(0, loginResponseOutDTO.getId());
-        loginResponseOutDTO.setId(1);
+        assertNull(loginResponseOutDTO.getId());
+        loginResponseOutDTO.setId(1l);
         assertEquals(1, loginResponseOutDTO.getId());
         
         assertNull(loginResponseOutDTO.getRole());
@@ -37,16 +36,16 @@ public class LoginResponseOutDTOTest {
         loginResponseOutDTO.setEmail("Rohit@gmail.com");
         assertEquals("Rohit@gmail.com", loginResponseOutDTO.getEmail());
         
-        assertEquals(0,loginResponseOutDTO.getDepartmentId());
-        loginResponseOutDTO.setDepartmentId(1);
+        assertNull(loginResponseOutDTO.getDepartmentId());
+        loginResponseOutDTO.setDepartmentId(1l);
         assertEquals(1, loginResponseOutDTO.getDepartmentId());
     }
+    
     @Test
-    @DisplayName("LoginResponseOutDTO toString, equals&hashCode")
     public void testEqualAndHashCodeAndToString() {
-        LoginResponseOutDTO loginResponseOutDTO1 = new LoginResponseOutDTO(1l, Role.ADMIN, "Rohit", false, "rohit.rajput@nucleusteq.com", 1, "Rohit@123");
-        LoginResponseOutDTO loginResponseOutDTO2 = new LoginResponseOutDTO(1l, Role.ADMIN, "Rohit", false, "rohit.rajput@nucleusteq.com", 1, "Rohit@123");
-        LoginResponseOutDTO loginResponseOutDTO3 = new LoginResponseOutDTO(1l, Role.ADMIN, "Rohit", true, "rohit.rajput@nucleusteq.com", 1, "Rohit@123");
+        LoginResponseOutDTO loginResponseOutDTO1 = new LoginResponseOutDTO(1l, Role.ADMIN, "Rohit", false, "rohit.rajput@nucleusteq.com", 1l, "Rohit@123");
+        LoginResponseOutDTO loginResponseOutDTO2 = new LoginResponseOutDTO(1l, Role.ADMIN, "Rohit", false, "rohit.rajput@nucleusteq.com", 1l, "Rohit@123");
+        LoginResponseOutDTO loginResponseOutDTO3 = new LoginResponseOutDTO(1l, Role.ADMIN, "Rohit", true, "rohit.rajput@nucleusteq.com", 1l, "Rohit@123");
         assertEquals(loginResponseOutDTO1, loginResponseOutDTO2);
         assertNotEquals(loginResponseOutDTO1, loginResponseOutDTO3);
         assertEquals(loginResponseOutDTO1.hashCode(), loginResponseOutDTO2.hashCode());

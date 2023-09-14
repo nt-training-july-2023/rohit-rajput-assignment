@@ -9,8 +9,8 @@ import org.springframework.stereotype.Service;
 
 import com.gms.dto.DepartmentOutDTO;
 import com.gms.entity.Department;
-import com.gms.exception.DepartmentValidationException;
-import com.gms.exception.DepartmentsNotFoundException;
+import com.gms.exception.BadRequestException;
+import com.gms.exception.NotFoundException;
 import com.gms.repository.DepartmentRepository;
 import com.gms.service.DepartmentService;
 
@@ -25,6 +25,7 @@ public class DepartmentServiceImpl implements DepartmentService {
      * this is logger.
      */
     private static final Logger LOGGER = LogManager.getLogger(DepartmentServiceImpl.class);
+    
     /**
      * this is DepartmentRepository reference.
      */
@@ -40,7 +41,7 @@ public class DepartmentServiceImpl implements DepartmentService {
         List<DepartmentOutDTO> departmentList = departmentRepository.findAllDepartmentName();
         if (departmentList.size() == 0) {
             LOGGER.warn("Department not available");
-            throw new DepartmentsNotFoundException("There is no department");
+            throw new NotFoundException("There is no department");
         }
         LOGGER.info("returning department list");
         return departmentList;
@@ -51,7 +52,7 @@ public class DepartmentServiceImpl implements DepartmentService {
      * @param id
      */
     @Override
-    public void deleteDepartment(final long id) {
+    public void deleteDepartment(final Long id) {
         int length = departmentRepository.findAll().size();
         boolean isExist = departmentRepository.existsById(id);
         if (isExist && length > 1) {
@@ -59,13 +60,13 @@ public class DepartmentServiceImpl implements DepartmentService {
             departmentRepository.deleteById(id);
         } else if (!isExist) {
             LOGGER.warn("Department id is not present");
-            throw new DepartmentsNotFoundException("Department Id not exists");
+            throw new BadRequestException("Department Id not exists");
         } else {
             LOGGER.warn("only 1 department, you can't delete");
-            throw new DepartmentValidationException("Only 1 department, you can't delete");
+            throw new BadRequestException("Only 1 department, you can't delete");
         }
     }
-
+    
     /**
      * this is @saveDepartment method for saving a @Department.
      * @return String - departmentName.
@@ -74,7 +75,7 @@ public class DepartmentServiceImpl implements DepartmentService {
     public String saveDepartment(final String departmentName) {
         if (departmentRepository.existsByDepartmentName(departmentName.toUpperCase())) {
             LOGGER.warn("departmentName is already exists");
-            throw new DepartmentValidationException("Department exists");
+            throw new BadRequestException("Department exists");
         }
         Department department = new Department();
         department.setDepartmentName(departmentName.toUpperCase());

@@ -16,8 +16,8 @@ import org.mockito.MockitoAnnotations;
 
 import com.gms.dto.DepartmentOutDTO;
 import com.gms.entity.Department;
-import com.gms.exception.DepartmentValidationException;
-import com.gms.exception.DepartmentsNotFoundException;
+import com.gms.exception.BadRequestException;
+import com.gms.exception.NotFoundException;
 import com.gms.repository.DepartmentRepository;
 
 public class DepartmentServiceImplTest {
@@ -30,14 +30,16 @@ public class DepartmentServiceImplTest {
     public void setUp() {
         MockitoAnnotations.openMocks(this);
     }
+    
     @Test
     public void testSaveDepartmentIfDepartmentNameExists() {
         String departmentName = "HR";
         when(departmentRepository.existsByDepartmentName(departmentName)).thenReturn(true);
-        DepartmentValidationException ex = assertThrows(DepartmentValidationException.class,
+        BadRequestException ex = assertThrows(BadRequestException.class,
                 ()->departmentServiceImpl.saveDepartment(departmentName));
         assertEquals("Department exists", ex.getMessage());
     }
+    
     @Test
     public void testSaveDepartmentSavedSuccessfully() {
         String departmentName = "HR";
@@ -52,7 +54,7 @@ public class DepartmentServiceImplTest {
     public void testGetAllDepartmentFailure() {
         List<DepartmentOutDTO> list = Arrays.asList();
         when(departmentRepository.findAllDepartmentName()).thenReturn(list);
-        DepartmentsNotFoundException exception = assertThrows(DepartmentsNotFoundException.class, ()->{
+        NotFoundException exception = assertThrows(NotFoundException.class, ()->{
            departmentServiceImpl.getAllDepartment(); 
         });
         assertEquals("There is no department", exception.getMessage());
@@ -60,7 +62,7 @@ public class DepartmentServiceImplTest {
     
     @Test
     public void testGetAllDepartmentSuccess() {
-        List<DepartmentOutDTO> list = Arrays.asList(new DepartmentOutDTO(1, "HR"));
+        List<DepartmentOutDTO> list = Arrays.asList(new DepartmentOutDTO(1l, "HR"));
         when(departmentRepository.findAllDepartmentName()).thenReturn(list);
         List<DepartmentOutDTO> list2 = departmentServiceImpl.getAllDepartment();
         assertEquals(list, list2);

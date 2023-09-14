@@ -1,7 +1,10 @@
 package com.gms.serviceImpl;
 
+import java.time.LocalDateTime;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 import org.apache.logging.log4j.LogManager;
@@ -12,41 +15,56 @@ import org.springframework.stereotype.Service;
 import com.gms.dto.TicketInfoOutDTO;
 import com.gms.dto.TicketSaveInDTO;
 import com.gms.dto.TicketTableOutDTO;
+import com.gms.dto.UpdateTicketInDTO;
+import com.gms.entity.Comment;
 import com.gms.entity.Department;
+import com.gms.entity.Role;
 import com.gms.entity.Status;
 import com.gms.entity.Ticket;
 import com.gms.entity.User;
-import com.gms.exception.DepartmentsNotFoundException;
-import com.gms.exception.TicketNotFoundException;
-import com.gms.exception.UserNotFoundException;
+import com.gms.exception.BadRequestException;
+import com.gms.exception.NotFoundException;
+import com.gms.repository.CommentRepository;
 import com.gms.repository.DepartmentRepository;
 import com.gms.repository.TicketRepository;
 import com.gms.repository.UserRepository;
 import com.gms.service.TicketService;
 
 /**
- * this is @TicketServiceImpl class for implementin business logic for ticket
+ * this is @TicketServiceImpl class for implementation business logic for ticket
  * table data.
  */
 @Service
 public class TicketServiceImpl implements TicketService {
 
-    private static final Logger LOGGER = LogManager.getLogger(TicketServiceImpl.class);
     /**
-     * this is DepartmentRepository refernce.
+     * This is @Logger object.
+     */
+    private static final Logger LOGGER = LogManager.getLogger(TicketServiceImpl.class);
+
+    /**
+     * this is DepartmentRepository reference.
      */
     @Autowired
     private DepartmentRepository departmentRepository;
+
     /**
      * this is UserRepository reference.
      */
     @Autowired
     private UserRepository userRepository;
+
     /**
      * this is TicketRepository reference.
      */
     @Autowired
     private TicketRepository ticketRepository;
+
+    /**
+     * this is CommentRepository reference.
+     */
+    @Autowired
+    private CommentRepository commentRepository;
 
     /**
      * this is @saveTicket method for saving a ticket.
@@ -56,12 +74,12 @@ public class TicketServiceImpl implements TicketService {
         Optional<User> userOptional = userRepository.findById(ticketSaveInDTO.getUserId());
         if (!userOptional.isPresent()) {
             LOGGER.warn("[TicketServiceImpl]: User Id not exists");
-            throw new UserNotFoundException("User Id not exists");
+            throw new NotFoundException("User Id not exists");
         }
         Optional<Department> departmentOptional = departmentRepository.findById(ticketSaveInDTO.getDepartmentId());
         if (!departmentOptional.isPresent()) {
             LOGGER.warn("[TicketServiceImpl]: Department Id not exists");
-            throw new DepartmentsNotFoundException("Department Id not exists");
+            throw new NotFoundException("Department Id not exists");
         }
         LOGGER.info("[TicketServiceImpl]: Ticket saved");
         Ticket ticket = new Ticket();
@@ -73,61 +91,105 @@ public class TicketServiceImpl implements TicketService {
         return ticketRepository.save(ticket);
     }
 
+    /**
+     * This is @getAllTicket for getting list of @TicketTableOutDTO.
+     */
     @Override
-    public List<TicketTableOutDTO> getAllTicket() {
-        List<TicketTableOutDTO> ticketTableOutDTOs = ticketRepository.findAllTicket();
-        if (ticketTableOutDTOs.size() == 0) {
-            LOGGER.warn("[TicketServiceImpl]: Empty list of ticket");
-            throw new TicketNotFoundException("There is no ticket");
-        }
-        LOGGER.info("[TicketServiceImpl]: Sorting list of ticket basis of status");
-        List<TicketTableOutDTO> sortedOnStatus = ticketTableOutDTOs.stream().sorted((ticket1, ticket2) -> {
-            if (ticket1.getStatus().equals(ticket2.getStatus())) {
-                return ticket2.getLastUpdationTime().compareTo(ticket1.getLastUpdationTime());
-            } else if (ticket1.getStatus().equals(Status.OPEN)) {
-                return -1;
-            } else if (ticket1.getStatus().equals(Status.BEING_ADDRESSED)) {
-                return ticket2.getStatus().equals(Status.OPEN) ? 1 : -1;
-            } else {
-                return 1;
+    public List<TicketTableOutDTO> getAllTicket(final Long userId, final Boolean myTicket) {
+        List<TicketTableOutDTO> ticketTableOutDTOs;
+        User user = userRepository.findById(userId).orElseThrow(
+                () -> new NotFoundException("UserId not found"));
+        if (myTicket && user.getTicket().size() == 0) {
+            throw new NotFoundException("There is no ticket");
+        } else if (myTicket) {
+            ticketTableOutDTOs = user.getTicket().stream().map(ticket -> {
+                TicketTableOutDTO outDTO = new TicketTableOutDTO();
+                outDTO.setTitle(ticket.getTitle());
+                outDTO.setStatus(ticket.getStatus());
+                outDTO.setLastUpdationTime(ticket.getLastUpdationTime());
+                outDTO.setAssignedBy(ticket.getUser().getName());
+                outDTO.setDepartmentName(ticket.getDepartment().getDepartmentName());
+                return outDTO;
+            }).sorted(comparator).collect(Collectors.toList());
+            return ticketTableOutDTOs;
+        } else if (user.getRole().equals(Role.ADMIN)) {
+            ticketTableOutDTOs = ticketRepository.findAllTicket().stream().sorted(comparator)
+                    .collect(Collectors.toList());
+            return ticketTableOutDTOs;
+        } else {
+            ticketTableOutDTOs = ticketRepository.findAllByDepartment(user.getDepartment().getDepartmentId());
+            if (ticketTableOutDTOs.size() == 0) {
+                throw new NotFoundException("No ticket is assigned to your department");
             }
-        }).collect(Collectors.toList());
-        return sortedOnStatus;
+            return ticketTableOutDTOs.stream().sorted(comparator).collect(Collectors.toList());
+        }
     }
 
+    /**
+     * This is @getTicketById for getting a list by ticketId.
+     */
     @Override
-    public List<TicketTableOutDTO> getAllTicketByDepartment(String departmentName) {
-        if (!departmentRepository.existsByDepartmentName(departmentName)) {
-            LOGGER.warn("[TicketServiceImpl]: Department Name not exists");
-            throw new DepartmentsNotFoundException("DepartmentName Not Found");
-        }
-        Long departmentId = departmentRepository.findByDepartmentName(departmentName);
-        List<TicketTableOutDTO> ticketTableOutDTOs = ticketRepository.findAllByDepartment(departmentId);
-        if (ticketTableOutDTOs.isEmpty()) {
-            LOGGER.warn("[TicketServiceImpl]: No ticket is assigned to this department");
-            throw new TicketNotFoundException("Ticket is not assigned to your department");
-        }
-        LOGGER.info("[TicketServiceImpl]: Sorting list of ticket basis of status");
-        List<TicketTableOutDTO> sortedOnStatus = ticketTableOutDTOs.stream().sorted((ticket1, ticket2) -> {
-            if (ticket1.getStatus().equals(ticket2.getStatus())) {
-                return ticket2.getLastUpdationTime().compareTo(ticket1.getLastUpdationTime());
-            } else if (ticket1.getStatus().equals(Status.OPEN)) {
-                return -1;
-            } else if (ticket1.getStatus().equals(Status.BEING_ADDRESSED)) {
-                return ticket2.getStatus().equals(Status.OPEN) ? 1 : -1;
-            } else {
-                return 1;
-            }
-        }).collect(Collectors.toList());
-        return sortedOnStatus;
-    }
-
-    @Override
-    public TicketInfoOutDTO getTicketById(long id) {
-        if(!ticketRepository.existsById(id)) {
-            throw new TicketNotFoundException("Ticket Id not exists");
+    public TicketInfoOutDTO getTicketById(final Long id) {
+        if (!ticketRepository.existsById(id)) {
+            throw new NotFoundException("Ticket Id not exists");
         }
         TicketInfoOutDTO ticketInfoOutDTO = ticketRepository.findTicketById(id);
         return ticketInfoOutDTO;
     }
+
+
+    
+    @Override
+    public String updateTicket(final UpdateTicketInDTO updateTicketInDTO) {
+      Ticket ticket = ticketRepository.findById(updateTicketInDTO.getTicketId())
+              .orElseThrow(() -> new NotFoundException("TicketId not exists"));
+      User user = userRepository.findById(updateTicketInDTO.getUserId())
+              .orElseThrow(() -> new NotFoundException("User Id not Found"));
+      if (!ticket.getDepartment().equals(user.getDepartment())) {
+          throw new BadRequestException("Access denied");
+      }
+      if (ticket.getStatus().equals(Status.RESOLVED)) {
+          throw new BadRequestException("Ticket is Resolved, You can't update");
+      }
+      if (updateTicketInDTO.getStatus().equals(Status.OPEN)) {
+          throw new BadRequestException("Updated status value can't be OPEN");
+      }
+      if (updateTicketInDTO.getStatus().equals(Status.RESOLVED)
+              && updateTicketInDTO.getComment()==null
+              && ticket.getComments().size()==0) {
+          throw new BadRequestException("Without a comment you can't RESOLVED ticket");
+      }
+      if (ticket.getStatus().equals(Status.OPEN) && updateTicketInDTO.getComment()==null) {
+          throw new BadRequestException("Without comment Status value OPEN can't be change");
+      }
+      if(ticket.getStatus().equals(updateTicketInDTO.getStatus()) && updateTicketInDTO.getComment()==null) {
+          throw new BadRequestException("There is no content to update");
+      }
+      if(updateTicketInDTO.getComment()!=null) {
+          Comment comment = new Comment();
+          comment.setComment(updateTicketInDTO.getComment());
+          comment.setCommentTime(LocalDateTime.now().withNano(0));
+          comment.setTicket(ticket);
+          comment.setUser(user);
+          commentRepository.save(comment);
+      }
+      if(!ticket.getStatus().equals(updateTicketInDTO.getStatus())) {
+          ticket.setStatus(updateTicketInDTO.getStatus());
+          ticketRepository.save(ticket);
+      }
+      return "Ticket updated Successfully";
+    }
+
+    Comparator<TicketTableOutDTO> comparator = (TicketTableOutDTO ticketTableOutDTO1,
+            TicketTableOutDTO ticketTableOutDTO2) -> {
+        if (ticketTableOutDTO1.getStatus().equals(ticketTableOutDTO2.getStatus())) {
+            return ticketTableOutDTO2.getLastUpdationTime().compareTo(ticketTableOutDTO1.getLastUpdationTime());
+        } else if (ticketTableOutDTO1.getStatus().equals(Status.OPEN)) {
+            return -1;
+        } else if (ticketTableOutDTO1.getStatus().equals(Status.BEING_ADDRESSED)) {
+            return ticketTableOutDTO2.getStatus().equals(Status.OPEN) ? 1 : -1;
+        } else {
+            return 1;
+        }
+    };
 }

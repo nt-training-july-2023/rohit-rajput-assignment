@@ -22,8 +22,8 @@ public class TicketTest {
     public void init() {
         ticket = new Ticket();
     }
+    
     @Test
-    @DisplayName("Gettter & Setter")
     public void testGetAndSetTicketId() {
         assertEquals(0, ticket.getTicketId());
         ticket.setTicketId(1);
@@ -59,6 +59,7 @@ public class TicketTest {
         ticket.setComments(list);
         assertNotNull(ticket.getComments());
     }
+    
     @Test
     public void testEqualsAndHashCode() {
         Ticket ticket1 = new Ticket();
