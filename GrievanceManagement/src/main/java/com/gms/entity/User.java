@@ -20,7 +20,7 @@ import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.gms.constants.ConstantVariable;
+import com.gms.constants.VariableConstant;
 
 /**
  * <p>
@@ -52,8 +52,8 @@ public class User {
      * This is user name.
      */
     @NotEmpty
-    @Size(min =ConstantVariable.NAME_MIN_LENGTH,
-          max = ConstantVariable.NAME_MAX_LENGTH,
+    @Size(min =VariableConstant.NAME_MIN_LENGTH,
+          max = VariableConstant.NAME_MAX_LENGTH,
           message = "name must be in 2-30  characters Long")
     private String name;
 

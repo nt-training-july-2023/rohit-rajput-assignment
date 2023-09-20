@@ -3,17 +3,20 @@ package com.gms.dto;
 import java.util.Objects;
 
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
-import com.gms.constants.ConstantVariable;
+
+import com.gms.constants.VariableConstant;
 
 public class UpdatePasswordInDTO {
     /**
      * this is userId.
      */
+    @NotNull(message = "Id can not be null")
     private Long userId;
-    @Size(min = ConstantVariable.PASSWORD_MIN_LENGTH, max = ConstantVariable.PASSWORD_MAX_LENGTH, message = "password must be 8-20 character Long")
+    @Size(min = VariableConstant.PASSWORD_MIN_LENGTH, max = VariableConstant.PASSWORD_MAX_LENGTH, message = "password must be 8-20 character Long")
     @NotEmpty(message = "please enter your password")
     @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])"
             + "(?=.*[@$!%*?&])[A-Za-z0-9@$!%*?&]{8,20}$", message = "enter strong password")
@@ -22,7 +25,7 @@ public class UpdatePasswordInDTO {
     /**
      * this is newPassword.
      */
-    @Size(min = ConstantVariable.PASSWORD_MIN_LENGTH, max = ConstantVariable.PASSWORD_MAX_LENGTH, message = "password must be 8-20 character Long")
+    @Size(min = VariableConstant.PASSWORD_MIN_LENGTH, max = VariableConstant.PASSWORD_MAX_LENGTH, message = "password must be 8-20 character Long")
     @NotEmpty(message = "please enter your password")
     @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])"
             + "(?=.*[@$!%*?&])[A-Za-z0-9@$!%*?&]{8,20}$", message = "enter strong password")
@@ -86,9 +89,9 @@ public class UpdatePasswordInDTO {
      * @param password
      * @param newPassword
      */
-    public UpdatePasswordInDTO(final Long userId,
-            @Size(min = 8, max = 20, message = "password must be 8-20 character long") @NotEmpty(message = "please enter your password") @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[@$!%*?&])[A-Za-z0-9@$!%*?&]{8,20}$", message = "enter strong password")final String password,
-            @Size(min = 8, max = 20, message = "password must be 8-20 character long") @NotEmpty(message = "please enter your password") @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[@$!%*?&])[A-Za-z0-9@$!%*?&]{8,20}$", message = "enter strong password")final String newPassword) {
+    public UpdatePasswordInDTO(@NotNull(message = "Id can not be null") Long userId,
+            @Size(min = 8, max = 20, message = "password must be 8-20 character Long") @NotEmpty(message = "please enter your password") @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[@$!%*?&])[A-Za-z0-9@$!%*?&]{8,20}$", message = "enter strong password") String password,
+            @Size(min = 8, max = 20, message = "password must be 8-20 character Long") @NotEmpty(message = "please enter your password") @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[@$!%*?&])[A-Za-z0-9@$!%*?&]{8,20}$", message = "enter strong password") String newPassword) {
         super();
         this.userId = userId;
         this.password = password;
@@ -102,7 +105,7 @@ public class UpdatePasswordInDTO {
     public int hashCode() {
         return Objects.hash(newPassword, password, userId);
     }
-    
+
     /**
      *This is @equals method.
      */

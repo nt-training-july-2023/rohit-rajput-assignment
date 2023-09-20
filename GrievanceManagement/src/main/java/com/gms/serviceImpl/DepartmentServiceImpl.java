@@ -40,7 +40,7 @@ public class DepartmentServiceImpl implements DepartmentService {
     public List<DepartmentOutDTO> getAllDepartment() {
         List<DepartmentOutDTO> departmentList = departmentRepository.findAllDepartmentName();
         if (departmentList.size() == 0) {
-            LOGGER.warn("Department not available");
+            LOGGER.warn("[DepartmentServiceImpl]: Department not available");
             throw new NotFoundException("There is no department");
         }
         LOGGER.info("returning department list");
@@ -56,13 +56,13 @@ public class DepartmentServiceImpl implements DepartmentService {
         int length = departmentRepository.findAll().size();
         boolean isExist = departmentRepository.existsById(id);
         if (isExist && length > 1) {
-            LOGGER.info("department deleted successfully");
+            LOGGER.info("[DepartmentServiceImpl]: department deleted successfully");
             departmentRepository.deleteById(id);
         } else if (!isExist) {
-            LOGGER.warn("Department id is not present");
+            LOGGER.warn("[DepartmentServiceImpl]: Department id is not present");
             throw new BadRequestException("Department Id not exists");
         } else {
-            LOGGER.warn("only 1 department, you can't delete");
+            LOGGER.warn("[DepartmentServiceImpl]: only 1 department, you can't delete");
             throw new BadRequestException("Only 1 department, you can't delete");
         }
     }
@@ -74,12 +74,12 @@ public class DepartmentServiceImpl implements DepartmentService {
     @Override
     public String saveDepartment(final String departmentName) {
         if (departmentRepository.existsByDepartmentName(departmentName.toUpperCase())) {
-            LOGGER.warn("departmentName is already exists");
+            LOGGER.warn("[DepartmentServiceImpl]: departmentName is already exists");
             throw new BadRequestException("Department exists");
         }
         Department department = new Department();
         department.setDepartmentName(departmentName.toUpperCase());
-        LOGGER.info("department saved successfully");
+        LOGGER.info("[DepartmentServiceImpl]: department saved successfully");
         Department department2 = departmentRepository.save(department);
         return department2.getDepartmentName();
     }

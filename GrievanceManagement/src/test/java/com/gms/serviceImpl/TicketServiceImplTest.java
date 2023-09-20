@@ -25,6 +25,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.junit.jupiter.MockitoSettings;
 import org.mockito.quality.Strictness;
 
+import com.gms.constants.MessageConstant;
 import com.gms.dto.TicketSaveInDTO;
 import com.gms.dto.TicketTableOutDTO;
 import com.gms.dto.UpdateTicketInDTO;
@@ -64,7 +65,7 @@ public class TicketServiceImplTest {
         when(userRepository.findById(1l)).thenReturn(Optional.empty());
         NotFoundException notFoundException = assertThrows(NotFoundException.class,
                 ()->ticketServiceImpl.saveTicket(new TicketSaveInDTO()));
-        assertEquals("User Id not exists", notFoundException.getMessage());
+        assertEquals(MessageConstant.NOT_FOUND, notFoundException.getMessage());
     }
 
     @Test
@@ -78,7 +79,7 @@ public class TicketServiceImplTest {
         when(departmentRepository.findById(ticketSaveInDTO.getDepartmentId())).thenReturn(Optional.empty());
         NotFoundException notFoundException = assertThrows(NotFoundException.class,
                 () -> ticketServiceImpl.saveTicket(ticketSaveInDTO));
-        assertEquals("Department Id not exists", notFoundException.getMessage());
+        assertEquals(MessageConstant.NOT_FOUND, notFoundException.getMessage());
     }
 
     @Test
@@ -108,11 +109,11 @@ public class TicketServiceImplTest {
 
     @Test
     public void testGetAllTicketIfUserNotFound() {
-        when(userRepository.findById(1l)).thenThrow(new NotFoundException("User Not Found"));
+        when(userRepository.findById(1l)).thenThrow(new NotFoundException(MessageConstant.NOT_FOUND));
         NotFoundException exception = assertThrows(NotFoundException.class, ()->{
             ticketServiceImpl.getAllTicket(1l, false);
         });
-        assertEquals("User Not Found", exception.getMessage());
+        assertEquals(MessageConstant.NOT_FOUND, exception.getMessage());
     }
     
     @Test
@@ -120,11 +121,11 @@ public class TicketServiceImplTest {
         User user = new User();
         user.setId(1l);
         user.setTicket(Arrays.asList());
-        when(userRepository.findById(1l)).thenThrow(new NotFoundException("There is no ticket"));
+        when(userRepository.findById(1l)).thenThrow(new NotFoundException("Resource not found"));
         NotFoundException exception = assertThrows(NotFoundException.class, ()->{
             ticketServiceImpl.getAllTicket(1l, true);
         });
-        assertEquals("There is no ticket", exception.getMessage());
+        assertEquals(MessageConstant.NOT_FOUND, exception.getMessage());
     }
     
     @Test
@@ -247,11 +248,11 @@ public class TicketServiceImplTest {
         UpdateTicketInDTO updateTicketInDTO = new UpdateTicketInDTO();
         updateTicketInDTO.setTicketId(1l);
         when(ticketRepository.findById(updateTicketInDTO.getTicketId()))
-                .thenThrow(new NotFoundException("ticketId not found"));
+                .thenThrow(new NotFoundException("Resource not found"));
         NotFoundException exception = assertThrows(NotFoundException.class, () -> {
             ticketServiceImpl.updateTicket(updateTicketInDTO);
         });
-        assertEquals("ticketId not found", exception.getMessage());
+        assertEquals(MessageConstant.NOT_FOUND, exception.getMessage());
     }
 
     @Test
@@ -262,12 +263,12 @@ public class TicketServiceImplTest {
         
         when(ticketRepository.findById(updateTicketInDTO.getTicketId())).thenReturn(Optional.of(new Ticket()));
         when(userRepository.findById(updateTicketInDTO.getUserId()))
-                .thenThrow(new NotFoundException("userId not found"));
+                .thenThrow(new NotFoundException("Resource not found"));
         
         NotFoundException exception = assertThrows(NotFoundException.class, () -> {
             ticketServiceImpl.updateTicket(updateTicketInDTO);
         });
-        assertEquals("userId not found", exception.getMessage());
+        assertEquals(MessageConstant.NOT_FOUND, exception.getMessage());
     }
 
     @Test
@@ -424,7 +425,7 @@ public class TicketServiceImplTest {
         when(userRepository.findById(updateTicketInDTO.getUserId()))
                 .thenReturn(Optional.of(user));
         String message = ticketServiceImpl.updateTicket(updateTicketInDTO);
-        assertEquals("Ticket updated Successfully", message);
+        assertEquals(MessageConstant.UPDATED, message);
        
     }
 }

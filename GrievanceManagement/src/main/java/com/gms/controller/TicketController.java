@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.gms.constants.MessageConstant;
 import com.gms.constants.UrlConstant;
-import com.gms.dto.GetTicketRequestInDTO;
 import com.gms.dto.TicketSaveInDTO;
 import com.gms.dto.UpdateTicketInDTO;
 import com.gms.response.APIResponseEntity;
@@ -25,7 +25,7 @@ import com.gms.service.TicketService;
  * to ticket.
  */
 @RestController
-@RequestMapping(UrlConstant.BASE_URL + UrlConstant.TICKET_URL)
+@RequestMapping(UrlConstant.BASE_URL )
 @CrossOrigin("*")
 public class TicketController {
 
@@ -40,20 +40,20 @@ public class TicketController {
      * @param ticketSaveInDTO
      * @return APIResponseEntity
      */
-    @PostMapping
+    @PostMapping(UrlConstant.COMMON_URL + UrlConstant.TICKET_URL)
     public APIResponseEntity saveTicket(@RequestBody @Valid final TicketSaveInDTO ticketSaveInDTO) {
         ticketService.saveTicket(ticketSaveInDTO);
-        return new APIResponseEntity(false, "Ticket generated successfully");
+        return new APIResponseEntity(false, MessageConstant.ADDED);
     }
 
     /**
      * This is @getAllTicket method for a handle get all ticket request. 
      * @return APIResponseEntity
      */
-    @GetMapping
-    public APIResponseEntity getAllTicket(@RequestBody final GetTicketRequestInDTO requestInDTO) {
+    @GetMapping(UrlConstant.COMMON_URL + UrlConstant.TICKET_URL )
+    public APIResponseEntity getAllTicket(@RequestParam Long userId, @RequestParam(defaultValue = "false") Boolean myTicket, @RequestParam(defaultValue = "1") Integer pageNumber) {
         return new APIResponseEntity(true,
-                ticketService.getAllTicket(requestInDTO.getUserId(), requestInDTO.getMyTicket()), "List of ticket");
+                ticketService.getAllTicket(userId, myTicket, pageNumber-1), MessageConstant.SUCCESS);
     }
 
 
@@ -62,9 +62,9 @@ public class TicketController {
      * @param id
      * @return
      */
-    @GetMapping("/{id}")
-    public APIResponseEntity getTicketById(@PathVariable Long id) {
-        return new APIResponseEntity(true, ticketService.getTicketById(id), "Ticket fecthed successfully");
+    @GetMapping(UrlConstant.COMMON_URL + UrlConstant.TICKET_URL + "/{ticketId}")
+    public APIResponseEntity getTicketById(@PathVariable Long ticketId, @RequestParam Long userId) {
+        return new APIResponseEntity(true, ticketService.getTicketById(ticketId,userId), MessageConstant.SUCCESS);
     }
 
     /**
@@ -72,8 +72,8 @@ public class TicketController {
      * @param updateTicketInDTO
      * @return
      */
-    @PutMapping("/update")
+    @PutMapping(UrlConstant.COMMON_URL + UrlConstant.TICKET_URL)
     public APIResponseEntity updateTicket(@RequestBody @Valid UpdateTicketInDTO updateTicketInDTO) {
-        return new APIResponseEntity(false, ticketService.updateTicket(updateTicketInDTO));
+        return new APIResponseEntity(false, ticketService.updateTicket(updateTicketInDTO),MessageConstant.SUCCESS);
     }
 }

@@ -8,6 +8,7 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.gms.constants.MessageConstant;
 import com.gms.dto.AddUserInDTO;
 import com.gms.dto.LoginRequestInDTO;
 import com.gms.dto.LoginResponseOutDTO;
@@ -73,7 +74,7 @@ public class UserServiceImpl implements UserService {
     public User save(final AddUserInDTO addUserInDTO) {
         Optional<Department> departmentOptional = departmentRepository.findById(addUserInDTO.getDepartmentId());
         if (!departmentOptional.isPresent()) {
-            throw new NotFoundException("Department id not found");
+            throw new NotFoundException(MessageConstant.NOT_FOUND);
         }
         if (userRepository.existsByEmail(addUserInDTO.getUsername())) {
             throw new BadRequestException("Username alredy exist");
@@ -92,7 +93,7 @@ public class UserServiceImpl implements UserService {
      * this is @updatePassword method for updating a password at firstTime login.
      */
     @Override
-    public void updatePassword(final UpdatePasswordInDTO passwordInDTO) {
+    public String updatePassword(final UpdatePasswordInDTO passwordInDTO) {
         String oldPassword = Base64.getEncoder().encodeToString(passwordInDTO.getPassword().getBytes());
         Optional<User> user = userRepository.findById(passwordInDTO.getUserId());
         if (user.isPresent() && user.get().isFirst()) {
@@ -100,13 +101,15 @@ public class UserServiceImpl implements UserService {
             user.get().setPassword(Base64.getEncoder().encodeToString(passwordInDTO.getNewPassword().getBytes()));
             userRepository.save(user.get());
         } else if(!user.isPresent()) {
-            throw new NotFoundException("User not Found");
+            throw new NotFoundException(MessageConstant.NOT_FOUND);
         } else if(oldPassword.equals(user.get().getPassword())) {
             user.get().setPassword(Base64.getEncoder().encodeToString(passwordInDTO.getNewPassword().getBytes()));
-            userRepository.save(user.get());
+            return userRepository.save(user.get()).getPassword();
         } else{
-            throw new BadRequestException("Invalid old password");
+            throw new BadRequestException(MessageConstant.INVALID_DATA);
         }
+        return MessageConstant.INVALID_DATA;
+        
     }
 
     /**

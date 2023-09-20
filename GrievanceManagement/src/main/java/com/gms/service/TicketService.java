@@ -24,14 +24,15 @@ public interface TicketService {
      * This method is for getting list of @TicketTableOutDTO.
      * @return List<TicketTableOutDTO>
      */
-    List<TicketTableOutDTO> getAllTicket(final Long userId, final Boolean myFirst);
+    List<TicketTableOutDTO> getAllTicket(final Long userId, final Boolean myFirst, Integer pageNumber);
 
     /**
      * This method is for getting a @TicketInfoUtDTO by ticketId.
      * @param id
+     * @param userId 
      * @return
      */
-    TicketInfoOutDTO getTicketById(final Long id);
+    TicketInfoOutDTO getTicketById(final Long id, Long userId);
 
     /**
      * This method is for updating ticket.

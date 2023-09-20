@@ -219,7 +219,7 @@ export default function AddNewTicket() {
                   </span>
                 )}
               <button className="newticket-btn" type="submit">
-                Generate Ticket
+                Raise Grievance
               </button>
             </form>
           </div>

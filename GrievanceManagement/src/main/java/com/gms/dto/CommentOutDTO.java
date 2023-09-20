@@ -15,10 +15,6 @@ public class CommentOutDTO {
      * This is the name of user who commented.
      */
     private String userName;
-    /**
-     * This is comment time.
-     */
-    private LocalDateTime commentTime;
 
     /**
      * This is no-argument constructor.
@@ -31,13 +27,11 @@ public class CommentOutDTO {
      * This is all-argument constructor.
      * @param comment
      * @param userName
-     * @param lastUpdationTime
      */
-    public CommentOutDTO(final String comment, final String userName, final LocalDateTime commentTime) {
+    public CommentOutDTO(final String comment, final String userName) {
         super();
         this.comment = comment;
         this.userName = userName;
-        this.commentTime = commentTime;
     }
 
     /**
@@ -73,27 +67,11 @@ public class CommentOutDTO {
     }
 
     /**
-     * getter method for @getLastUpdationTime.
-     * @return String - lastUpdationTime
-     */
-    public LocalDateTime getLastUpdationTime() {
-        return commentTime;
-    }
-
-    /**
-     * setter method for @setLastUpdationTime.
-     * @param lastUpdationTime
-     */
-    public void setLastUpdationTime(final LocalDateTime commentTime) {
-        this.commentTime = commentTime;
-    }
-
-    /**
      * This is @hashCode method
      */
     @Override
     public int hashCode() {
-        return Objects.hash(comment, commentTime, userName);
+        return Objects.hash(comment, userName);
     }
 
     /**
@@ -111,8 +89,7 @@ public class CommentOutDTO {
             return false;
         }
         CommentOutDTO other = (CommentOutDTO) obj;
-        return Objects.equals(comment, other.comment) && Objects.equals(commentTime, other.commentTime)
-                && Objects.equals(userName, other.userName);
+        return Objects.equals(comment, other.comment) && Objects.equals(userName, other.userName);
     }
 
     /**
@@ -120,8 +97,7 @@ public class CommentOutDTO {
      */
     @Override
     public String toString() {
-        return "CommentOutDTO [comment=" + comment + ", userName=" + userName + ", commentTime=" + commentTime
-                + "]";
+        return "CommentOutDTO [comment=" + comment + ", userName=" + userName +"]";
     }
 
 }

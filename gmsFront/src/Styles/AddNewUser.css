@@ -101,9 +101,7 @@
   cursor: pointer;
   border-radius: 6px;
   font-weight: 400;
-  /* transition: all 0.2s ease; */
   background-color: #024074;
-  /* background-color: black; */
 }
 .form .add-user-btn:hover {
   background-color: #084b83;
@@ -129,5 +127,4 @@
 .select-box .addnewuser_option {
   font-size: 1.5rem;
   font-weight: 600;
-  background-color: #6caee4;
 }

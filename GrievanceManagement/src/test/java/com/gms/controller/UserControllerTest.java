@@ -19,6 +19,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.gms.constants.MessageConstant;
 import com.gms.constants.UrlConstant;
 import com.gms.dto.AddUserInDTO;
 import com.gms.dto.LoginRequestInDTO;
@@ -91,7 +92,7 @@ public class UserControllerTest {
         when(userService.save(addUserInDTO)).thenReturn(user);
         mockMvc.perform(post(UrlConstant.BASE_URL + UrlConstant.ADMIN_URL+ "/adduser").contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(addUserInDTO))).andExpect(status().isOk())
-                .andExpect(jsonPath("$.message", is("User added successfully")));
+                .andExpect(jsonPath("$.message", is(MessageConstant.ADDED)));
     }
 
     @Test

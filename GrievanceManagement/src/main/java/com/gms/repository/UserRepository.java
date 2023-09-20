@@ -1,6 +1,5 @@
 package com.gms.repository;
 
-import java.lang.reflect.Method;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -30,12 +29,21 @@ public interface UserRepository extends JpaRepository<User, Long> {
     Optional<User> findByEmail(final String email);
     
     /**
-     * This is @existsByEmailAndPasswordAndRole method for checking a user
-     * that it is exists or not.
+     * This is @existsByEmailAndPasswordAndRole method for checking a user with
+     * the specific role that it exists or not.
      * @param email
      * @param password
      * @param role
      * @return boolean
      */
     boolean existsByEmailAndPasswordAndRole(final String email, final String password, final Role role);
+    
+    /**
+     * This is @existsByEmailAndPasswordAndRole method for checking a user
+     * that it is exists or not.
+     * @param email
+     * @param password
+     * @return boolean
+     */
+    boolean existsByEmailAndPassword(final String email, final String password);
 }

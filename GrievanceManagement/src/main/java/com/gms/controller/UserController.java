@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.gms.constants.MessageConstant;
 import com.gms.constants.UrlConstant;
 import com.gms.dto.AddUserInDTO;
 import com.gms.dto.LoginRequestInDTO;
@@ -55,7 +56,7 @@ public class UserController {
     @PostMapping(UrlConstant.AUTH_URL + "/login")
     public APIResponseEntity login(@RequestBody @Valid final LoginRequestInDTO loginRequestInDTO) {
         LOGGER.info("request for login");
-        return new APIResponseEntity(true, userService.login(loginRequestInDTO), "Login Successful");
+        return new APIResponseEntity(true, userService.login(loginRequestInDTO), MessageConstant.SUCCESS);
     }
 
     /**
@@ -67,7 +68,7 @@ public class UserController {
     public APIResponseEntity save(@RequestBody @Valid final AddUserInDTO addUserInDTO) {
         System.out.println(addUserInDTO);
         userService.save(addUserInDTO);
-        return new APIResponseEntity(false, "User added successfully");
+        return new APIResponseEntity(false, MessageConstant.ADDED);
     }
 
     /**
@@ -77,8 +78,7 @@ public class UserController {
      */
     @PostMapping(UrlConstant.AUTH_URL + "/change-password")
     public APIResponseEntity updatePassword(@RequestBody @Valid final UpdatePasswordInDTO updatePasswordInDTO) {
-        userService.updatePassword(updatePasswordInDTO);
-        return new APIResponseEntity(false, "Password updated");
+        return new APIResponseEntity(true, userService.updatePassword(updatePasswordInDTO), MessageConstant.UPDATED);
     }
 
     /**
@@ -89,6 +89,6 @@ public class UserController {
     @DeleteMapping(UrlConstant.ADMIN_URL + "/{userId}")
     public APIResponseEntity deleteUser(@PathVariable final Long userId) {
         userService.deleteUser(userId);
-        return new APIResponseEntity(false, "User deleted successfully");
+        return new APIResponseEntity(false, MessageConstant.DELETED);
     }
 }

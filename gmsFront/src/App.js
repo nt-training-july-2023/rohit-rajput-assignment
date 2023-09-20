@@ -13,50 +13,15 @@ import AdminRoutes from './AdminRoutes';
 import MemberRoutes from './MemberRoutes';
 import AdminDashboard from './Componenets/AdminDashboard';
 import PageNotFound from './Componenets/PageNotFound';
+import ViewTicket from './Componenets/ViewTicket';
+import ChangePassAgain from './Componenets/ChangePassAgain';
+import TicketTable from './Componenets/TicketTable';
 
 // import AddUser from './Componenets/AddUser';
 function App() {
   const[userRole,setUserRole]=useState(localStorage.getItem("role"));
   return (
-    // <BrowserRouter>
-    // <Routes>
-    //   <Route path="/" element={<Home/>}/>
-    //   <Route path='/login' element={<Login/>}/>
-    //   <Route path='/changepassword' element={<ChangePassword/>}/>
-    //   <Route path='/admin' element={<AddNewUser/>}/>
-    //   <Route path='/newticket' element={<AddNewTicket/>}/>
-    // </Routes>
-    // </BrowserRouter>
-    // <div >
-    // <> 
-    //    <Header/>
-    //   <Login/>
-    //   {/* //  <AddUser/>  */}
-    //   {/* <AddNewUser/> */}
-    //    <Footer/>
-    //    </>  
-    // </div>
-    // <AddNewUser/>
-
-    // <BrowserRouter>
-    // <Routes>
-    //   <Route path='/' element={<Home/>}/>
-    //   {
-    //     userRole ? isFisrtLogin ? <Route path='/change-password' element={<ChangePassword firstLogin={setIsFirstLogin}/>}/>
-    //     :(
-    //       <>
-    //       { userRole==="ADMIN" && <Route path='/admin' element ={<AdminRoutes />}/>}
-    //       { userRole==="MEMBER" && <Route path='/member' element ={<MemberRoutes/>}/>}
-    //       </>
-    //     )
-    //     :<Route path='/login' element={<Login firstLogin={setIsFirstLogin} role={setUserRole}/>}/>
-    //   }
-    //   <Route exact path='*' element={<PageNotFound/>}/>
-    // </Routes>
-    // </BrowserRouter>
-
-    // <AdminDashboard/>
-
+   
     <BrowserRouter>
     <Routes>
      
@@ -68,6 +33,9 @@ function App() {
       
     </Routes>
     </BrowserRouter>
+    // <ViewTicket/>
+    // <ChangePassAgain/>
+    // <TicketTable/>
   );
 }
 

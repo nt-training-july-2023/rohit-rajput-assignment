@@ -21,6 +21,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.gms.constants.MessageConstant;
 import com.gms.constants.UrlConstant;
 import com.gms.dto.DepartmentOutDTO;
 import com.gms.exception.BadRequestException;
@@ -47,7 +48,7 @@ public class DepartmentControllerTest {
     public void testSaveDepartmentFailure() throws JsonProcessingException, Exception  {
         String departmentName = "HR";
         when(departmentService.saveDepartment(departmentName)).thenThrow(BadRequestException.class);
-        mockMvc.perform(post(UrlConstant.BASE_URL + UrlConstant.DEPARTMENT_URL).param("departmentName", departmentName)
+        mockMvc.perform(post(UrlConstant.BASE_URL + UrlConstant.ADMIN_URL + UrlConstant.DEPARTMENT_URL).param("departmentName", departmentName)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest());
     }
@@ -56,7 +57,7 @@ public class DepartmentControllerTest {
     public void testSaveDepartmentSuccefully() throws JsonProcessingException, Exception  {
         String departmentName = "HR";
         when(departmentService.saveDepartment(departmentName)).thenReturn(departmentName);
-        mockMvc.perform(post(UrlConstant.BASE_URL + UrlConstant.DEPARTMENT_URL).param("departmentName", departmentName)
+        mockMvc.perform(post(UrlConstant.BASE_URL + UrlConstant.ADMIN_URL + UrlConstant.DEPARTMENT_URL).param("departmentName", departmentName)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk()).andReturn();
     }
@@ -65,9 +66,9 @@ public class DepartmentControllerTest {
     public void testGetAllDepartmentSuccess() throws Exception {
         List<DepartmentOutDTO> departmentOutDTOs = Arrays.asList(new DepartmentOutDTO(1l, "HR"));
         when(departmentService.getAllDepartment()).thenReturn(departmentOutDTOs);
-         mockMvc.perform(get(UrlConstant.BASE_URL + UrlConstant.DEPARTMENT_URL))
+         mockMvc.perform(get(UrlConstant.BASE_URL + UrlConstant.COMMON_URL + UrlConstant.DEPARTMENT_URL))
         .andExpect(status().isOk())
-        .andExpect(jsonPath("$.message", is("List of Department")))
+        .andExpect(jsonPath("$.message", is(MessageConstant.SUCCESS)))
         .andExpect(jsonPath("$.data.size()", is(1)));
        
     }

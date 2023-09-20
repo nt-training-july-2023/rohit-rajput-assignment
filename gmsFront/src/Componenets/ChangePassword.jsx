@@ -59,7 +59,7 @@ const ChangePassword = () => {
         // setNewPasswordErr("");
         // setuserId(localStorage.getItem('userId'));
         // console.log(userId);
-        await loginService.changePassword(newPassword)
+        await loginService.changePassword(newPassword ,confirmPassword)
         .then((res) => {
              setShow(true);
              setAlertMessage(res.data.message);

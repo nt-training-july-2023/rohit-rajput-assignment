@@ -41,6 +41,10 @@ public class TicketInfoOutDTO {
      */
     private LocalDateTime creationTime;
     /**
+     * This is last updated time of ticket.
+     */
+    private LocalDateTime lastUpdatedTime;
+    /**
      * This is @CommentOutDTO list.
      */
     private List<CommentOutDTO> comments;  
@@ -56,7 +60,7 @@ public class TicketInfoOutDTO {
         super();
     }
     
-        
+    
     /**
      * This is all-argument constructor.
      * @param ticketId
@@ -66,11 +70,13 @@ public class TicketInfoOutDTO {
      * @param assignedTo
      * @param assignedBy
      * @param creationTime
+     * @param lastUpdatedTime
      * @param comments
      * @param status
      */
     public TicketInfoOutDTO(Long ticketId, String title, String description, TicketType ticketType, String assignedTo,
-            String assignedBy, LocalDateTime creationTime, List<CommentOutDTO> comments, Status status) {
+            String assignedBy, LocalDateTime creationTime, LocalDateTime lastUpdatedTime, List<CommentOutDTO> comments,
+            Status status) {
         super();
         this.ticketId = ticketId;
         this.title = title;
@@ -79,11 +85,10 @@ public class TicketInfoOutDTO {
         this.assignedTo = assignedTo;
         this.assignedBy = assignedBy;
         this.creationTime = creationTime;
+        this.lastUpdatedTime = lastUpdatedTime;
         this.comments = comments;
         this.status = status;
     }
-
-
 
     /**
      * getter method for @getTicketId.
@@ -198,6 +203,22 @@ public class TicketInfoOutDTO {
     }
     
     /**
+     * getter method for @getCreationTime.
+     * @return LocalDateTime - creationTime
+     */
+    public LocalDateTime getLastUpdatedTime() {
+        return lastUpdatedTime;
+    }
+    
+    /**
+     * setter method for @setCreationTime.
+     * @param creationTime
+     */
+    public void setLastUpdatedTime(final LocalDateTime lastUpdatedTime) {
+        this.lastUpdatedTime = lastUpdatedTime;
+    }
+    
+    /**
      * getter method for @getCoomment.
      * @return List<Comment> - comments
      */
@@ -234,10 +255,10 @@ public class TicketInfoOutDTO {
      */
     @Override
     public int hashCode() {
-        return Objects.hash(assignedBy, assignedTo, comments, creationTime, description, status, ticketId, ticketType,
-                title);
+        return Objects.hash(assignedBy, assignedTo, comments, creationTime, description, lastUpdatedTime, status,
+                ticketId, ticketType, title);
     }
-    
+
     /**
      *This is @equals method.
      */
@@ -255,11 +276,12 @@ public class TicketInfoOutDTO {
         TicketInfoOutDTO other = (TicketInfoOutDTO) obj;
         return Objects.equals(assignedBy, other.assignedBy) && Objects.equals(assignedTo, other.assignedTo)
                 && Objects.equals(comments, other.comments) && Objects.equals(creationTime, other.creationTime)
-                && Objects.equals(description, other.description) && status == other.status
+                && Objects.equals(description, other.description)
+                && Objects.equals(lastUpdatedTime, other.lastUpdatedTime) && status == other.status
                 && Objects.equals(ticketId, other.ticketId) && ticketType == other.ticketType
                 && Objects.equals(title, other.title);
     }
-    
+
     /**
      *This is @toString method.
      */
@@ -267,7 +289,8 @@ public class TicketInfoOutDTO {
     public String toString() {
         return "TicketInfoOutDTO [ticketId=" + ticketId + ", title=" + title + ", description=" + description
                 + ", ticketType=" + ticketType + ", assignedTo=" + assignedTo + ", assignedBy=" + assignedBy
-                + ", creationTime=" + creationTime + ", comments=" + comments + ", status=" + status + "]";
+                + ", creationTime=" + creationTime + ", lastUpdatedTime=" + lastUpdatedTime + ", comments=" + comments
+                + ", status=" + status + "]";
     }
     
     

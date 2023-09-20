@@ -29,7 +29,7 @@ public interface UserService {
      * This method is for updating password.
      * @param updatePasswordInDTO
      */
-    void updatePassword(final UpdatePasswordInDTO updatePasswordInDTO);
+    String updatePassword(final UpdatePasswordInDTO updatePasswordInDTO);
 
     /**
      * This method is for deleting a user.

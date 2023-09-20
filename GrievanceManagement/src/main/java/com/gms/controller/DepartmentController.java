@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.gms.constants.MessageConstant;
 import com.gms.constants.UrlConstant;
 import com.gms.response.APIResponseEntity;
 import com.gms.service.DepartmentService;
@@ -20,7 +21,7 @@ import com.gms.service.DepartmentService;
  */
 @CrossOrigin("*")
 @RestController
-@RequestMapping(UrlConstant.BASE_URL + "/department")
+@RequestMapping(UrlConstant.BASE_URL)
 public class DepartmentController {
 
     /**
@@ -32,28 +33,28 @@ public class DepartmentController {
     /**
      * @return APIResponseEntity
      */
-    @GetMapping
+    @GetMapping(UrlConstant.COMMON_URL + UrlConstant.DEPARTMENT_URL)
     public APIResponseEntity getAllDepartment() {
-        return new APIResponseEntity(true, departmentService.getAllDepartment(), "List of Department");
+        return new APIResponseEntity(true, departmentService.getAllDepartment(), MessageConstant.SUCCESS);
     }
 
     /**
      * @param departmentName
      * @return APIResponseEntity
      */
-    @PostMapping
+    @PostMapping(UrlConstant.ADMIN_URL + UrlConstant.DEPARTMENT_URL)
     public APIResponseEntity saveDepartment(@RequestParam final String departmentName) {
-        return new APIResponseEntity(true, departmentService.saveDepartment(departmentName), "Department saved");
+        return new APIResponseEntity(true, departmentService.saveDepartment(departmentName), MessageConstant.ADDED);
     }
 
     /**
      * @param id - departmentId
      * @return APIResponseEntity
      */
-    @DeleteMapping("/{id}")
+    @DeleteMapping(UrlConstant.ADMIN_URL + UrlConstant.DEPARTMENT_URL +"/{id}")
     public APIResponseEntity deleteDepartment(@PathVariable final Long id) {
         departmentService.deleteDepartment(id);
-        return new APIResponseEntity(false, "Department deleted");
+        return new APIResponseEntity(false, MessageConstant.DELETED);
     }
 
 }

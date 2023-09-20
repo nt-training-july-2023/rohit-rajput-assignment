@@ -17,6 +17,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import com.gms.constants.MessageConstant;
 import com.gms.dto.AddUserInDTO;
 import com.gms.dto.LoginRequestInDTO;
 import com.gms.dto.LoginResponseOutDTO;
@@ -80,7 +81,7 @@ public class UserServiceImplTest {
         when(departmentRepository.findById(anyLong())).thenReturn(Optional.empty());
         NotFoundException exception = assertThrows(NotFoundException.class,
                 ()->{userServiceImpl.save(new AddUserInDTO());});
-        assertEquals("Department id not found", exception.getMessage());
+        assertEquals(MessageConstant.NOT_FOUND, exception.getMessage());
     }
 
     @Test
@@ -125,7 +126,7 @@ public class UserServiceImplTest {
         NotFoundException exception = assertThrows(NotFoundException.class, () -> {
             userServiceImpl.updatePassword(passwordInDTO);
         });
-        assertEquals("User not Found", exception.getMessage());
+        assertEquals(MessageConstant.NOT_FOUND, exception.getMessage());
     }
 
     @Test
@@ -166,6 +167,6 @@ public class UserServiceImplTest {
         BadRequestException exception = assertThrows(BadRequestException.class, () -> {
             userServiceImpl.updatePassword(passwordInDTO);
         });
-        assertEquals("Invalid old password", exception.getMessage());
+        assertEquals(MessageConstant.INVALID_DATA, exception.getMessage());
     }
 }

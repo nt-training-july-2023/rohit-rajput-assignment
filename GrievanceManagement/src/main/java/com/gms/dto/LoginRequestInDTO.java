@@ -6,7 +6,7 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
-import com.gms.constants.ConstantVariable;
+import com.gms.constants.VariableConstant;
 
 /**
  * this is @LoginRequestInDTO class for login.
@@ -23,7 +23,7 @@ public class LoginRequestInDTO {
     /**
      * This is password.
      */
-    @Size(min = ConstantVariable.PASSWORD_MIN_LENGTH, max = ConstantVariable.PASSWORD_MAX_LENGTH, message = "password must be 8-20 character long")
+    @Size(min = VariableConstant.PASSWORD_MIN_LENGTH, max = VariableConstant.PASSWORD_MAX_LENGTH, message = "password must be 8-20 character long")
     @NotEmpty(message = "please enter your password")
     @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])"
             + "(?=.*[@$!%*?&])[A-Za-z0-9@$!%*?&]{8,20}$", message = "enter strong password")
@@ -44,7 +44,7 @@ public class LoginRequestInDTO {
             @NotEmpty(message = "please enter username ")
             @Pattern(regexp = "^[a-z0-9]{2,}[.][a-z]{2,}+@nucleusteq.com$",
             message = "please enter valid username ") final String email,
-            @Size(min = ConstantVariable.PASSWORD_MIN_LENGTH, max = ConstantVariable.PASSWORD_MAX_LENGTH,
+            @Size(min = VariableConstant.PASSWORD_MIN_LENGTH, max = VariableConstant.PASSWORD_MAX_LENGTH,
             message = "password must be 8-20 character long")
             @NotEmpty(message = "please enter your password")
             @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])"

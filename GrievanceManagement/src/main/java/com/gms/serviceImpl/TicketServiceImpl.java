@@ -1,6 +1,7 @@
 package com.gms.serviceImpl;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
@@ -10,8 +11,12 @@ import java.util.stream.Collectors;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import com.gms.constants.MessageConstant;
+import com.gms.dto.CommentOutDTO;
 import com.gms.dto.TicketInfoOutDTO;
 import com.gms.dto.TicketSaveInDTO;
 import com.gms.dto.TicketTableOutDTO;
@@ -74,12 +79,12 @@ public class TicketServiceImpl implements TicketService {
         Optional<User> userOptional = userRepository.findById(ticketSaveInDTO.getUserId());
         if (!userOptional.isPresent()) {
             LOGGER.warn("[TicketServiceImpl]: User Id not exists");
-            throw new NotFoundException("User Id not exists");
+            throw new NotFoundException(MessageConstant.NOT_FOUND);
         }
         Optional<Department> departmentOptional = departmentRepository.findById(ticketSaveInDTO.getDepartmentId());
         if (!departmentOptional.isPresent()) {
             LOGGER.warn("[TicketServiceImpl]: Department Id not exists");
-            throw new NotFoundException("Department Id not exists");
+            throw new NotFoundException(MessageConstant.NOT_FOUND);
         }
         LOGGER.info("[TicketServiceImpl]: Ticket saved");
         Ticket ticket = new Ticket();
@@ -95,15 +100,17 @@ public class TicketServiceImpl implements TicketService {
      * This is @getAllTicket for getting list of @TicketTableOutDTO.
      */
     @Override
-    public List<TicketTableOutDTO> getAllTicket(final Long userId, final Boolean myTicket) {
+    public List<TicketTableOutDTO> getAllTicket(final Long userId, final Boolean myTicket, Integer pageNumber) {
+        Pageable pageable = PageRequest.of(pageNumber, 10);
         List<TicketTableOutDTO> ticketTableOutDTOs;
         User user = userRepository.findById(userId).orElseThrow(
-                () -> new NotFoundException("UserId not found"));
+                () -> new NotFoundException(MessageConstant.NOT_FOUND));
         if (myTicket && user.getTicket().size() == 0) {
-            throw new NotFoundException("There is no ticket");
+            throw new NotFoundException(MessageConstant.NOT_FOUND);
         } else if (myTicket) {
             ticketTableOutDTOs = user.getTicket().stream().map(ticket -> {
                 TicketTableOutDTO outDTO = new TicketTableOutDTO();
+                outDTO.setTicketId(ticket.getTicketId());
                 outDTO.setTitle(ticket.getTitle());
                 outDTO.setStatus(ticket.getStatus());
                 outDTO.setLastUpdationTime(ticket.getLastUpdationTime());
@@ -113,11 +120,11 @@ public class TicketServiceImpl implements TicketService {
             }).sorted(comparator).collect(Collectors.toList());
             return ticketTableOutDTOs;
         } else if (user.getRole().equals(Role.ADMIN)) {
-            ticketTableOutDTOs = ticketRepository.findAllTicket().stream().sorted(comparator)
+            ticketTableOutDTOs = ticketRepository.findAllTicket(pageable).stream().sorted(comparator)
                     .collect(Collectors.toList());
             return ticketTableOutDTOs;
         } else {
-            ticketTableOutDTOs = ticketRepository.findAllByDepartment(user.getDepartment().getDepartmentId());
+            ticketTableOutDTOs = ticketRepository.findAllByDepartment(user.getDepartment().getDepartmentId(),pageable);
             if (ticketTableOutDTOs.size() == 0) {
                 throw new NotFoundException("No ticket is assigned to your department");
             }
@@ -129,11 +136,35 @@ public class TicketServiceImpl implements TicketService {
      * This is @getTicketById for getting a list by ticketId.
      */
     @Override
-    public TicketInfoOutDTO getTicketById(final Long id) {
-        if (!ticketRepository.existsById(id)) {
-            throw new NotFoundException("Ticket Id not exists");
+    public TicketInfoOutDTO getTicketById(final Long ticketId, final Long userId) {
+        Optional<Ticket> ticket = ticketRepository.findById(ticketId);
+        if(!ticket.isPresent()) {
+            throw new NotFoundException(MessageConstant.NOT_FOUND);
         }
-        TicketInfoOutDTO ticketInfoOutDTO = ticketRepository.findTicketById(id);
+        Optional<User> user = userRepository.findById(userId);
+        if(!user.isPresent()) {
+            throw new NotFoundException(MessageConstant.NOT_FOUND);
+        }
+        if(ticket.get().getUser().getId()!=userId && user.get().getRole()==Role.MEMBER) {
+            throw new BadRequestException(MessageConstant.ACCESS_DENIED);
+        }
+        List<CommentOutDTO> comOutDTOs = ticket.get().getComments().stream().map(comment->{
+            CommentOutDTO commentOutDTO = new CommentOutDTO();
+            commentOutDTO.setComment(comment.getComment());
+            commentOutDTO.setUserName(comment.getUser().getName());
+            return commentOutDTO;
+        }).collect(Collectors.toList());       
+        TicketInfoOutDTO ticketInfoOutDTO = new TicketInfoOutDTO();
+        ticketInfoOutDTO.setTitle(ticket.get().getTitle());
+        ticketInfoOutDTO.setTicketType(ticket.get().getTicketType());
+        ticketInfoOutDTO.setTicketId(ticket.get().getTicketId());
+        ticketInfoOutDTO.setStatus(ticket.get().getStatus());
+        ticketInfoOutDTO.setDescription(ticket.get().getDescription());
+        ticketInfoOutDTO.setCreationTime(ticket.get().getCreationTime());
+        ticketInfoOutDTO.setLastUpdatedTime(ticket.get().getLastUpdationTime());
+        ticketInfoOutDTO.setAssignedTo(ticket.get().getDepartment().getDepartmentName());
+        ticketInfoOutDTO.setAssignedBy(ticket.get().getUser().getName());
+        ticketInfoOutDTO.setComments(comOutDTOs);
         return ticketInfoOutDTO;
     }
 
@@ -142,11 +173,11 @@ public class TicketServiceImpl implements TicketService {
     @Override
     public String updateTicket(final UpdateTicketInDTO updateTicketInDTO) {
       Ticket ticket = ticketRepository.findById(updateTicketInDTO.getTicketId())
-              .orElseThrow(() -> new NotFoundException("TicketId not exists"));
+              .orElseThrow(() -> new NotFoundException(MessageConstant.NOT_FOUND));
       User user = userRepository.findById(updateTicketInDTO.getUserId())
-              .orElseThrow(() -> new NotFoundException("User Id not Found"));
+              .orElseThrow(() -> new NotFoundException(MessageConstant.NOT_FOUND));
       if (!ticket.getDepartment().equals(user.getDepartment())) {
-          throw new BadRequestException("Access denied");
+          throw new BadRequestException(MessageConstant.ACCESS_DENIED);
       }
       if (ticket.getStatus().equals(Status.RESOLVED)) {
           throw new BadRequestException("Ticket is Resolved, You can't update");
@@ -177,7 +208,7 @@ public class TicketServiceImpl implements TicketService {
           ticket.setStatus(updateTicketInDTO.getStatus());
           ticketRepository.save(ticket);
       }
-      return "Ticket updated Successfully";
+      return MessageConstant.UPDATED;
     }
 
     Comparator<TicketTableOutDTO> comparator = (TicketTableOutDTO ticketTableOutDTO1,

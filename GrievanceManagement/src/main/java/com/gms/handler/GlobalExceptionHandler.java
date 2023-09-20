@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import com.gms.constants.MessageConstant;
 import com.gms.exception.BadRequestException;
 import com.gms.exception.NotFoundException;
 import com.gms.response.APIResponseEntity;
@@ -32,7 +33,7 @@ public class GlobalExceptionHandler {
         exception.getBindingResult().getFieldErrors()
                 .forEach(err -> errMap.put(err.getField(), err.getDefaultMessage()));
         System.out.println(errMap);
-        return new APIResponseEntity(true, errMap, "Invalid data");
+        return new APIResponseEntity(true, errMap, MessageConstant.INVALID_DATA);
     }
 
     /**

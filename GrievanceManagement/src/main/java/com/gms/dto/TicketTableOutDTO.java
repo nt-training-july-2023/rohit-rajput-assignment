@@ -9,6 +9,11 @@ import com.gms.entity.Status;
  * This is @TicketTableOutDTO for showing details of tickets in a table.
  */
 public class TicketTableOutDTO {
+    
+    /**
+     * This is ticketId;
+     */
+    private Long ticketId;
     /**
      * This is ticket title;
      */
@@ -18,7 +23,7 @@ public class TicketTableOutDTO {
      */
     private String departmentName;
     /**
-     * This is status odf ticket.
+     * This is status of ticket.
      */
     private Status status;
     /**
@@ -30,6 +35,23 @@ public class TicketTableOutDTO {
      */
     private LocalDateTime lastUpdationTime;
     
+    
+    /**
+     * getter method for @getTicketId.
+     * @return Long - ticketId
+     */
+    public Long getTicketId() {
+        return ticketId;
+    }
+
+    /**
+     * setter method for @setTicketId.
+     * @param ticketId
+     */
+    public void setTicketId(final Long ticketId) {
+        this.ticketId = ticketId;
+    }
+
     /**
      * getter method for @getTitle. 
      * @return String - title
@@ -118,17 +140,20 @@ public class TicketTableOutDTO {
         super();
     }
     
+    
     /**
      * This is all-argument constructor.
+     * @param ticketId
      * @param title
      * @param departmentName
      * @param status
      * @param assignedBy
      * @param lastUpdationTime
      */
-    public TicketTableOutDTO(final String title, final String departmentName, final Status status, final String assignedBy,
-           final LocalDateTime lastUpdationTime) {
+    public TicketTableOutDTO(Long ticketId, String title, String departmentName, Status status, String assignedBy,
+            LocalDateTime lastUpdationTime) {
         super();
+        this.ticketId = ticketId;
         this.title = title;
         this.departmentName = departmentName;
         this.status = status;
@@ -136,44 +161,39 @@ public class TicketTableOutDTO {
         this.lastUpdationTime = lastUpdationTime;
     }
     
+    
     /**
      *This is @hashCode method.
      */
     @Override
     public int hashCode() {
-        return Objects.hash(assignedBy, departmentName, lastUpdationTime, status, title);
+        return Objects.hash(assignedBy, departmentName, lastUpdationTime, status, ticketId, title);
     }
-    
+
     /**
      *This is @equals method.
      */
     @Override
     public boolean equals(final Object obj) {
-        if (this == obj) {
+        if (this == obj)
             return true;
-        }
-        if (obj == null) {
+        if (obj == null)
             return false;
-        }
-        if (getClass() != obj.getClass()) {
+        if (getClass() != obj.getClass())
             return false;
-        }
         TicketTableOutDTO other = (TicketTableOutDTO) obj;
         return Objects.equals(assignedBy, other.assignedBy) && Objects.equals(departmentName, other.departmentName)
                 && Objects.equals(lastUpdationTime, other.lastUpdationTime) && status == other.status
-                && Objects.equals(title, other.title);
+                && Objects.equals(ticketId, other.ticketId) && Objects.equals(title, other.title);
     }
-    
+
     /**
-     *This is @toString method.
+     *this is @equals method.
      */
     @Override
     public String toString() {
-        return "TicketTableOutDTO [title=" + title + ", departmentName=" + departmentName + ", status=" + status
-                + ", assignedBy=" + assignedBy + ", lastUpdationTime=" + lastUpdationTime + "]";
+        return "TicketTableOutDTO [ticketId=" + ticketId + ", title=" + title + ", departmentName=" + departmentName
+                + ", status=" + status + ", assignedBy=" + assignedBy + ", lastUpdationTime=" + lastUpdationTime + "]";
     }
     
-   
-    
-
 }
