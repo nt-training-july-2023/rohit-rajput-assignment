@@ -2,8 +2,8 @@ import React, { useState } from 'react'
 import Alert from './Alert';
 import '../Styles/NewDepartment.css'
 import { useNavigate } from 'react-router-dom';
-import loginService from './service/loginService';
 import AdminDashboard from './AdminDashboard';
+import APIService from '../Service/api';
 
 export default function AddDepartment() {
     const[departmentName, setDepartmentName]=useState('')
@@ -18,7 +18,7 @@ export default function AddDepartment() {
        if(!validateDepartmentName(departmentName)){
         setDepartmentNameErr("Invalid department name")
        }else{
-        await loginService.addDepartment(departmentName)
+        await APIService.addDepartment(departmentName)
         .then((res)=>{
           setShow(true)
           setAlertMessage(res.data.message);

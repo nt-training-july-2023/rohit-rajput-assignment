@@ -1,10 +1,8 @@
 import React, { useEffect, useState } from "react";
 import "../Styles/ViewTicket.css";
 import AdminDashboard from "./AdminDashboard";
-import Header from "./Header";
-import Footer from "./Footer";
 import { useLocation } from "react-router-dom";
-import loginService from "./service/loginService";
+import APIService from "../Service/api";
 export default function ViewTicket() {
   const location = useLocation();
   const data = location.state;
@@ -16,7 +14,7 @@ export default function ViewTicket() {
   }, []);
 
   const fetchTicketById = async () => {
-    await loginService
+    await APIService
       .getTicketById(data.id)
       .then((res) => {
         console.log(res.data.data);

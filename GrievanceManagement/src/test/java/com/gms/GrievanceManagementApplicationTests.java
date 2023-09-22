@@ -9,5 +9,10 @@ class GrievanceManagementApplicationTests {
 	@Test
 	void contextLoads() {
 	}
+	
+	@Test
+	public void applicationContextTest() {
+	    GrievanceManagementApplication.main(new String[] {});
+	}
 
 }

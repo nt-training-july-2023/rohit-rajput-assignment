@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 
 import com.gms.dto.DepartmentOutDTO;
 import com.gms.entity.Department;
+import com.gms.entity.Status;
 /**
  * This is @Departmentrepository to perform operation on department table in database.
  */

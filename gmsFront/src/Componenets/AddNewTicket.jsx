@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import "../Styles/AddNewTicket.css";
 import AdminDashboard from "./AdminDashboard";
-import loginService from "./service/loginService";
 import Alert from "./Alert";
+import APIService from "../Service/api";
 
 export default function AddNewTicket() {
   const [show, setShow] = useState(false);
@@ -49,7 +49,7 @@ export default function AddNewTicket() {
 };
 
   const fetchDepartment = async () => {
-    await loginService
+    await APIService
       .getAllDepartment()
       .then((res) => {
         if (res.data.hasdata) {
@@ -80,7 +80,7 @@ export default function AddNewTicket() {
       setDescriptionErr("");
     }
     if(validateDepartmentId(ticket.departmentId) && validateDescription(ticket.description)){
-        await loginService.addNewTicket(ticket)
+        await APIService.addNewTicket(ticket)
         .then((res)=>{
           setShow(true)
           setAlertMessage(res.data.message)

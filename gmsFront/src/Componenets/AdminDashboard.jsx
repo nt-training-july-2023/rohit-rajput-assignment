@@ -1,17 +1,8 @@
 import React, { useState } from "react";
 import '../Styles/AdminDashboard.css';
 import { Link } from "react-router-dom";
-import Alert from "./Alert";
 
 export default function AdminDashboard() {
-  // const [show, setShow] = useState(false);
-  // const [alertMessage, setAlertMessage] = useState("");
-
-  // const closeAlert = () => {
-  //   setAlertMessage("");
-  //   setShow(false);
-  // };
-
   return (
     <div>
       <div className="admin-parent-container">

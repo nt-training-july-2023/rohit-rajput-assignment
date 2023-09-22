@@ -23,10 +23,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.gms.constants.VariableConstant;
 
 /**
- * <p>
- * This is User class for representing user_details table in database
- * <p>
- * .
+ * This is User class for representing user_details table in database.
  */
 @Entity
 @Table(name = "user_details")

@@ -193,7 +193,7 @@ public class TicketTableOutDTO {
     @Override
     public String toString() {
         return "TicketTableOutDTO [ticketId=" + ticketId + ", title=" + title + ", departmentName=" + departmentName
-                + ", status=" + status + ", assignedBy=" + assignedBy + ", lastUpdationTime=" + lastUpdationTime + "]";
+                + ", status=" + status + ", assignedBy=" + assignedBy +  "]";
     }
     
 }

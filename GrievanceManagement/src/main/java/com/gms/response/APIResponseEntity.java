@@ -22,12 +22,6 @@ public class APIResponseEntity {
     private String message;
     
     /**
-     * this is no-argument constructor.
-     */
-    public APIResponseEntity() {
-    }
-    
-    /**
      * This is all argument constructor.
      * @param hasdata
      * @param data

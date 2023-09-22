@@ -45,9 +45,10 @@ public class DepartmentServiceImplTest {
         String departmentName = "HR";
         Department department = new Department();
         department.setDepartmentName(departmentName);
-        when(departmentRepository.existsByDepartmentName(departmentName)).thenReturn(false);
+        when(departmentRepository.existsByDepartmentName(departmentName.toUpperCase())).thenReturn(false);
         when(departmentRepository.save(department)).thenReturn(department);
-        assertEquals(departmentName, departmentRepository.save(department).getDepartmentName());
+        String message = departmentServiceImpl.saveDepartment(departmentName);
+        assertEquals(message, departmentRepository.save(department).getDepartmentName());
     }
     
     @Test

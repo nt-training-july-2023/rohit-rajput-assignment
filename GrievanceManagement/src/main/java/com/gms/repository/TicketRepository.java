@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import com.gms.dto.TicketTableOutDTO;
+import com.gms.entity.Status;
 import com.gms.entity.Ticket;
 
 /**
@@ -34,6 +35,16 @@ public interface TicketRepository extends JpaRepository<Ticket, Long> {
             + "t.ticketId, t.title, d.departmentName , t.status, u.name, t.lastUpdationTime)"
             + "from Ticket t JOIN t.department d JOIN t.user u")
     List<TicketTableOutDTO> findAllTicket(Pageable pageable);
+
+    @Query("select new com.gms.dto." + "TicketTableOutDTO("
+            + "t.ticketId, t.title, d.departmentName , t.status, u.name, t.lastUpdationTime)"
+            + "from Ticket t JOIN t.department d JOIN t.user u where t.status = ?1")
+    List<TicketTableOutDTO> findAllTicketByStatus(Pageable pageable, Status filterStatus);
+
+    @Query("select new com.gms.dto." + "TicketTableOutDTO("
+            + "t.ticketId, t.title, d.departmentName , t.status, u.name, t.lastUpdationTime)"
+            + "from Ticket t JOIN t.department d JOIN t.user u where d.departmentId = ?1 AND t.status = ?2")
+    List<TicketTableOutDTO> findAllByDepartmentAndStatus(Long departmentId, Status filterStatus, Pageable pageable);
 
     /**
      * This method is use for finding details of ticket by ticketId.

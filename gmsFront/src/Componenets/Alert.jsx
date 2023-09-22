@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import '../Styles/Alert.css'
 const Alert = (props) =>{
    return(

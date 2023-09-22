@@ -54,8 +54,6 @@
 //            String username = httpServletRequest.getHeader("username");
 //            String password = httpServletRequest.getHeader("encodePassword");
 //            String path = httpServletRequest.getServletPath();
-//            System.out.println(username);
-//            System.out.println(password);
 //            if (username == null || password == null || username == "" || password == "") {
 //                ((HttpServletResponse) response).sendError(HttpServletResponse.SC_UNAUTHORIZED,
 //                        MessageConstant.INVALID_TOKEN);

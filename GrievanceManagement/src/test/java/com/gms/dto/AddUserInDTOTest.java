@@ -1,8 +1,10 @@
 package com.gms.dto;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -63,11 +65,19 @@ public class AddUserInDTOTest {
                 1l);
         AddUserInDTO addUserInDTO3 = new AddUserInDTO("Rohit Rajput", "rohit.rajput@nucleusteq.com", Role.ADMIN, "Rohit@123",
                 1l);
+        
         assertEquals(addUserInDTO1, addUserInDTO2);
         assertNotEquals(addUserInDTO1, addUserInDTO3);
         assertEquals(addUserInDTO1.hashCode(), addUserInDTO2.hashCode());
         assertNotEquals(addUserInDTO1.hashCode(), addUserInDTO3.hashCode());
-        System.out.println(addUserInDTO);
+        assertEquals("AddUserInDTO [name=Rohit, username=rohit.rajput@nucleusteq.com, userType=ADMIN, password=Rohit@123, departmentId=1]", addUserInDTO1.toString());
+       
+        assertTrue(addUserInDTO1.equals(addUserInDTO2));
+        assertFalse(addUserInDTO1.equals(null));
+        assertFalse(addUserInDTO1.equals(new CommentOutDTO()));
+        assertFalse(addUserInDTO1.equals(addUserInDTO3));
+        addUserInDTO2 =addUserInDTO1;
+        assertTrue(addUserInDTO1.equals(addUserInDTO2));
     }
 
 }

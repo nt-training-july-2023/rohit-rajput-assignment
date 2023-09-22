@@ -1,11 +1,9 @@
 import { useEffect, useState } from "react";
 import "../Styles/AddNewUser.css";
-import Footer from "./Footer";
-import Header from "./Header";
-import loginService from "./service/loginService";
 import Alert from "./Alert";
 import AdminDashboard from "./AdminDashboard";
 import { useNavigate } from "react-router-dom";
+import APIService from "../Service/api";
 const AddNewUser = () => {
   const [show, setShow] = useState(false);
   const [alertMessage, setAlertMessage] = useState("");
@@ -29,21 +27,8 @@ const AddNewUser = () => {
     departmentId: 0,
   });
 
-  // const fetchDepartment = async () => {
-  //   try {
-  //     const res = await loginService.getAllDepartment();
-  //     console.log(res);
-  //     if (res.data.hasdata) {
-  //       setDepartment(res.data.data);
-  //     }
-  //   } catch (error) {
-  //     alert(error);
-  //   }
-  //   // console.log(department);
-  // };
-
   const fetchDepartment = async () =>{
-       await loginService.getAllDepartment()
+       await APIService.getAllDepartment()
        .then((res)=>{
         console.log(res);
           if(res.data.hasdata){
@@ -114,7 +99,7 @@ const AddNewUser = () => {
     }
     if(validateName(user.name) && validateDepartment(user,department) && validatePassword(user.password) && validateUsername(user.username)){
       console.log(user);
-      await loginService.addNewUser(user)
+      await APIService.addNewUser(user)
       .then((res)=>{
         e.preventDefault();
         setShow(true)

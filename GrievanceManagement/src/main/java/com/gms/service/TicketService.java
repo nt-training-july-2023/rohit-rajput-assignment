@@ -6,6 +6,7 @@ import com.gms.dto.TicketInfoOutDTO;
 import com.gms.dto.TicketSaveInDTO;
 import com.gms.dto.TicketTableOutDTO;
 import com.gms.dto.UpdateTicketInDTO;
+import com.gms.entity.Status;
 import com.gms.entity.Ticket;
 
 /**
@@ -24,7 +25,7 @@ public interface TicketService {
      * This method is for getting list of @TicketTableOutDTO.
      * @return List<TicketTableOutDTO>
      */
-    List<TicketTableOutDTO> getAllTicket(final Long userId, final Boolean myFirst, Integer pageNumber);
+    List<TicketTableOutDTO> getAllTicket(final Long userId, final Boolean myFirst, Integer pageNumber, Status filterStatus);
 
     /**
      * This method is for getting a @TicketInfoUtDTO by ticketId.

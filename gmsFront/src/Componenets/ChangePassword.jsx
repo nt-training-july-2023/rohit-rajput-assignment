@@ -1,10 +1,10 @@
 import { useState } from "react";
 import "../Styles/Login.css";
-import loginService from "./service/loginService";
 import { redirect, useNavigate } from "react-router-dom";
 import Footer from "./Footer";
 import Header from "./Header";
 import Alert from "./Alert";
+import APIService from "../Service/api";
 const ChangePassword = () => {
     const[newPassword, setNewPassword] = useState('');
     const[newPasswordErr, setNewPasswordErr] = useState('');
@@ -59,7 +59,7 @@ const ChangePassword = () => {
         // setNewPasswordErr("");
         // setuserId(localStorage.getItem('userId'));
         // console.log(userId);
-        await loginService.changePassword(newPassword ,confirmPassword)
+        await APIService.changePassword(newPassword ,confirmPassword)
         .then((res) => {
              setShow(true);
              setAlertMessage(res.data.message);

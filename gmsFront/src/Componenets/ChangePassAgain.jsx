@@ -1,10 +1,8 @@
 import React, { useState } from 'react'
-import Header from './Header'
-import Footer from './Footer'
 import "../Styles/ChangePassword.css"
 import AdminDashboard from './AdminDashboard'
 import { useNavigate } from 'react-router-dom'
-import loginService from './service/loginService'
+import APIService from '../Service/api';
 
 export default function ChangePassAgain() {
 
@@ -77,7 +75,7 @@ const handleSubmit = async(e) =>{
        setConfirmPasswordErr("");
    }
    if(validateOldPassword(oldPassword) && validateNewPassword(newPassword) && validateConfirmPassword(confirmPassword)){
-    await loginService.changePassword(oldPassword ,newPassword)
+    await APIService.changePassword(oldPassword ,newPassword)
     .then((res) => {
         console.log(res);
         localStorage.setItem('user', JSON.stringify({...JSON.parse(localStorage.getItem('user')), encodePassword: res.data.data}))

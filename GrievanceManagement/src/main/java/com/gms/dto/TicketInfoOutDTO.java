@@ -289,7 +289,7 @@ public class TicketInfoOutDTO {
     public String toString() {
         return "TicketInfoOutDTO [ticketId=" + ticketId + ", title=" + title + ", description=" + description
                 + ", ticketType=" + ticketType + ", assignedTo=" + assignedTo + ", assignedBy=" + assignedBy
-                + ", creationTime=" + creationTime + ", lastUpdatedTime=" + lastUpdatedTime + ", comments=" + comments
+                + ", comments=" + comments
                 + ", status=" + status + "]";
     }
     

@@ -43,7 +43,7 @@ public class GlobalExceptionHandler {
      */
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(BadRequestException.class)
-    public APIResponseEntity departmentExistsExceptionHandler(final BadRequestException exception) {
+    public APIResponseEntity badRequestExceptionHandler(final BadRequestException exception) {
         return new APIResponseEntity(false, exception.getMessage());
     }    
 
@@ -54,7 +54,7 @@ public class GlobalExceptionHandler {
      */
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @ExceptionHandler(NotFoundException.class)
-    public APIResponseEntity departmentsNotFoundExceptionHandler(final NotFoundException exception) {
+    public APIResponseEntity notFoundExceptionHandler(final NotFoundException exception) {
         return new APIResponseEntity(false, exception.getMessage());
     }
 }

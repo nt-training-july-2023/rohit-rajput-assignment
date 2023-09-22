@@ -97,25 +97,24 @@ public class UpdateTicketInDTO {
      */
     public UpdateTicketInDTO() {
         super();
-    }
+    }      
     
     /**
      * This is all-argument constructor.
-     * @param description
      * @param status
      * @param ticketId
      * @param userId
      * @param comment
      */
-    public UpdateTicketInDTO(String description, @NotNull(message = "Please add a status") Status status, Long ticketId,
-            Long userId, String comment) {
+    public UpdateTicketInDTO(@NotNull(message = "Please add a status") Status status, Long ticketId, Long userId,
+            String comment) {
         super();
         this.status = status;
         this.ticketId = ticketId;
         this.userId = userId;
         this.comment = comment;
-    }    
-    
+    }
+
     /**
      *This is @hashCode method.
      */

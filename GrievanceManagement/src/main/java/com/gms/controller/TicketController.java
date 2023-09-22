@@ -17,6 +17,7 @@ import com.gms.constants.MessageConstant;
 import com.gms.constants.UrlConstant;
 import com.gms.dto.TicketSaveInDTO;
 import com.gms.dto.UpdateTicketInDTO;
+import com.gms.entity.Status;
 import com.gms.response.APIResponseEntity;
 import com.gms.service.TicketService;
 
@@ -51,9 +52,13 @@ public class TicketController {
      * @return APIResponseEntity
      */
     @GetMapping(UrlConstant.COMMON_URL + UrlConstant.TICKET_URL )
-    public APIResponseEntity getAllTicket(@RequestParam Long userId, @RequestParam(defaultValue = "false") Boolean myTicket, @RequestParam(defaultValue = "1") Integer pageNumber) {
+    public APIResponseEntity getAllTicket(@RequestParam Long userId, @RequestParam(defaultValue = "false") Boolean myTicket,
+            @RequestParam(defaultValue = "1") Integer pageNumber, @RequestParam(required = false) Status filterStatus) {
+        if(pageNumber<=0) {
+            pageNumber = 1;
+        }
         return new APIResponseEntity(true,
-                ticketService.getAllTicket(userId, myTicket, pageNumber-1), MessageConstant.SUCCESS);
+                ticketService.getAllTicket(userId, myTicket, pageNumber-1, filterStatus), MessageConstant.SUCCESS);
     }
 
 

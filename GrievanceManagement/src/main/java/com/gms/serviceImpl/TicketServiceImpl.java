@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
@@ -100,14 +101,18 @@ public class TicketServiceImpl implements TicketService {
      * This is @getAllTicket for getting list of @TicketTableOutDTO.
      */
     @Override
-    public List<TicketTableOutDTO> getAllTicket(final Long userId, final Boolean myTicket, Integer pageNumber) {
+    public List<TicketTableOutDTO> getAllTicket(final Long userId, final Boolean myTicket,
+            Integer pageNumber, Status filterStatus) {
+        System.out.println(filterStatus);
         Pageable pageable = PageRequest.of(pageNumber, 10);
         List<TicketTableOutDTO> ticketTableOutDTOs;
         User user = userRepository.findById(userId).orElseThrow(
                 () -> new NotFoundException(MessageConstant.NOT_FOUND));
         if (myTicket && user.getTicket().size() == 0) {
+            LOGGER.info("There is no ticket");
             throw new NotFoundException(MessageConstant.NOT_FOUND);
-        } else if (myTicket) {
+        } else if (myTicket && filterStatus==null) {
+            LOGGER.info("Tickets raised by user");
             ticketTableOutDTOs = user.getTicket().stream().map(ticket -> {
                 TicketTableOutDTO outDTO = new TicketTableOutDTO();
                 outDTO.setTicketId(ticket.getTicketId());
@@ -119,16 +124,43 @@ public class TicketServiceImpl implements TicketService {
                 return outDTO;
             }).sorted(comparator).collect(Collectors.toList());
             return ticketTableOutDTOs;
-        } else if (user.getRole().equals(Role.ADMIN)) {
+        }else if(myTicket && filterStatus!=null) {
+            LOGGER.info("Tickets of user filtered by status");
+            ticketTableOutDTOs = user.getTicket().stream()
+                    .filter(ticket-> ticket.getStatus().equals(filterStatus))
+                    .map(ticket -> {
+                TicketTableOutDTO outDTO = new TicketTableOutDTO();
+                outDTO.setTicketId(ticket.getTicketId());
+                outDTO.setTitle(ticket.getTitle());
+                outDTO.setStatus(ticket.getStatus());
+                outDTO.setLastUpdationTime(ticket.getLastUpdationTime());
+                outDTO.setAssignedBy(ticket.getUser().getName());
+                outDTO.setDepartmentName(ticket.getDepartment().getDepartmentName());
+                return outDTO;
+            }).collect(Collectors.toList());
+            return ticketTableOutDTOs;
+        }        
+        else if (user.getRole().equals(Role.ADMIN) && filterStatus==null) {
+            LOGGER.info("All Tickets for ADMIN role without filter");
             ticketTableOutDTOs = ticketRepository.findAllTicket(pageable).stream().sorted(comparator)
                     .collect(Collectors.toList());
             return ticketTableOutDTOs;
-        } else {
+        }else if (user.getRole().equals(Role.ADMIN) && filterStatus!=null) {
+            LOGGER.info("All Tickets for ADMIN role with filter by status");
+            ticketTableOutDTOs = ticketRepository.findAllTicketByStatus(pageable,filterStatus);
+            return ticketTableOutDTOs;
+        }
+        else if(filterStatus==null){
+            LOGGER.info("Tickets assigned to a department for Member role without filter");
             ticketTableOutDTOs = ticketRepository.findAllByDepartment(user.getDepartment().getDepartmentId(),pageable);
             if (ticketTableOutDTOs.size() == 0) {
                 throw new NotFoundException("No ticket is assigned to your department");
             }
             return ticketTableOutDTOs.stream().sorted(comparator).collect(Collectors.toList());
+        }else {
+            LOGGER.info("Tickets assigned to a department for Member role without filter");
+            ticketTableOutDTOs = ticketRepository.findAllByDepartmentAndStatus(user.getDepartment().getDepartmentId(), filterStatus, pageable);
+            return ticketTableOutDTOs;
         }
     }
 
@@ -148,7 +180,7 @@ public class TicketServiceImpl implements TicketService {
         if(ticket.get().getUser().getId()!=userId && user.get().getRole()==Role.MEMBER) {
             throw new BadRequestException(MessageConstant.ACCESS_DENIED);
         }
-        List<CommentOutDTO> comOutDTOs = ticket.get().getComments().stream().map(comment->{
+        List<CommentOutDTO> commentOutDTOs = ticket.get().getComments().stream().map(comment->{
             CommentOutDTO commentOutDTO = new CommentOutDTO();
             commentOutDTO.setComment(comment.getComment());
             commentOutDTO.setUserName(comment.getUser().getName());
@@ -164,7 +196,7 @@ public class TicketServiceImpl implements TicketService {
         ticketInfoOutDTO.setLastUpdatedTime(ticket.get().getLastUpdationTime());
         ticketInfoOutDTO.setAssignedTo(ticket.get().getDepartment().getDepartmentName());
         ticketInfoOutDTO.setAssignedBy(ticket.get().getUser().getName());
-        ticketInfoOutDTO.setComments(comOutDTOs);
+        ticketInfoOutDTO.setComments(commentOutDTOs);
         return ticketInfoOutDTO;
     }
 
