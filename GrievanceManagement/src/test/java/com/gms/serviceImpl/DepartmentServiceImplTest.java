@@ -3,6 +3,8 @@ package com.gms.serviceImpl;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.util.Arrays;
@@ -14,6 +16,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import com.gms.constants.MessageConstant;
 import com.gms.dto.DepartmentOutDTO;
 import com.gms.entity.Department;
 import com.gms.exception.BadRequestException;
@@ -69,7 +72,40 @@ public class DepartmentServiceImplTest {
         assertEquals(list, list2);
         assertEquals(list.size(), list2.size());
         assertSame(list, list2);
+    }   
+    
+    @Test
+    public void testDeleteDepartmentIfdepartmentPresentAndSizemoreThanOne() {
+        Department department1 = new Department();
+        department1.setDepartmentId(1l);
+        List<Department> departments = Arrays.asList(department1, new Department());
+        when(departmentRepository.findAll()).thenReturn(departments);
+        when(departmentRepository.existsById(1l)).thenReturn(true);
+        departmentServiceImpl.deleteDepartment(1l);
+        verify(departmentRepository,times(1)).deleteById(1l);
+        
     }
     
-
+    @Test
+    public void testDeleteDepartmentIfdepartmentNotPresent() {
+        Department department1 = new Department();
+        department1.setDepartmentId(1l);
+        List<Department> departments = Arrays.asList(department1, new Department());
+        when(departmentRepository.findAll()).thenReturn(departments);
+        when(departmentRepository.existsById(1l)).thenReturn(false);
+        BadRequestException badRequestException = assertThrows(BadRequestException.class,()->{departmentServiceImpl.deleteDepartment(1l);} );
+        assertEquals(MessageConstant.NOT_FOUND, badRequestException.getMessage());
+    }
+    
+    @Test
+    public void testDeleteDepartmentIfdepartmentPresentAndSizeIsOne() {
+        Department department1 = new Department();
+        department1.setDepartmentId(1l);
+        List<Department> departments = Arrays.asList(department1);
+        when(departmentRepository.findAll()).thenReturn(departments);
+        when(departmentRepository.existsById(1l)).thenReturn(true);
+        BadRequestException badRequestException = assertThrows(BadRequestException.class,()->{departmentServiceImpl.deleteDepartment(1l);} );
+        assertEquals(MessageConstant.ACCESS_DENIED, badRequestException.getMessage());
+        
+    }
 }

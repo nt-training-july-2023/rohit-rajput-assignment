@@ -38,22 +38,22 @@ public class LoginResponseOutDTOTest {
         loginResponseOutDTO.setEmail("Rohit@gmail.com");
         assertEquals("Rohit@gmail.com", loginResponseOutDTO.getEmail());
         
-        assertNull(loginResponseOutDTO.getDepartmentId());
-        loginResponseOutDTO.setDepartmentId(1l);
-        assertEquals(1, loginResponseOutDTO.getDepartmentId());
+        assertNull(loginResponseOutDTO.getDepartmentName());
+        loginResponseOutDTO.setDepartmentName("HR");
+        assertEquals("HR", loginResponseOutDTO.getDepartmentName());
     }
     
     @Test
     public void testEqualAndHashCodeAndToString() {
-        LoginResponseOutDTO loginResponseOutDTO1 = new LoginResponseOutDTO(1l, Role.ADMIN, "Rohit", false, "rohit.rajput@nucleusteq.com", 1l, "Rohit@123");
-        LoginResponseOutDTO loginResponseOutDTO2 = new LoginResponseOutDTO(1l, Role.ADMIN, "Rohit", false, "rohit.rajput@nucleusteq.com", 1l, "Rohit@123");
-        LoginResponseOutDTO loginResponseOutDTO3 = new LoginResponseOutDTO(1l, Role.ADMIN, "Rohit", true, "rohit.rajput@nucleusteq.com", 1l, "Rohit@123");
+        LoginResponseOutDTO loginResponseOutDTO1 = new LoginResponseOutDTO(1l, Role.ADMIN, "Rohit", false, "rohit.rajput@nucleusteq.com", "HR", "Rohit@123");
+        LoginResponseOutDTO loginResponseOutDTO2 = new LoginResponseOutDTO(1l, Role.ADMIN, "Rohit", false, "rohit.rajput@nucleusteq.com", "HR", "Rohit@123");
+        LoginResponseOutDTO loginResponseOutDTO3 = new LoginResponseOutDTO(1l, Role.ADMIN, "Rohit", true, "rohit.rajput@nucleusteq.com", "HR", "Rohit@123");
         
         assertEquals(loginResponseOutDTO1, loginResponseOutDTO2);
         assertNotEquals(loginResponseOutDTO1, loginResponseOutDTO3);
         assertEquals(loginResponseOutDTO1.hashCode(), loginResponseOutDTO2.hashCode());
         assertNotEquals(loginResponseOutDTO1.hashCode(), loginResponseOutDTO3.hashCode());
-        assertEquals("LoginResponseOutDTO [id=1, role=ADMIN, name=Rohit, firstLogin=false, email=rohit.rajput@nucleusteq.com, departmentId=1, encodePassword=Rohit@123]"
+        assertEquals("LoginResponseOutDTO [id=1, role=ADMIN, name=Rohit, firstLogin=false, email=rohit.rajput@nucleusteq.com, departmentName=HR, encodePassword=Rohit@123]"
                 + "", loginResponseOutDTO1.toString());
         
         assertTrue(loginResponseOutDTO1.equals(loginResponseOutDTO2));

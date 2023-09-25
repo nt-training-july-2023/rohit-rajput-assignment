@@ -35,6 +35,8 @@
     background-color: #ddd;
 }
 .ticket-table-data-update{
+    color: black;
+    text-align:center;
     font-size: 2vw;
     background: white;
     border: none;

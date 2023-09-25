@@ -7,6 +7,7 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.gms.constants.MessageConstant;
 import com.gms.dto.DepartmentOutDTO;
 import com.gms.entity.Department;
 import com.gms.exception.BadRequestException;
@@ -52,18 +53,19 @@ public class DepartmentServiceImpl implements DepartmentService {
      * @param id
      */
     @Override
-    public void deleteDepartment(final Long id) {
+    public String deleteDepartment(final Long id) {
         int length = departmentRepository.findAll().size();
         boolean isExist = departmentRepository.existsById(id);
         if (isExist && length > 1) {
             LOGGER.info("[DepartmentServiceImpl]: department deleted successfully");
             departmentRepository.deleteById(id);
+            return MessageConstant.DELETED;
         } else if (!isExist) {
             LOGGER.warn("[DepartmentServiceImpl]: Department id is not present");
-            throw new BadRequestException("Department Id not exists");
+            throw new BadRequestException(MessageConstant.NOT_FOUND);
         } else {
             LOGGER.warn("[DepartmentServiceImpl]: only 1 department, you can't delete");
-            throw new BadRequestException("Only 1 department, you can't delete");
+            throw new BadRequestException(MessageConstant.ACCESS_DENIED);
         }
     }
     

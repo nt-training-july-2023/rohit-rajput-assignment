@@ -3,6 +3,7 @@ import "../Styles/AddNewTicket.css";
 import AdminDashboard from "./AdminDashboard";
 import Alert from "./Alert";
 import APIService from "../Service/api";
+import MemberDashboard from "./MemberDashboard";
 
 export default function AddNewTicket() {
   const [show, setShow] = useState(false);
@@ -10,14 +11,19 @@ export default function AddNewTicket() {
   const[titleErr,setTitleErr]=useState('');
   const[descriptionErr,setDescriptionErr]=useState("")
   const[departmentIdErr,setDepartmentIdErr]=useState("")
+  const [userRole, setUserRole] = useState("");
   const [department, setDepartment] = useState([]);
   const [ticket, setTicket] = useState({
-    ticketType: "Grievance",
+    ticketType: "GRIEVANCE",
     title: "",
     description: "",
     departmentId: 0,
     userId: JSON.parse(localStorage.getItem('user'))?.id
   });
+
+  useEffect(()=>{
+    setUserRole(localStorage.getItem('role'));
+  })
 
   const validateDepartmentId = (departmentId) => {
     if (departmentId===0) {
@@ -68,7 +74,6 @@ export default function AddNewTicket() {
   const handleSubmit = async(e) => {
     e.preventDefault();
     console.log(ticket);
-    alert(localStorage.getItem("user"))
     if (!validateDepartmentId(ticket.departmentId)) {
       setDepartmentIdErr("Select a department");
     } else {
@@ -98,7 +103,7 @@ export default function AddNewTicket() {
   return (
     <>
       <div>
-        <AdminDashboard />
+        {userRole === 'ADMIN' ? <AdminDashboard />:<MemberDashboard/>}
         <div className="add-new-ticket-container">
           <div className="new-ticket-container">
             <form onSubmit={handleSubmit} className="form">
@@ -114,10 +119,10 @@ export default function AddNewTicket() {
                   }}
                 >
                   {/* <option hidden>Select TicketType</option> */}
-                  <option name="ticketType" value="Grievance">
+                  <option name="ticketType" value="GRIEVANCE">
                     Grievance
                   </option>
-                  <option name="ticketType" value="Feedback">
+                  <option name="ticketType" value="FEEDBACK">
                     Feedback
                   </option>
                 </select>

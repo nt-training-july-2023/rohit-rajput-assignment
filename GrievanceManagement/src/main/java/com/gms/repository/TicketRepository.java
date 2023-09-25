@@ -46,11 +46,14 @@ public interface TicketRepository extends JpaRepository<Ticket, Long> {
             + "from Ticket t JOIN t.department d JOIN t.user u where d.departmentId = ?1 AND t.status = ?2")
     List<TicketTableOutDTO> findAllByDepartmentAndStatus(Long departmentId, Status filterStatus, Pageable pageable);
 
-    /**
-     * This method is use for finding details of ticket by ticketId.
-     * @param id
-     * @return TicketInfoOutDTO
-     */
+    @Query("select new com.gms.dto." + "TicketTableOutDTO("
+            + "t.ticketId, t.title, d.departmentName , t.status, u.name, t.lastUpdationTime)"
+            + "from Ticket t JOIN t.department d JOIN t.user u where u.id = ?1")
+    List<TicketTableOutDTO> findAllTicketByUser(Long userId, Pageable pageable);
 
+    @Query("select new com.gms.dto." + "TicketTableOutDTO("
+            + "t.ticketId, t.title, d.departmentName , t.status, u.name, t.lastUpdationTime)"
+            + "from Ticket t JOIN t.department d JOIN t.user u where u.id = ?1 AND t.status = ?2")
+    List<TicketTableOutDTO> findAllTicketByUserAndStatus(Long userId, Status filterStatus, Pageable pageable);
    
 }

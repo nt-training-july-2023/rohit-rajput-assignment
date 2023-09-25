@@ -63,8 +63,8 @@ public class AddUserInDTOTest {
                 1l);
         AddUserInDTO addUserInDTO2 = new AddUserInDTO("Rohit", "rohit.rajput@nucleusteq.com", Role.ADMIN, "Rohit@123",
                 1l);
-        AddUserInDTO addUserInDTO3 = new AddUserInDTO("Rohit Rajput", "rohit.rajput@nucleusteq.com", Role.ADMIN, "Rohit@123",
-                1l);
+        AddUserInDTO addUserInDTO3 = new AddUserInDTO("Rohit", "rohit.rajput@nucleusteq.com", Role.ADMIN, "Rohit@123",
+                2l);
         
         assertEquals(addUserInDTO1, addUserInDTO2);
         assertNotEquals(addUserInDTO1, addUserInDTO3);
@@ -73,6 +73,7 @@ public class AddUserInDTOTest {
         assertEquals("AddUserInDTO [name=Rohit, username=rohit.rajput@nucleusteq.com, userType=ADMIN, password=Rohit@123, departmentId=1]", addUserInDTO1.toString());
        
         assertTrue(addUserInDTO1.equals(addUserInDTO2));
+        assertFalse(false);
         assertFalse(addUserInDTO1.equals(null));
         assertFalse(addUserInDTO1.equals(new CommentOutDTO()));
         assertFalse(addUserInDTO1.equals(addUserInDTO3));

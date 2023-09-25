@@ -97,7 +97,7 @@ const AddNewUser = () => {
     } else {
       setPasswordErr("");
     }
-    if(validateName(user.name) && validateDepartment(user,department) && validatePassword(user.password) && validateUsername(user.username)){
+    if(validateName(user.name) && validateDepartment(user.departmentId) && validatePassword(user.password) && validateUsername(user.username)){
       console.log(user);
       await APIService.addNewUser(user)
       .then((res)=>{

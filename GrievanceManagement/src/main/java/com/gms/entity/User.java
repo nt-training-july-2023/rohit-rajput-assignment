@@ -83,7 +83,6 @@ public class User {
     /**
      * This is @List<Ticket> beLongs to user.
      */
-    @JsonIgnore
     @OneToMany(mappedBy = "user")
     private List<Ticket> ticket;
 
@@ -91,7 +90,6 @@ public class User {
      * This is department beLongs to user.
      */
     @ManyToOne
-    @JsonIgnore
     private Department department;
 
     /**

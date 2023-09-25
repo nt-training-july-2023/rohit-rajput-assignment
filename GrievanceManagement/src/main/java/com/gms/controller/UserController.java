@@ -1,13 +1,9 @@
 package com.gms.controller;
 
-import java.time.LocalDateTime;
-import java.util.Base64;
-
 import javax.validation.Valid;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.hibernate.validator.constraints.URL;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -16,6 +12,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.gms.constants.MessageConstant;
@@ -88,7 +85,14 @@ public class UserController {
      */
     @DeleteMapping(UrlConstant.ADMIN_URL + "/{userId}")
     public APIResponseEntity deleteUser(@PathVariable final Long userId) {
-        userService.deleteUser(userId);
-        return new APIResponseEntity(false, MessageConstant.DELETED);
+        return new APIResponseEntity(false, userService.deleteUser(userId));
+    }
+    
+    @GetMapping(UrlConstant.ADMIN_URL)
+    public APIResponseEntity getAllUser(@RequestParam Integer pageNumber, @RequestParam(required = false) String filterDepartment) {
+        if(pageNumber<=0) {
+            pageNumber = 1;
+        }
+        return new APIResponseEntity(true, userService.getAllUser(pageNumber-1, filterDepartment), MessageConstant.SUCCESS);
     }
 }

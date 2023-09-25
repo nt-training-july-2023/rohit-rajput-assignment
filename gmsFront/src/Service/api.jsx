@@ -26,10 +26,10 @@ const APIService = {
   },
 
 
-  getAllTicket(currentPage, filterStatus) {
+  getAllTicket(currentPage, filterStatus, myTicket) {
     const userId = JSON.parse(localStorage.getItem("user"))?.id;
     console.log(userId);
-    const myTicket = false;
+    // const myTicket = false;
     console.log(myTicket);
     console.log(currentPage);
     console.log(filterStatus);
@@ -49,8 +49,8 @@ const APIService = {
 
 
   changePassword(password, newPassword) {
-    // const userId = JSON.parse(localStorage.getItem('userId'))?.id;
-    const userId = localStorage.getItem('userId');
+    const userId = JSON.parse(localStorage.getItem('user'))?.id;
+    // const userId = localStorage.getItem('userId');
     console.log(userId);
     console.log(password);
     console.log(newPassword);
@@ -65,7 +65,7 @@ const APIService = {
   addDepartment(departmentName) {
     console.log(departmentName);
     return axios.post(
-      `BASEURL+user/department?departmentName=${departmentName}`
+      `${BASEURL}admin/department?departmentName=${departmentName}`
     );
   },
 
@@ -80,6 +80,13 @@ const APIService = {
     console.log(ticket);
     return axios.post(BASEURL + "user/ticket", ticket);
   },
+
+  updateTicket(status, ticketId, comment){
+    const userId = JSON.parse(localStorage.getItem('user'))?.id;
+    console.log(userId);
+    console.log(comment);
+    return axios.put(BASEURL + "user/ticket",{status, ticketId, userId, comment});
+  }
 };
 
 export default APIService;

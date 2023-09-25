@@ -1,7 +1,9 @@
 package com.gms.controller;
 
 import static org.hamcrest.CoreMatchers.is;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -77,5 +79,21 @@ public class DepartmentControllerTest {
         when(departmentService.getAllDepartment()).thenThrow(NotFoundException.class);
          mockMvc.perform(get(UrlConstant.BASE_URL + UrlConstant.DEPARTMENT_URL))
         .andExpect(status().isNotFound());            
+    }
+    
+    @Test
+    public void testDeleteDepartmentSuccess() throws Exception {
+        when(departmentService.deleteDepartment(1l)).thenReturn(MessageConstant.DELETED);
+        mockMvc.perform(delete(UrlConstant.BASE_URL + UrlConstant.ADMIN_URL + UrlConstant.DEPARTMENT_URL +"/1"))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.message", is(MessageConstant.DELETED)));
+    }
+    
+    @Test
+    public void testDeleteDepartmentFailure() throws Exception {
+        when(departmentService.deleteDepartment(1l)).thenThrow(new NotFoundException(MessageConstant.NOT_FOUND));
+        mockMvc.perform(delete(UrlConstant.BASE_URL + UrlConstant.ADMIN_URL + UrlConstant.DEPARTMENT_URL +"/1"))
+        .andExpect(status().isNotFound())
+        .andExpect(jsonPath("$.message", is(MessageConstant.NOT_FOUND)));
     }
 }

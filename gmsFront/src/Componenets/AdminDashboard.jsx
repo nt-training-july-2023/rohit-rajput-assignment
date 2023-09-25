@@ -13,7 +13,7 @@ export default function AdminDashboard() {
                 <li><Link to="/get-all-user">All Users</Link></li>
                 <li><Link to="/delete-user">Delete User</Link></li>
                 <li><Link to="/get-all-ticket">Tickets</Link></li>
-                <li><Link to="/get-my-ticket">My Tickets</Link></li>
+                <li><Link to="/get-my-ticket" >My Tickets</Link></li>
                 <li><Link to="/add-user">Add User</Link></li>
                 <li><Link to="/add-department">Add Department</Link></li>
                 <li><Link to="/update-password">Change-Password</Link></li>

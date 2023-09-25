@@ -27,7 +27,7 @@ function App() {
      
       {userRole==="ADMIN" && <Route path='/*' element={<AdminRoutes/>}/>}
       { userRole==="MEMBER" && <Route path='/*' element={<MemberRoutes/>}/>}
-      <Route path='/' element={<Home/>}/>
+      {/* <Route path='/' element={<Home/>}/> */}
       <Route path="/login" element={<Login />}/>
       <Route path="/change-password" element={<ChangePassword />}/>
       

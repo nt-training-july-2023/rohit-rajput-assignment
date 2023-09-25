@@ -19,7 +19,7 @@ public interface DepartmentService {
      * This is @deleteDepartment method.
      * @param id
      */
-    void deleteDepartment(final Long id);
+    String deleteDepartment(final Long id);
 
     /**
      * This is @saveDepartment method.

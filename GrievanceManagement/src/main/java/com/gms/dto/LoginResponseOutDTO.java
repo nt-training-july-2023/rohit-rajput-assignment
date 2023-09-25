@@ -32,10 +32,11 @@ public class LoginResponseOutDTO {
      * user email.
      */
     private String email;
+    
     /**
-     * departmentId user belongs to.
+     * This is name of the department user belongs.
      */
-    private Long departmentId;
+    private String departmentName;
 
     private String encodePassword;
 
@@ -52,10 +53,10 @@ public class LoginResponseOutDTO {
      * @param name
      * @param firstLogin
      * @param email
-     * @param departmentId
+     * @param departmentName
      * @param encodePassword
      */
-    public LoginResponseOutDTO(final Long id, final Role role, final String name, final boolean firstLogin, final String email, final Long departmentId,
+    public LoginResponseOutDTO(final Long id, final Role role, final String name, final boolean firstLogin, final String email, final String departmentName,
             final String encodePassword) {
         super();
         this.id = id;
@@ -63,7 +64,7 @@ public class LoginResponseOutDTO {
         this.name = name;
         this.firstLogin = firstLogin;
         this.email = email;
-        this.departmentId = departmentId;
+        this.departmentName = departmentName;
         this.encodePassword = encodePassword;
     }
 
@@ -100,19 +101,19 @@ public class LoginResponseOutDTO {
     }
 
     /**
-     * getter method for @getDepartmnetId.
-     * @return long - departmentId
+     * getter method for @getDepartmnetName.
+     * @return String - departmentName
      */
-    public Long getDepartmentId() {
-        return departmentId;
+    public String getDepartmentName() {
+        return departmentName;
     }
 
     /**
-     * setter method for @setDepartmentId.
-     * @param departmentId
+     * setter method for @setDepartmentName.
+     * @param departmentName
      */
-    public void setDepartmentId(final Long departmentId) {
-        this.departmentId = departmentId;
+    public void setDepartmentName(final String departmentName) {
+        this.departmentName = departmentName;
     }
 
     /**
@@ -184,7 +185,7 @@ public class LoginResponseOutDTO {
      */
     @Override
     public int hashCode() {
-        return Objects.hash(departmentId, email, encodePassword, firstLogin, id, name, role);
+        return Objects.hash(departmentName, email, encodePassword, firstLogin, id, name, role);
     }
 
     /**
@@ -199,7 +200,7 @@ public class LoginResponseOutDTO {
         if (getClass() != obj.getClass())
             return false;
         LoginResponseOutDTO other = (LoginResponseOutDTO) obj;
-        return departmentId == other.departmentId && Objects.equals(email, other.email)
+        return departmentName == other.departmentName && Objects.equals(email, other.email)
                 && Objects.equals(encodePassword, other.encodePassword) && firstLogin == other.firstLogin
                 && id == other.id && Objects.equals(name, other.name) && role == other.role;
     }
@@ -210,7 +211,7 @@ public class LoginResponseOutDTO {
     @Override
     public String toString() {
         return "LoginResponseOutDTO [id=" + id + ", role=" + role + ", name=" + name + ", firstLogin=" + firstLogin
-                + ", email=" + email + ", departmentId=" + departmentId + ", encodePassword=" + encodePassword + "]";
+                + ", email=" + email + ", departmentName=" + departmentName + ", encodePassword=" + encodePassword + "]";
     }
 
 }

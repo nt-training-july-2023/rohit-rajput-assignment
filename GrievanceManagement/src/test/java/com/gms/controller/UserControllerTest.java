@@ -4,18 +4,27 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+import java.util.Arrays;
+import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.core.MethodParameter;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.ResultMatcher;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -25,6 +34,7 @@ import com.gms.dto.AddUserInDTO;
 import com.gms.dto.LoginRequestInDTO;
 import com.gms.dto.LoginResponseOutDTO;
 import com.gms.dto.UpdatePasswordInDTO;
+import com.gms.dto.UserOutDTO;
 import com.gms.entity.Role;
 import com.gms.entity.User;
 import com.gms.exception.BadRequestException;
@@ -52,7 +62,7 @@ public class UserControllerTest {
     public void testLoginSuccessful() throws Exception {
         LoginRequestInDTO requestInDTO = new LoginRequestInDTO("yash.sharma@nucleusteq.com", "Yash@123");
         LoginResponseOutDTO responseOutDTO = new LoginResponseOutDTO(1l, Role.ADMIN, "Rohit", false,
-                "rohit.rajput@nucleusteq.com", 1l, "Rohit@123");
+                "rohit.rajput@nucleusteq.com", "HR", "Rohit@123");
         when(userService.login(requestInDTO)).thenReturn(responseOutDTO);
         this.mockMvc
                 .perform(post(UrlConstant.BASE_URL + UrlConstant.AUTH_URL + "/login").contentType(MediaType.APPLICATION_JSON)
@@ -67,6 +77,21 @@ public class UserControllerTest {
         this.mockMvc.perform(post(UrlConstant.BASE_URL + UrlConstant.AUTH_URL+ "/login").contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(requestInDTO))).andExpect(status().isBadRequest());
     }
+    
+    @Test
+    public void testAddUserFailureForMethodArgumentException() throws JsonProcessingException, Exception {
+        AddUserInDTO addUserInDTO = new AddUserInDTO("Rohit1", "rohit.rajput@nucleusTeq.com", Role.ADMIN, "Roh@123",
+                1l);
+        User user = new User();
+        user.setEmail(addUserInDTO.getUsername());
+        user.setName(addUserInDTO.getName());
+        user.setRole(addUserInDTO.getUserType());
+        mockMvc.perform(post(UrlConstant.BASE_URL + UrlConstant.ADMIN_URL+ "/adduser").contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(addUserInDTO)))
+        .andExpect(status().isBadRequest())
+        .andExpect(jsonPath("$.data.username", is("please enter valid username")))
+        .andExpect(jsonPath("$.data.password", is("enter strong password")));
+    }
 
     @Test
     public void testAddUserFailure() throws JsonProcessingException, Exception {
@@ -77,7 +102,7 @@ public class UserControllerTest {
         user.setName(addUserInDTO.getName());
         user.setRole(addUserInDTO.getUserType());
         when(userService.save(addUserInDTO)).thenThrow(NotFoundException.class);
-        mockMvc.perform(post(UrlConstant.BASE_URL + UrlConstant.AUTH_URL+ "/adduser").contentType(MediaType.APPLICATION_JSON)
+        mockMvc.perform(post(UrlConstant.BASE_URL + UrlConstant.ADMIN_URL+ "/adduser").contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(addUserInDTO))).andExpect(status().isNotFound());
     }
 
@@ -101,5 +126,23 @@ public class UserControllerTest {
         mockMvc.perform(post(UrlConstant.BASE_URL + UrlConstant.AUTH_URL + "/change-password").contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(inDTO)));
         verify(userService, times(1)).updatePassword(inDTO);
+    }
+    
+    @Test
+    public void testDeleteUser() throws Exception {
+        when(userService.deleteUser(1l)).thenReturn(MessageConstant.DELETED);
+        mockMvc.perform(delete(UrlConstant.BASE_URL + UrlConstant.ADMIN_URL +"/1"))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.message", is(MessageConstant.DELETED)));
+    }
+    
+    @Test
+    public void testGetAllUser() throws Exception {
+        UserOutDTO userOutDTO1 = new UserOutDTO(1l, "Rohit", "HR");
+        UserOutDTO userOutDTO2 = new UserOutDTO(2l, "Mohit", "HR");
+        List<UserOutDTO> userOutDTOs = Arrays.asList(userOutDTO1, userOutDTO2);
+        mockMvc.perform(get(UrlConstant.BASE_URL + UrlConstant.ADMIN_URL)
+                .param("pageNumber", "0")
+                .param("filterDepartment", "HR"));
     }
 }

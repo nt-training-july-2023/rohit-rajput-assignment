@@ -1,11 +1,15 @@
 package com.gms.serviceImpl;
 
 import java.util.Base64;
+import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.gms.constants.MessageConstant;
@@ -13,6 +17,7 @@ import com.gms.dto.AddUserInDTO;
 import com.gms.dto.LoginRequestInDTO;
 import com.gms.dto.LoginResponseOutDTO;
 import com.gms.dto.UpdatePasswordInDTO;
+import com.gms.dto.UserOutDTO;
 import com.gms.entity.Department;
 import com.gms.entity.User;
 import com.gms.exception.BadRequestException;
@@ -22,22 +27,23 @@ import com.gms.repository.UserRepository;
 import com.gms.service.UserService;
 
 /**
- * This is @UserServiceImpl class which is implementation of @UserService interface.
+ * This is @UserServiceImpl class which is implementation of @UserService
+ * interface.
  */
 @Service
 public class UserServiceImpl implements UserService {
-    
+
     /**
      * This is @Logger for logging the information.
      */
     private static final Logger LOGGER = LogManager.getLogger(UserServiceImpl.class);
-    
+
     /**
      * This is @UserRepository object.
      */
     @Autowired
     private UserRepository userRepository;
-    
+
     /**
      * This is @DepartmentRepository object.
      */
@@ -60,7 +66,7 @@ public class UserServiceImpl implements UserService {
             responseOutDTO.setId(user.get().getId());
             responseOutDTO.setEncodePassword(user.get().getPassword());
             responseOutDTO.setFirstLogin(user.get().isFirst());
-            responseOutDTO.setDepartmentId(user.get().getDepartment().getDepartmentId());
+            responseOutDTO.setDepartmentName(user.get().getDepartment().getDepartmentName());
             return responseOutDTO;
         }
         LOGGER.error("bad credential for login");
@@ -100,26 +106,48 @@ public class UserServiceImpl implements UserService {
             user.get().setFirst(false);
             user.get().setPassword(Base64.getEncoder().encodeToString(passwordInDTO.getNewPassword().getBytes()));
             userRepository.save(user.get());
-        } else if(!user.isPresent()) {
+        } else if (!user.isPresent()) {
             throw new NotFoundException(MessageConstant.NOT_FOUND);
-        } else if(oldPassword.equals(user.get().getPassword())) {
+        } else if (oldPassword.equals(user.get().getPassword())) {
             user.get().setPassword(Base64.getEncoder().encodeToString(passwordInDTO.getNewPassword().getBytes()));
             return userRepository.save(user.get()).getPassword();
-        } else{
+        } else {
             throw new BadRequestException(MessageConstant.INVALID_DATA);
         }
         return MessageConstant.INVALID_DATA;
-        
+
     }
 
     /**
-     *This method is for deleting a user by userId.
+     * This method is for deleting a user by userId.
      */
     @Override
-    public void deleteUser(final Long userId) {
-        if(!userRepository.existsById(userId)) {
-            throw new NotFoundException("User not exists");
+    public String deleteUser(final Long userId) {
+        if (!userRepository.existsById(userId)) {
+            throw new NotFoundException(MessageConstant.NOT_FOUND);
         }
         userRepository.deleteById(userId);
+        return MessageConstant.DELETED;
+    }
+
+    /**
+     * This is @getAllUser method.
+     */
+    @Override
+    public List<UserOutDTO> getAllUser(Integer pageNumber, String filterDepartment) {
+        Pageable pageable = PageRequest.of(pageNumber, 10);
+        if (Objects.isNull(filterDepartment)) {
+            List<UserOutDTO> userOutDTOs = userRepository.getAllUser(pageable);
+            if (userOutDTOs.isEmpty()) {
+                LOGGER.warn("[LoginResponseOutDTO]: there is no user");
+                throw new NotFoundException(MessageConstant.NOT_FOUND);
+            }
+            LOGGER.info("[LoginResponseOutDTO]: User list without filteration");
+            return userOutDTOs;
+        } else {
+            List<UserOutDTO> userOutDTOs = userRepository.getAllUserByDepartment(filterDepartment, pageable);
+            LOGGER.info("[LoginResponseOutDTO]: User list with filteration");
+            return userOutDTOs;
+        }
     }
 }

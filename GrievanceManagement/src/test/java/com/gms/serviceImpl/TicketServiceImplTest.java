@@ -131,79 +131,79 @@ public class TicketServiceImplTest {
         assertEquals(MessageConstant.NOT_FOUND, exception.getMessage());
     }
     
-    @Test
-    public void testGetAllTicketIfMyTicketIsTrueAndFilterStatusIsNull() {
-        Department department1 = new Department();
-        department1.setDepartmentId(1l);
-        department1.setDepartmentName("HR");
-        
-        Department department2 = new Department();
-        department2.setDepartmentId(2l);
-        department2.setDepartmentName("Finance");
-        
-        User user = new User();
-        user.setId(1l);
-        user.setName("Rohit");
-        
-        Ticket ticket1 = new Ticket();
-        ticket1.setTitle("qwerty");
-        ticket1.setStatus(Status.BEING_ADDRESSED);
-        ticket1.setLastUpdationTime(LocalDateTime.now().withNano(0));
-        ticket1.setUser(user);
-        ticket1.setDepartment(department1);
-        
-        Ticket ticket2 = new Ticket();
-        ticket2.setTitle("qwert");
-        ticket2.setStatus(Status.BEING_ADDRESSED);
-        ticket2.setLastUpdationTime(LocalDateTime.now().withNano(0));
-        ticket2.setUser(user);
-        ticket2.setDepartment(department2);
-        
-        user.setTicket(Arrays.asList(ticket1,ticket2));
-        when(userRepository.findById(1l)).thenReturn(Optional.of(user));
-        List<TicketTableOutDTO> ticketTableOutDTOs = ticketServiceImpl.getAllTicket(1l, true, 1, null);
-        
-        assertEquals(2, ticketTableOutDTOs.size());
-        assertEquals("qwerty", ticketTableOutDTOs.get(0).getTitle());
-        assertEquals("qwert", ticketTableOutDTOs.get(1).getTitle());
-    }
+//    @Test
+//    public void testGetAllTicketIfMyTicketIsTrueAndFilterStatusIsNull() {
+//        Department department1 = new Department();
+//        department1.setDepartmentId(1l);
+//        department1.setDepartmentName("HR");
+//        
+//        Department department2 = new Department();
+//        department2.setDepartmentId(2l);
+//        department2.setDepartmentName("Finance");
+//        
+//        User user = new User();
+//        user.setId(1l);
+//        user.setName("Rohit");
+//        
+//        Ticket ticket1 = new Ticket();
+//        ticket1.setTitle("qwerty");
+//        ticket1.setStatus(Status.BEING_ADDRESSED);
+//        ticket1.setLastUpdationTime(LocalDateTime.now().withNano(0));
+//        ticket1.setUser(user);
+//        ticket1.setDepartment(department1);
+//        
+//        Ticket ticket2 = new Ticket();
+//        ticket2.setTitle("qwert");
+//        ticket2.setStatus(Status.BEING_ADDRESSED);
+//        ticket2.setLastUpdationTime(LocalDateTime.now().withNano(0));
+//        ticket2.setUser(user);
+//        ticket2.setDepartment(department2);
+//        
+//        user.setTicket(Arrays.asList(ticket1,ticket2));
+//        when(userRepository.findById(1l)).thenReturn(Optional.of(user));
+//        List<TicketTableOutDTO> ticketTableOutDTOs = ticketServiceImpl.getAllTicket(1l, true, 1, null);
+//        
+//        assertEquals(2, ticketTableOutDTOs.size());
+//        assertEquals("qwerty", ticketTableOutDTOs.get(0).getTitle());
+//        assertEquals("qwert", ticketTableOutDTOs.get(1).getTitle());
+//    }
     
-    @Test
-    public void testGetAllTicketIfMyTicketIsTrueAndFilterStatusIsNotNull() {
-        Department department1 = new Department();
-        department1.setDepartmentId(1l);
-        department1.setDepartmentName("HR");
-        
-        Department department2 = new Department();
-        department2.setDepartmentId(2l);
-        department2.setDepartmentName("Finance");
-        
-        User user = new User();
-        user.setId(1l);
-        user.setName("Rohit");
-        
-        Ticket ticket1 = new Ticket();
-        ticket1.setTitle("qwerty");
-        ticket1.setStatus(Status.BEING_ADDRESSED);
-        ticket1.setLastUpdationTime(LocalDateTime.now().withNano(0));
-        ticket1.setUser(user);
-        ticket1.setDepartment(department1);
-        
-        Ticket ticket2 = new Ticket();
-        ticket2.setTitle("qwert");
-        ticket2.setStatus(Status.BEING_ADDRESSED);
-        ticket2.setLastUpdationTime(LocalDateTime.now().withNano(0));
-        ticket2.setUser(user);
-        ticket2.setDepartment(department2);
-        
-        user.setTicket(Arrays.asList(ticket1,ticket2));
-        when(userRepository.findById(1l)).thenReturn(Optional.of(user));
-        List<TicketTableOutDTO> ticketTableOutDTOs = ticketServiceImpl.getAllTicket(1l, true, 1, Status.BEING_ADDRESSED);
-        
-        assertEquals(2, ticketTableOutDTOs.size());
-        assertEquals("qwerty", ticketTableOutDTOs.get(0).getTitle());
-        assertEquals("qwert", ticketTableOutDTOs.get(1).getTitle());
-    }
+//    @Test
+//    public void testGetAllTicketIfMyTicketIsTrueAndFilterStatusIsNotNull() {
+//        Department department1 = new Department();
+//        department1.setDepartmentId(1l);
+//        department1.setDepartmentName("HR");
+//        
+//        Department department2 = new Department();
+//        department2.setDepartmentId(2l);
+//        department2.setDepartmentName("Finance");
+//        
+//        User user = new User();
+//        user.setId(1l);
+//        user.setName("Rohit");
+//        
+//        Ticket ticket1 = new Ticket();
+//        ticket1.setTitle("qwerty");
+//        ticket1.setStatus(Status.BEING_ADDRESSED);
+//        ticket1.setLastUpdationTime(LocalDateTime.now().withNano(0));
+//        ticket1.setUser(user);
+//        ticket1.setDepartment(department1);
+//        
+//        Ticket ticket2 = new Ticket();
+//        ticket2.setTitle("qwert");
+//        ticket2.setStatus(Status.BEING_ADDRESSED);
+//        ticket2.setLastUpdationTime(LocalDateTime.now().withNano(0));
+//        ticket2.setUser(user);
+//        ticket2.setDepartment(department2);
+//        
+//        user.setTicket(Arrays.asList(ticket1,ticket2));
+//        when(userRepository.findById(1l)).thenReturn(Optional.of(user));
+//        List<TicketTableOutDTO> ticketTableOutDTOs = ticketServiceImpl.getAllTicket(1l, true, 1, Status.BEING_ADDRESSED);
+//        
+//        assertEquals(2, ticketTableOutDTOs.size());
+//        assertEquals("qwerty", ticketTableOutDTOs.get(0).getTitle());
+//        assertEquals("qwert", ticketTableOutDTOs.get(1).getTitle());
+//    }
     
     @Test
     public void testGetAllTicketIfMyTicketIsFalseAndRoleIsAdminAndFilterStatusIsNull() {

@@ -1,5 +1,6 @@
 package com.gms.serviceImpl;
 
+import static org.assertj.core.api.Assertions.useDefaultDateFormatsOnly;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -8,7 +9,9 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import java.util.Arrays;
 import java.util.Base64;
+import java.util.List;
 import java.util.Optional;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -16,12 +19,16 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.mockito.stubbing.Answer;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
 import com.gms.constants.MessageConstant;
 import com.gms.dto.AddUserInDTO;
 import com.gms.dto.LoginRequestInDTO;
 import com.gms.dto.LoginResponseOutDTO;
 import com.gms.dto.UpdatePasswordInDTO;
+import com.gms.dto.UserOutDTO;
 import com.gms.entity.Department;
 import com.gms.entity.Role;
 import com.gms.entity.User;
@@ -47,7 +54,7 @@ public class UserServiceImplTest {
     public void testLoginSuccessful() {
         LoginRequestInDTO requestInDTO = new LoginRequestInDTO("yash.sharma@nucleusteq.com", "Yash@123");
         LoginResponseOutDTO expected = new LoginResponseOutDTO(1l, Role.ADMIN, "Yash", false,
-                "yash.sharma@nucleusteq.com", 1l, "WWFzaEAxMjM=");
+                "yash.sharma@nucleusteq.com", "HR", "WWFzaEAxMjM=");
         User user = new User();
         user.setName("Yash");
         user.setEmail("yash.sharma@nucleusteq.com");
@@ -168,5 +175,50 @@ public class UserServiceImplTest {
             userServiceImpl.updatePassword(passwordInDTO);
         });
         assertEquals(MessageConstant.INVALID_DATA, exception.getMessage());
+    }
+    
+    @Test
+    public void testDeleteUserIfIdNotExist() {
+        Long userId = 1l;
+        when(userRepository.existsById(userId)).thenReturn(false);
+        NotFoundException notFoundException = assertThrows(NotFoundException.class, ()->userServiceImpl.deleteUser(userId));
+        assertEquals(MessageConstant.NOT_FOUND, notFoundException.getMessage());
+    }
+    
+    @Test
+    public void testDeleteUserIfIdExist() {
+        Long userId = 1l;
+        when(userRepository.existsById(userId)).thenReturn(true);
+        userServiceImpl.deleteUser(userId);
+        verify(userRepository,times(1)).deleteById(userId);
+    }
+    
+    @Test
+    public void testGetAllUserIfListIsempty() {
+        Pageable pageable = PageRequest.of(1, 10);
+        when(userRepository.getAllUser(pageable)).thenReturn(Arrays.asList());
+        NotFoundException notFoundException = assertThrows(NotFoundException.class, ()->userServiceImpl.getAllUser(0, null));
+        assertEquals(MessageConstant.NOT_FOUND, notFoundException.getMessage());
+    }
+    
+    @Test
+    public void testGetAllUserIfListIsNotEmpty() {
+        Pageable pageable = PageRequest.of(0, 10);
+        List<UserOutDTO> userOutDTOs = Arrays.asList(new UserOutDTO(1l,"Rohit","HR"));
+        when(userRepository.getAllUser(pageable)).thenReturn(userOutDTOs);
+        List<UserOutDTO> userOutDTOs1 = userServiceImpl.getAllUser(0, null);
+        assertEquals(1, userOutDTOs1.size());
+    }
+    
+    @Test
+    public void testGetAllUserIfListIsNotEmptyWithFilteration() {
+        Pageable pageable = PageRequest.of(0, 10);
+        String filterDepartment = "HR";
+        UserOutDTO userOutDTO1 = new UserOutDTO(1l,"Rohit","HR");
+        List<UserOutDTO> userOutDTOs = Arrays.asList(userOutDTO1);
+        when(userRepository.getAllUser(pageable)).thenReturn(userOutDTOs);
+        when(userRepository.getAllUserByDepartment(filterDepartment, pageable)).thenReturn(userOutDTOs);
+        List<UserOutDTO> userOutDTOs1 = userServiceImpl.getAllUser(0, "HR");
+        assertEquals(1, userOutDTOs1.size());
     }
 }

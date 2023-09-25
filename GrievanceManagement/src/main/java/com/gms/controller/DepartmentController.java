@@ -1,5 +1,7 @@
 package com.gms.controller;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -23,6 +25,11 @@ import com.gms.service.DepartmentService;
 @RestController
 @RequestMapping(UrlConstant.BASE_URL)
 public class DepartmentController {
+    
+    /**
+     * This is @Logger class object. 
+     */
+    private static final Logger LOGGER = LogManager.getLogger(UserController.class);
 
     /**
      * This is DepartmentService object.
@@ -53,8 +60,8 @@ public class DepartmentController {
      */
     @DeleteMapping(UrlConstant.ADMIN_URL + UrlConstant.DEPARTMENT_URL +"/{id}")
     public APIResponseEntity deleteDepartment(@PathVariable final Long id) {
-        departmentService.deleteDepartment(id);
-        return new APIResponseEntity(false, MessageConstant.DELETED);
+        LOGGER.info("[DepartmentController]: sending delete department request to departmentService");
+        return new APIResponseEntity(false, departmentService.deleteDepartment(id));
     }
 
 }

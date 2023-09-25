@@ -52,7 +52,7 @@ public class TicketController {
      * @return APIResponseEntity
      */
     @GetMapping(UrlConstant.COMMON_URL + UrlConstant.TICKET_URL )
-    public APIResponseEntity getAllTicket(@RequestParam Long userId, @RequestParam(defaultValue = "false") Boolean myTicket,
+    public APIResponseEntity getAllTicket(@RequestParam Long userId, @RequestParam(defaultValue = "false",required=false) Boolean myTicket,
             @RequestParam(defaultValue = "1") Integer pageNumber, @RequestParam(required = false) Status filterStatus) {
         if(pageNumber<=0) {
             pageNumber = 1;

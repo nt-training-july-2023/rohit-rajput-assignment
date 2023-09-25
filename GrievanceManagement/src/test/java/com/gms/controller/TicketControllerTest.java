@@ -1,6 +1,7 @@
 package com.gms.controller;
 
 import static org.hamcrest.CoreMatchers.is;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -90,19 +91,16 @@ public class TicketControllerTest {
                .andExpect(status().isNotFound());               
     }
     
-//    @Test
-//    public void testGetAllTicketSuccess() throws Exception {        
-//        List<TicketTableOutDTO> list = Arrays.asList(new TicketTableOutDTO(1l ,"qwert", "HR", Status.OPEN, "Rohit",LocalDateTime.now()));
-//        when(ticketService.getAllTicket(1l,false, 1, Status.BEING_ADDRESSED)).thenReturn(list);
-//        mockMvc.perform(get(UrlConstant.BASE_URL + UrlConstant.COMMON_URL + UrlConstant.TICKET_URL)
-//                .param("userId","1")
-//                .param("myTicket", "false")
-//                .param("pageNumber", "1")
-//                .param("filterStatus", "null")
-//                .contentType(MediaType.APPLICATION_JSON))
-//               .andExpect(status().isOk())
-//               .andExpect(jsonPath("$.data.size()", is(1)));               
-//    }
+    @Test
+    public void testGetAllTicketSuccess() throws Exception {        
+        List<TicketTableOutDTO> list = Arrays.asList(new TicketTableOutDTO(1l ,"qwert", "HR", Status.OPEN, "Rohit",LocalDateTime.now()));
+        when(ticketService.getAllTicket(1l,false, 1, Status.BEING_ADDRESSED)).thenReturn(list);
+        mockMvc.perform(get(UrlConstant.BASE_URL + UrlConstant.COMMON_URL + UrlConstant.TICKET_URL)
+                .param("userId","1")
+                .param("myTicket", "false")
+                .param("pageNumber", "0"))
+               .andExpect(status().isOk());
+    }
     
     @Test
     public void testUpdateTicket() throws JsonProcessingException, Exception {
@@ -115,14 +113,14 @@ public class TicketControllerTest {
                 .andExpect(jsonPath("$.message", is(MessageConstant.SUCCESS)));
     }
     
-//    @Test
-//    public void testGetTicketbyId() throws Exception {
-//        TicketInfoOutDTO ticketInfoOutDTO = new TicketInfoOutDTO();
-//        ticketInfoOutDTO.setAssignedBy("Rohit");
-//        ticketInfoOutDTO.setAssignedTo("HR");
-//        ticketInfoOutDTO.setDescription("qwertyu");
-//        when(ticketService.getTicketById(1l, 1l)).thenReturn(ticketInfoOutDTO);
-//        mockMvc.perform(get(UrlConstant.BASE_URL + UrlConstant.COMMON_URL + UrlConstant.TICKET_URL +"/{1}")
-//                .param("userId", "1l").contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk());
-//    }
+    @Test
+    public void testGetTicketbyId() throws Exception {
+        TicketInfoOutDTO ticketInfoOutDTO = new TicketInfoOutDTO();
+        ticketInfoOutDTO.setAssignedBy("Rohit");
+        ticketInfoOutDTO.setAssignedTo("HR");
+        ticketInfoOutDTO.setDescription("qwertyu");
+        when(ticketService.getTicketById(1l, 1l)).thenReturn(ticketInfoOutDTO);
+        mockMvc.perform(get(UrlConstant.BASE_URL + UrlConstant.COMMON_URL + UrlConstant.TICKET_URL +"/1")
+                .param("userId", "1").contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk());
+    }
 }

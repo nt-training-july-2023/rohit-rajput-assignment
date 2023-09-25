@@ -2,33 +2,84 @@ import React, { useEffect, useState } from "react";
 import "../Styles/TicketTable.css";
 import { AiOutlineEdit } from "react-icons/ai";
 import AdminDashboard from "./AdminDashboard";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import Alert from "./Alert";
 import APIService from "../Service/api";
+import MemberDashboard from "./MemberDashboard";
 
 export default function TicketTable() {
+  const [myTicket,setMyTicket]=  useState(true);
   const [tickets, setTickets] = useState([]);
   const [show, setShow] = useState(false);
   const [filterStatus, setFilterStatus] = useState("");
   const [isNextPage, setIsNextPage] = useState(true);
   const [alertMessage, setAlertMessage] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
+  const [userRole, setUserRole] = useState("");
+
+  
+  console.log(myTicket);
+  const path = useLocation().pathname;
+
+  useEffect(()=>{
+    setUserRole(localStorage.getItem('role'));
+  })
 
   useEffect(() => {
-    fetchTickets();
-  },[currentPage]);
+    if(path==="/get-my-ticket"){
+        setMyTicket(true);
+        fetchMyTickets();
+    } else{
+        fetchAllTickets();
+        setMyTicket(false);
+    }
+    // fetchTickets();
+},[currentPage,path]);
 
   const handleSubmit = (e) =>{
     e.preventDefault();
-       fetchTickets();
+    if(path === "/get-my-ticket"){
+        fetchMyTickets();
+    }else{
+        fetchAllTickets();
+    }
   }
 
-  const fetchTickets = async () => {
+  const fetchAllTickets = async () => {
     if (currentPage <= 0) {
       setCurrentPage(1);
       return;
     }
-    await APIService.getAllTicket(currentPage,filterStatus)
+    
+    await APIService.getAllTicket(currentPage, filterStatus, false)
+      .then((res) => {
+        console.log(res);
+        if (res.data.data.length == 0) {
+          setCurrentPage(currentPage - 1);
+          setIsNextPage(false);
+          setShow(true);
+          setAlertMessage("Next page is empty");
+        } else {
+          setTickets(res.data.data);
+        }
+      })
+      .catch((error) => {
+        setShow(true);
+        if (error.code === "ERR_NETWORK") {
+          setAlertMessage(error.message);
+        } else {
+          setAlertMessage(error.response.data.message);
+        }
+      });
+  };
+
+  const fetchMyTickets = async () => {
+    if (currentPage <= 0) {
+      setCurrentPage(1);
+      return;
+    }
+    
+    await APIService.getAllTicket(currentPage, filterStatus, true)
       .then((res) => {
         console.log(res);
         if (res.data.data.length == 0) {
@@ -75,7 +126,7 @@ export default function TicketTable() {
 
   return (
     <>
-      <AdminDashboard />
+      {userRole === 'ADMIN' ? <AdminDashboard />:<MemberDashboard/>}
       <div className="ticket-table-parent-container">
         <div className="ticket-table-top-element">
           <select onChange={(e)=>{handleStatus(e)}}>
@@ -103,10 +154,6 @@ export default function TicketTable() {
             </thead>
 
             {tickets?.map((ticket) => {
-              const data = {
-                id: ticket.ticketId,
-                departName: ticket.departmentName,
-              };
 
               return (
                 <tr key={ticket.ticketId}>
@@ -114,12 +161,12 @@ export default function TicketTable() {
                   <td>{ticket.departmentName}</td>
                   <td>{ticket.status}</td>
                   <td>{ticket.assignedBy}</td>
-                  <td>{ticket.lastUpdationTime}</td>
+                  <td>{ticket.lastUpdationTime.replace("T"," : ")}</td>
                   <td>
-                    <Link to="/update-ticket" state={data}>
-                      <button className="ticket-table-data-update">
+                    <Link to={`/update-ticket/${ticket.ticketId}`} className="ticket-table-data-update">
+                     
                         <AiOutlineEdit />
-                      </button>
+                     
                     </Link>
                   </td>
                 </tr>

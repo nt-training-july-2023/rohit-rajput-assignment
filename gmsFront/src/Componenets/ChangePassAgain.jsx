@@ -3,6 +3,9 @@ import "../Styles/ChangePassword.css"
 import AdminDashboard from './AdminDashboard'
 import { useNavigate } from 'react-router-dom'
 import APIService from '../Service/api';
+import Alert from './Alert';
+import MemberDashboard from './MemberDashboard';
+import { useEffect } from 'react';
 
 export default function ChangePassAgain() {
 
@@ -14,8 +17,12 @@ export default function ChangePassAgain() {
     const[confirmPasswordErr, setConfirmPasswordErr] = useState('')
     const [show, setShow] = useState(false);
     const [alertMessage, setAlertMessage] = useState("");
-    const[navigateLogin,setNavigateLogin]=useState(false);
-    const navigate = useNavigate();
+    const [userRole, setUserRole] = useState("");
+  
+
+    useEffect(()=>{
+        setUserRole(localStorage.getItem('role'));
+      })
 
     const validateOldPassword = (oldPassword) =>{
         const oldPasswordRegex =/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[@$!%*?&])[A-Za-z0-9@$!%*?&]{8,20}$/;
@@ -46,9 +53,6 @@ export default function ChangePassAgain() {
    const closeAlert = () => {
     setAlertMessage("");
     setShow(false);
-    if(navigateLogin){
-    navigate("/get-all-ticket");
-    }
   };
 
 const handleSubmit = async(e) =>{
@@ -81,7 +85,6 @@ const handleSubmit = async(e) =>{
         localStorage.setItem('user', JSON.stringify({...JSON.parse(localStorage.getItem('user')), encodePassword: res.data.data}))
          setShow(true);
          setAlertMessage(res.data.message);
-         setNavigateLogin(true);
     })
     .catch((error)=>{
         console.log(error);
@@ -98,7 +101,7 @@ const handleSubmit = async(e) =>{
 }
   return (
     <>
-    <AdminDashboard/>
+    {userRole === 'ADMIN' ? <AdminDashboard />:<MemberDashboard/>}
     <div className="change-password-parent-container">
       <div className="change-password-container">
         <form onSubmit={handleSubmit} >
@@ -145,6 +148,7 @@ const handleSubmit = async(e) =>{
         </form>
       </div>
     </div>
+    {show && <Alert message={alertMessage} close={closeAlert} />}
   </>
   )
 }

@@ -19,6 +19,7 @@ public class MessageConstant {
     public static final String NOT_FOUND = "Resource not found";
     
     public static final String INVALID_DATA = "Invalid data";
+    
     public static final String ERROR = "Invalid data";
 
 }

@@ -24,7 +24,7 @@ const Login = () => {
         .login({ email, password })
         .then((res) => {
           if (res.data.data.firstLogin) {
-            localStorage.setItem("userId", res.data.data.id);
+            localStorage.setItem("user", JSON.stringify(res.data.data));
             navigate("/change-password");
           } else {
             const mockdata = res.data.data;
