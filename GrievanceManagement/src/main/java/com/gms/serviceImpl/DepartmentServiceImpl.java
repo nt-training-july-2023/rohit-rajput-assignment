@@ -40,9 +40,9 @@ public class DepartmentServiceImpl implements DepartmentService {
     @Override
     public List<DepartmentOutDTO> getAllDepartment() {
         List<DepartmentOutDTO> departmentList = departmentRepository.findAllDepartmentName();
-        if (departmentList.size() == 0) {
+        if (departmentList.isEmpty()) {
             LOGGER.warn("[DepartmentServiceImpl]: Department not available");
-            throw new NotFoundException("There is no department");
+            throw new NotFoundException(MessageConstant.NOT_FOUND);
         }
         LOGGER.info("returning department list");
         return departmentList;
@@ -77,7 +77,7 @@ public class DepartmentServiceImpl implements DepartmentService {
     public String saveDepartment(final String departmentName) {
         if (departmentRepository.existsByDepartmentName(departmentName.toUpperCase())) {
             LOGGER.warn("[DepartmentServiceImpl]: departmentName is already exists");
-            throw new BadRequestException("Department exists");
+            throw new BadRequestException(MessageConstant.EXISTS);
         }
         Department department = new Department();
         department.setDepartmentName(departmentName.toUpperCase());

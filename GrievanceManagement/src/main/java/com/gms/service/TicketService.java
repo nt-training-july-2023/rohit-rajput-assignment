@@ -10,7 +10,8 @@ import com.gms.entity.Status;
 import com.gms.entity.Ticket;
 
 /**
- * This is @TicketService interface having all methods related to ticket table operation.
+ * This is @TicketService interface having all methods related to ticket table
+ * operation.
  */
 public interface TicketService {
 
@@ -19,27 +20,32 @@ public interface TicketService {
      * @param ticketSaveInDTO
      * @return Ticket
      */
-    Ticket saveTicket(final TicketSaveInDTO ticketSaveInDTO);
-    
+    Ticket saveTicket(TicketSaveInDTO ticketSaveInDTO);
+
     /**
      * This method is for getting list of @TicketTableOutDTO.
+     * @param userId
+     * @param myFirst
+     * @param pageNumber
+     * @param filterStatus
      * @return List<TicketTableOutDTO>
      */
-    List<TicketTableOutDTO> getAllTicket(final Long userId, final Boolean myFirst, Integer pageNumber, Status filterStatus);
+    List<TicketTableOutDTO> getAllTicket(Long userId, Boolean myFirst, Integer pageNumber,
+            Status filterStatus);
 
     /**
      * This method is for getting a @TicketInfoUtDTO by ticketId.
      * @param id
-     * @param userId 
-     * @return
+     * @param userId
+     * @return TicketInfoOutDTO
      */
-    TicketInfoOutDTO getTicketById(final Long id, Long userId);
+    TicketInfoOutDTO getTicketById(Long id, Long userId);
 
     /**
      * This method is for updating ticket.
      * @param updateTicketInDTO
+     * @return String
      */
-    String updateTicket(final UpdateTicketInDTO updateTicketInDTO);
+    String updateTicket(UpdateTicketInDTO updateTicketInDTO);
 
-    
 }

@@ -9,13 +9,13 @@ import com.gms.entity.Status;
  * This is @TicketTableOutDTO for showing details of tickets in a table.
  */
 public class TicketTableOutDTO {
-    
+
     /**
-     * This is ticketId;
+     * This is ticketId.
      */
     private Long ticketId;
     /**
-     * This is ticket title;
+     * This is ticket title.
      */
     private String title;
     /**
@@ -34,8 +34,7 @@ public class TicketTableOutDTO {
      * This is lastUpdationTime of ticket.
      */
     private LocalDateTime lastUpdationTime;
-    
-    
+
     /**
      * getter method for @getTicketId.
      * @return Long - ticketId
@@ -53,29 +52,29 @@ public class TicketTableOutDTO {
     }
 
     /**
-     * getter method for @getTitle. 
+     * getter method for @getTitle.
      * @return String - title
      */
     public String getTitle() {
         return title;
     }
-    
+
     /**
-     * setter method for @setTitle. 
+     * setter method for @setTitle.
      * @param title
      */
     public void setTitle(final String title) {
         this.title = title;
     }
-    
+
     /**
-     * getter method for @getDepartmentName. 
+     * getter method for @getDepartmentName.
      * @return String - departmentName
      */
     public String getDepartmentName() {
         return departmentName;
     }
-    
+
     /**
      * setter method for @setDepartmentName.
      * @param departmentName
@@ -83,7 +82,7 @@ public class TicketTableOutDTO {
     public void setDepartmentName(final String departmentName) {
         this.departmentName = departmentName;
     }
-    
+
     /**
      * getter method is @getStatus.
      * @return Status - status
@@ -91,7 +90,7 @@ public class TicketTableOutDTO {
     public Status getStatus() {
         return status;
     }
-    
+
     /**
      * setter method for @setStatus.
      * @param status
@@ -99,7 +98,7 @@ public class TicketTableOutDTO {
     public void setStatus(final Status status) {
         this.status = status;
     }
-    
+
     /**
      * getter method for @getAssignedBy.
      * @return String - assignedBy
@@ -107,8 +106,7 @@ public class TicketTableOutDTO {
     public String getAssignedBy() {
         return assignedBy;
     }
-    
-    
+
     /**
      * setter method for @setAssignedBy.
      * @param assignedBy
@@ -116,7 +114,7 @@ public class TicketTableOutDTO {
     public void setAssignedBy(final String assignedBy) {
         this.assignedBy = assignedBy;
     }
-    
+
     /**
      * getter method for @getLastUpdationTime.
      * @return LocalDateTime - lastUpdationTime
@@ -124,7 +122,7 @@ public class TicketTableOutDTO {
     public LocalDateTime getLastUpdationTime() {
         return lastUpdationTime;
     }
-    
+
     /**
      * setter method for @setLastUpdationTime.
      * @param lastUpdationTime
@@ -132,15 +130,14 @@ public class TicketTableOutDTO {
     public void setLastUpdationTime(final LocalDateTime lastUpdationTime) {
         this.lastUpdationTime = lastUpdationTime;
     }
-    
+
     /**
      * This is no-argument constructor.
      */
     public TicketTableOutDTO() {
         super();
     }
-    
-    
+
     /**
      * This is all-argument constructor.
      * @param ticketId
@@ -150,8 +147,8 @@ public class TicketTableOutDTO {
      * @param assignedBy
      * @param lastUpdationTime
      */
-    public TicketTableOutDTO(Long ticketId, String title, String departmentName, Status status, String assignedBy,
-            LocalDateTime lastUpdationTime) {
+    public TicketTableOutDTO(final Long ticketId, final String title, final String departmentName, final Status status,
+            final String assignedBy, LocalDateTime lastUpdationTime) {
         super();
         this.ticketId = ticketId;
         this.title = title;
@@ -160,10 +157,9 @@ public class TicketTableOutDTO {
         this.assignedBy = assignedBy;
         this.lastUpdationTime = lastUpdationTime;
     }
-    
-    
+
     /**
-     *This is @hashCode method.
+     * This is @hashCode method.
      */
     @Override
     public int hashCode() {
@@ -171,16 +167,19 @@ public class TicketTableOutDTO {
     }
 
     /**
-     *This is @equals method.
+     * This is @equals method.
      */
     @Override
     public boolean equals(final Object obj) {
-        if (this == obj)
+        if (this == obj) {
             return true;
-        if (obj == null)
+        }
+        if (obj == null) {
             return false;
-        if (getClass() != obj.getClass())
+        }
+        if (getClass() != obj.getClass()) {
             return false;
+        }
         TicketTableOutDTO other = (TicketTableOutDTO) obj;
         return Objects.equals(assignedBy, other.assignedBy) && Objects.equals(departmentName, other.departmentName)
                 && Objects.equals(lastUpdationTime, other.lastUpdationTime) && status == other.status
@@ -188,12 +187,12 @@ public class TicketTableOutDTO {
     }
 
     /**
-     *this is @equals method.
+     * this is @equals method.
      */
     @Override
     public String toString() {
         return "TicketTableOutDTO [ticketId=" + ticketId + ", title=" + title + ", departmentName=" + departmentName
-                + ", status=" + status + ", assignedBy=" + assignedBy +  "]";
+                + ", status=" + status + ", assignedBy=" + assignedBy + "]";
     }
-    
+
 }

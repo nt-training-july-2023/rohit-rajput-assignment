@@ -274,7 +274,8 @@ export default function ViewTicket() {
               <input
                 className="ticket-info-input"
                 type="text"
-                onClick={(e)=>{handleComment(e)}}
+                onChange={(e)=>{handleComment(e)}}
+                value={updateComment}
                 placeholder="Write comment here"
                 disabled={updatedStatus === "OPEN" ? true : false}
                 hidden={

@@ -8,7 +8,7 @@ import com.gms.dto.DepartmentOutDTO;
  * This is @DepartmentService interface for department table related operation.
  */
 public interface DepartmentService {
-    
+
     /**
      * this is @getAllDepartment method.
      * @return List<DepartmentOutDTO>
@@ -18,13 +18,14 @@ public interface DepartmentService {
     /**
      * This is @deleteDepartment method.
      * @param id
+     * @return String
      */
-    String deleteDepartment(final Long id);
+    String deleteDepartment(Long id);
 
     /**
      * This is @saveDepartment method.
      * @param departmentName
      * @return String
      */
-    String saveDepartment(final String departmentName);
+    String saveDepartment(String departmentName);
 }

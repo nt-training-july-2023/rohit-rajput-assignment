@@ -272,12 +272,15 @@ public class Ticket {
      */
     @Override
     public boolean equals(Object obj) {
-        if (this == obj)
+        if (this == obj) {
             return true;
-        if (obj == null)
+        }
+        if (obj == null) {
             return false;
-        if (getClass() != obj.getClass())
+        }
+        if (getClass() != obj.getClass()) {
             return false;
+        }
         Ticket other = (Ticket) obj;
         return Objects.equals(comments, other.comments) && Objects.equals(creationTime, other.creationTime)
                 && Objects.equals(department, other.department) && Objects.equals(description, other.description)

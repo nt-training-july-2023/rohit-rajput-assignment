@@ -40,7 +40,7 @@ public class DepartmentServiceImplTest {
         when(departmentRepository.existsByDepartmentName(departmentName)).thenReturn(true);
         BadRequestException ex = assertThrows(BadRequestException.class,
                 ()->departmentServiceImpl.saveDepartment(departmentName));
-        assertEquals("Department exists", ex.getMessage());
+        assertEquals(MessageConstant.EXISTS, ex.getMessage());
     }
     
     @Test
@@ -61,7 +61,7 @@ public class DepartmentServiceImplTest {
         NotFoundException exception = assertThrows(NotFoundException.class, ()->{
            departmentServiceImpl.getAllDepartment(); 
         });
-        assertEquals("There is no department", exception.getMessage());
+        assertEquals(MessageConstant.NOT_FOUND, exception.getMessage());
     }
     
     @Test

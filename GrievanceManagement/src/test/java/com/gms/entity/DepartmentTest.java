@@ -58,8 +58,14 @@ public class DepartmentTest {
         department3.setDepartmentId(2l);;
         
         assertTrue(department1.equals(department2));
-        assertEquals(department1, department2);
         assertFalse(department1.equals(department3));
+        assertFalse(department1.equals(null));
+        assertFalse(department1.equals(new Comment()));
+        department2 = department1;
+        assertTrue(department1.equals(department2));
+        
+        
+        assertEquals(department1, department2);
         assertNotEquals(department1, department3);
         assertEquals(department1.hashCode(),department2.hashCode());
         assertNotEquals(department1.hashCode(), department3.hashCode());

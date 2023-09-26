@@ -52,7 +52,7 @@ public class UserController {
      */
     @PostMapping(UrlConstant.AUTH_URL + "/login")
     public APIResponseEntity login(@RequestBody @Valid final LoginRequestInDTO loginRequestInDTO) {
-        LOGGER.info("request for login");
+        LOGGER.info("[UserController] : sending login request to userService");
         return new APIResponseEntity(true, userService.login(loginRequestInDTO), MessageConstant.SUCCESS);
     }
 
@@ -63,7 +63,7 @@ public class UserController {
      */
     @PostMapping(UrlConstant.ADMIN_URL + "/adduser")
     public APIResponseEntity save(@RequestBody @Valid final AddUserInDTO addUserInDTO) {
-        System.out.println(addUserInDTO);
+        LOGGER.info("[UserController] : sending add new user request to userService");
         userService.save(addUserInDTO);
         return new APIResponseEntity(false, MessageConstant.ADDED);
     }
@@ -75,6 +75,7 @@ public class UserController {
      */
     @PostMapping(UrlConstant.AUTH_URL + "/change-password")
     public APIResponseEntity updatePassword(@RequestBody @Valid final UpdatePasswordInDTO updatePasswordInDTO) {
+        LOGGER.info("[UserController] : sending change password request to userService");
         return new APIResponseEntity(true, userService.updatePassword(updatePasswordInDTO), MessageConstant.UPDATED);
     }
 
@@ -85,14 +86,16 @@ public class UserController {
      */
     @DeleteMapping(UrlConstant.ADMIN_URL + "/{userId}")
     public APIResponseEntity deleteUser(@PathVariable final Long userId) {
+        LOGGER.info("[UserController] : sending delete user request to userService");
         return new APIResponseEntity(false, userService.deleteUser(userId));
     }
     
     @GetMapping(UrlConstant.ADMIN_URL)
-    public APIResponseEntity getAllUser(@RequestParam Integer pageNumber, @RequestParam(required = false) String filterDepartment) {
+    public APIResponseEntity getAllUser(@RequestParam Integer pageNumber, @RequestParam(required = false)final String filterDepartment) {
         if(pageNumber<=0) {
             pageNumber = 1;
         }
+        LOGGER.info("[UserController] : sending get-all-user request to userService");
         return new APIResponseEntity(true, userService.getAllUser(pageNumber-1, filterDepartment), MessageConstant.SUCCESS);
     }
 }

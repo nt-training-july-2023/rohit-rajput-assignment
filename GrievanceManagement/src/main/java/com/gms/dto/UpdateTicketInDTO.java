@@ -36,7 +36,7 @@ public class UpdateTicketInDTO {
     public Status getStatus() {
         return status;
     }
-    
+
     /**
      * setter method for @setStatus.
      * @param status
@@ -44,6 +44,7 @@ public class UpdateTicketInDTO {
     public void setStatus(final Status status) {
         this.status = status;
     }
+
     /**
      * getter method for @getTicketId.
      * @return Long - ticketId
@@ -51,7 +52,7 @@ public class UpdateTicketInDTO {
     public Long getTicketId() {
         return ticketId;
     }
-    
+
     /**
      * setter method for @setTicketId.
      * @param ticketId
@@ -59,7 +60,7 @@ public class UpdateTicketInDTO {
     public void setTicketId(final Long ticketId) {
         this.ticketId = ticketId;
     }
-    
+
     /**
      * getter method for @getUserId.
      * @return Long - userId
@@ -67,7 +68,7 @@ public class UpdateTicketInDTO {
     public Long getUserId() {
         return userId;
     }
-    
+
     /**
      * setter method for @setUserId.
      * @param userId
@@ -75,7 +76,7 @@ public class UpdateTicketInDTO {
     public void setUserId(final Long userId) {
         this.userId = userId;
     }
-    
+
     /**
      * getter method for @getComment.
      * @return String - comment
@@ -83,7 +84,7 @@ public class UpdateTicketInDTO {
     public String getComment() {
         return comment;
     }
-    
+
     /**
      * setter method for @setComment.
      * @param comment
@@ -91,14 +92,14 @@ public class UpdateTicketInDTO {
     public void setComment(final String comment) {
         this.comment = comment;
     }
-    
+
     /**
      * this is no-argument constructor.
      */
     public UpdateTicketInDTO() {
         super();
-    }      
-    
+    }
+
     /**
      * This is all-argument constructor.
      * @param status
@@ -106,8 +107,8 @@ public class UpdateTicketInDTO {
      * @param userId
      * @param comment
      */
-    public UpdateTicketInDTO(@NotNull(message = "Please add a status") Status status, Long ticketId, Long userId,
-            String comment) {
+    public UpdateTicketInDTO(@NotNull(message = "Please add a status") final Status status, final Long ticketId,
+            final Long userId, final String comment) {
         super();
         this.status = status;
         this.ticketId = ticketId;
@@ -116,7 +117,7 @@ public class UpdateTicketInDTO {
     }
 
     /**
-     *This is @hashCode method.
+     * This is @hashCode method.
      */
     @Override
     public int hashCode() {
@@ -124,7 +125,7 @@ public class UpdateTicketInDTO {
     }
 
     /**
-     *This is @equals method.
+     * This is @equals method.
      */
     @Override
     public boolean equals(final Object obj) {
@@ -138,16 +139,16 @@ public class UpdateTicketInDTO {
             return false;
         }
         UpdateTicketInDTO other = (UpdateTicketInDTO) obj;
-        return Objects.equals(comment, other.comment) && status == other.status
-                && ticketId == other.ticketId && userId == other.userId;
+        return Objects.equals(comment, other.comment) && status == other.status && ticketId == other.ticketId
+                && userId == other.userId;
     }
-    
+
     /**
-     *This is @toString method.
+     * This is @toString method.
      */
     @Override
     public String toString() {
-        return "UpdateTicketInDTO [status=" + status + ", ticketId=" + ticketId
-                + ", userId=" + userId + ", comment=" + comment + "]";
+        return "UpdateTicketInDTO [status=" + status + ", ticketId=" + ticketId + ", userId=" + userId + ", comment="
+                + comment + "]";
     }
 }

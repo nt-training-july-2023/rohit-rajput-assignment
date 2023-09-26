@@ -103,42 +103,41 @@ public class TicketServiceImpl implements TicketService {
     @Override
     public List<TicketTableOutDTO> getAllTicket(final Long userId, final Boolean myTicket, Integer pageNumber,
             Status filterStatus) {
-        System.out.println(filterStatus);
         Pageable pageable = PageRequest.of(pageNumber, 10);
         List<TicketTableOutDTO> ticketTableOutDTOs;
         User user = userRepository.findById(userId).orElseThrow(() -> new NotFoundException(MessageConstant.NOT_FOUND));
-        if (myTicket && user.getTicket().size() == 0) {
-            LOGGER.info("There is no ticket");
+        if (myTicket && user.getTicket().isEmpty()) {
+            LOGGER.info("[TicketServiceImpl]: There is no ticket");
             throw new NotFoundException(MessageConstant.NOT_FOUND);
-        } else if (myTicket && filterStatus == null) {
-            LOGGER.info("Tickets raised by user");
+        } else if (myTicket && Objects.isNull(filterStatus)) {
+            LOGGER.info("[TicketServiceImpl]: Tickets raised by user");
             ticketTableOutDTOs = ticketRepository.findAllTicketByUser(userId, pageable).stream().sorted(comparator)
                     .collect(Collectors.toList());
-            System.out.println(ticketTableOutDTOs.size());
             return ticketTableOutDTOs;
-        } else if (myTicket && filterStatus != null) {
-            LOGGER.info("Tickets of user filtered by status");
+        } else if (myTicket && !Objects.isNull(filterStatus)) {
+            LOGGER.info("[TicketServiceImpl]: Tickets of user filtered by status");
             ticketTableOutDTOs = ticketRepository.findAllTicketByUserAndStatus(userId, filterStatus, pageable).stream()
                     .sorted(comparator).collect(Collectors.toList());
             return ticketTableOutDTOs;
-        } else if (user.getRole().equals(Role.ADMIN) && filterStatus == null) {
-            LOGGER.info("All Tickets for ADMIN role without filter");
+        } else if (user.getRole().equals(Role.ADMIN) && Objects.isNull(filterStatus)) {
+            LOGGER.info("[TicketServiceImpl]: All Tickets for ADMIN role without filter");
             ticketTableOutDTOs = ticketRepository.findAllTicket(pageable).stream().sorted(comparator)
                     .collect(Collectors.toList());
             return ticketTableOutDTOs;
-        } else if (user.getRole().equals(Role.ADMIN) && filterStatus != null) {
-            LOGGER.info("All Tickets for ADMIN role with filter by status");
+        } else if (user.getRole().equals(Role.ADMIN) && !Objects.isNull(filterStatus)) {
+            LOGGER.info("[TicketServiceImpl]: All Tickets for ADMIN role with filter by status");
             ticketTableOutDTOs = ticketRepository.findAllTicketByStatus(pageable, filterStatus);
             return ticketTableOutDTOs;
-        } else if (filterStatus == null) {
-            LOGGER.info("Tickets assigned to a department for Member role without filter");
+        } else if (Objects.isNull(filterStatus)) {
+            LOGGER.info("[TicketServiceImpl]: Tickets assigned to a department for Member role without filter");
             ticketTableOutDTOs = ticketRepository.findAllByDepartment(user.getDepartment().getDepartmentId(), pageable);
-            if (ticketTableOutDTOs.size() == 0) {
-                throw new NotFoundException("No ticket is assigned to your department");
+            if (ticketTableOutDTOs.isEmpty()) {
+                LOGGER.warn("[TicketServiceImpl]: No ticket is assigned to your department");
+                throw new NotFoundException(MessageConstant.NOT_FOUND);
             }
             return ticketTableOutDTOs.stream().sorted(comparator).collect(Collectors.toList());
         } else {
-            LOGGER.info("Tickets assigned to a department for Member role without filter");
+            LOGGER.info("[TicketServiceImpl]: Tickets assigned to a department for Member role without filter");
             ticketTableOutDTOs = ticketRepository.findAllByDepartmentAndStatus(user.getDepartment().getDepartmentId(),
                     filterStatus, pageable);
             return ticketTableOutDTOs;
@@ -152,13 +151,16 @@ public class TicketServiceImpl implements TicketService {
     public TicketInfoOutDTO getTicketById(final Long ticketId, final Long userId) {
         Optional<Ticket> ticket = ticketRepository.findById(ticketId);
         if (!ticket.isPresent()) {
+            LOGGER.warn("[TicketServiceImpl]: Tickets id does not exists");
             throw new NotFoundException(MessageConstant.NOT_FOUND);
         }
         Optional<User> user = userRepository.findById(userId);
         if (!user.isPresent()) {
+            LOGGER.warn("[TicketServiceImpl]: user id does not exists");
             throw new NotFoundException(MessageConstant.NOT_FOUND);
         }
         if (ticket.get().getUser().getId() != userId && user.get().getRole() == Role.MEMBER) {
+            LOGGER.warn("[TicketServiceImpl]: you does not have rights to access this ticket");
             throw new BadRequestException(MessageConstant.ACCESS_DENIED);
         }
         List<CommentOutDTO> commentOutDTOs = ticket.get().getComments().stream().map(comment -> {
@@ -178,6 +180,7 @@ public class TicketServiceImpl implements TicketService {
         ticketInfoOutDTO.setAssignedTo(ticket.get().getDepartment().getDepartmentName());
         ticketInfoOutDTO.setAssignedBy(ticket.get().getUser().getName());
         ticketInfoOutDTO.setComments(commentOutDTOs);
+        LOGGER.info("[TicketServiceImpl]: Giving TicketInfoOutDTO response to ticketController");
         return ticketInfoOutDTO;
     }
 
@@ -196,17 +199,17 @@ public class TicketServiceImpl implements TicketService {
         if (updateTicketInDTO.getStatus().equals(Status.OPEN)) {
             throw new BadRequestException("Updated status value can't be OPEN");
         }
-        if (updateTicketInDTO.getStatus().equals(Status.RESOLVED) && updateTicketInDTO.getComment() == null
-                && ticket.getComments().size() == 0) {
+        if (updateTicketInDTO.getStatus().equals(Status.RESOLVED) && Objects.isNull(updateTicketInDTO.getComment())
+                && ticket.getComments().isEmpty()) {
             throw new BadRequestException("Without a comment you can't RESOLVED ticket");
         }
-        if (ticket.getStatus().equals(Status.OPEN) && updateTicketInDTO.getComment() == null) {
+        if (ticket.getStatus().equals(Status.OPEN) && Objects.isNull(updateTicketInDTO.getComment())) {
             throw new BadRequestException("Without comment Status value OPEN can't be change");
         }
-        if (ticket.getStatus().equals(updateTicketInDTO.getStatus()) && updateTicketInDTO.getComment() == null) {
+        if (ticket.getStatus().equals(updateTicketInDTO.getStatus()) && Objects.isNull(updateTicketInDTO.getComment())) {
             throw new BadRequestException("There is no content to update");
         }
-        if (updateTicketInDTO.getComment() != null) {
+        if (!Objects.isNull(updateTicketInDTO.getComment())&& updateTicketInDTO.getComment().trim()!="") {
             Comment comment = new Comment();
             comment.setComment(updateTicketInDTO.getComment());
             comment.setCommentTime(LocalDateTime.now().withNano(0));

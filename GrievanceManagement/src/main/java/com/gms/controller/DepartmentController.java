@@ -42,6 +42,7 @@ public class DepartmentController {
      */
     @GetMapping(UrlConstant.COMMON_URL + UrlConstant.DEPARTMENT_URL)
     public APIResponseEntity getAllDepartment() {
+        LOGGER.info("[DepartmentController]: sending get-all-department request to departmentService");
         return new APIResponseEntity(true, departmentService.getAllDepartment(), MessageConstant.SUCCESS);
     }
 
@@ -51,6 +52,7 @@ public class DepartmentController {
      */
     @PostMapping(UrlConstant.ADMIN_URL + UrlConstant.DEPARTMENT_URL)
     public APIResponseEntity saveDepartment(@RequestParam final String departmentName) {
+        LOGGER.info("[DepartmentController]: sending save department request to departmentService");
         return new APIResponseEntity(true, departmentService.saveDepartment(departmentName), MessageConstant.ADDED);
     }
 

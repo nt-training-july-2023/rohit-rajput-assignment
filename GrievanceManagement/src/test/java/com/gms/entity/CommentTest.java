@@ -46,6 +46,12 @@ public class CommentTest {
     }
     
     @Test
+    public void testPrePersist() {
+        Comment comment = new Comment();
+        comment.persist();
+    }
+    
+    @Test
     public void testEqualsAndHashCode() {
         Comment comment1 = new Comment();
         comment1.setComment("good");
@@ -56,6 +62,13 @@ public class CommentTest {
         Comment comment3 = new Comment();
         comment3.setComment("qwerty");
         comment3.setCommentId(2l);
+        
+        
+        assertTrue(comment1.equals(comment2));
+        assertFalse(comment1.equals(null));
+        assertFalse(comment1.equals(new Department()));
+        
+        comment2 = comment1;
         assertTrue(comment1.equals(comment2));
         assertEquals(comment1, comment2);
         assertFalse(comment1.equals(comment3));

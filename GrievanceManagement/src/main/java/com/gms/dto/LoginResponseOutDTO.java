@@ -5,39 +5,37 @@ import java.util.Objects;
 import com.gms.entity.Role;
 
 /**
- * <p>
  * This is LoginResponseOutDTO for returning the values of user after successful
- * login
- * <p>
- * .
+ * login.
  */
 public class LoginResponseOutDTO {
     /**
-     * id of login user.
+     * This is id of login user.
      */
     private Long id;
     /**
-     * role of the user.
+     *This is role of the user.
      */
     private Role role;
     /**
-     * name of the user.
+     *This is  name of the user.
      */
     private String name;
     /**
-     * this is firstLogin for check that user is login first time are not.
+     * This is firstLogin for check that user is login first time are not.
      */
     private boolean firstLogin;
     /**
-     * user email.
+     *This is user email.
      */
-    private String email;
-    
+    private String email;    
     /**
      * This is name of the department user belongs.
      */
     private String departmentName;
-
+    /**
+     * This is encodePassword.
+     */
     private String encodePassword;
 
     /**
@@ -193,12 +191,15 @@ public class LoginResponseOutDTO {
      */
     @Override
     public boolean equals(final Object obj) {
-        if (this == obj)
+        if (this == obj) {
             return true;
-        if (obj == null)
+        }
+        if (obj == null) {
             return false;
-        if (getClass() != obj.getClass())
+        }
+        if (getClass() != obj.getClass()) {
             return false;
+        }
         LoginResponseOutDTO other = (LoginResponseOutDTO) obj;
         return departmentName == other.departmentName && Objects.equals(email, other.email)
                 && Objects.equals(encodePassword, other.encodePassword) && firstLogin == other.firstLogin

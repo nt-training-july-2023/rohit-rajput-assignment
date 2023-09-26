@@ -1,4 +1,5 @@
 import axios from "axios";
+import AuthHeader from "./AuthHeader";
 
 const BASEURL = "http://localhost:8080/gms/";
 
@@ -22,7 +23,7 @@ const APIService = {
 
   getTicketById(ticketId) {
     const userId = JSON.parse(localStorage.getItem('user'))?.id; 
-    return axios.get(`${BASEURL}user/ticket/${ticketId}?userId=${userId}`);
+    return axios.get(`${BASEURL}user/ticket/${ticketId}?userId=${userId}`,{headers:AuthHeader()});
   },
 
 
@@ -35,16 +36,16 @@ const APIService = {
     console.log(filterStatus);
     if(filterStatus === ""){
     return axios.get(
-      `${BASEURL}user/ticket?userId=${userId}&myTicket=${myTicket}&pageNumber=${currentPage}`);
+      `${BASEURL}user/ticket?userId=${userId}&myTicket=${myTicket}&pageNumber=${currentPage}`,{headers:AuthHeader()});
     }else{
       return axios.get(
-        `${BASEURL}user/ticket?userId=${userId}&myTicket=${myTicket}&pageNumber=${currentPage}&filterStatus=${filterStatus}`);
+        `${BASEURL}user/ticket?userId=${userId}&myTicket=${myTicket}&pageNumber=${currentPage}&filterStatus=${filterStatus}`,{headers:AuthHeader()});
     }
   },
 
 
   getAllDepartment() {
-    return axios.get(BASEURL + "user/department");
+    return axios.get(BASEURL + "user/department",{headers:AuthHeader()});
   },
 
 
@@ -58,34 +59,34 @@ const APIService = {
       userId,
       password,
       newPassword,
-    });
+    },{headers:AuthHeader()});
   },
 
 
   addDepartment(departmentName) {
     console.log(departmentName);
     return axios.post(
-      `${BASEURL}admin/department?departmentName=${departmentName}`
+      `${BASEURL}admin/department?departmentName=${departmentName}`,{headers:AuthHeader()}
     );
   },
 
 
   addNewUser(user) {
     console.log(user);
-    return axios.post(BASEURL + "admin/adduser", user);
+    return axios.post(BASEURL + "admin/adduser", user,{headers:AuthHeader()});
   },
 
 
   addNewTicket(ticket) {
     console.log(ticket);
-    return axios.post(BASEURL + "user/ticket", ticket);
+    return axios.post(BASEURL + "user/ticket", ticket,{headers:AuthHeader()});
   },
 
   updateTicket(status, ticketId, comment){
     const userId = JSON.parse(localStorage.getItem('user'))?.id;
     console.log(userId);
     console.log(comment);
-    return axios.put(BASEURL + "user/ticket",{status, ticketId, userId, comment});
+    return axios.put(BASEURL + "user/ticket",{status, ticketId, userId, comment},{headers:AuthHeader()});
   }
 };
 

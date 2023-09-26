@@ -81,8 +81,8 @@ public class TicketInfoOutDTOTest {
         TicketInfoOutDTO ticketInfoOutDTO2 = new TicketInfoOutDTO(1l, "Keyboard",
                 "qwerty", TicketType.FEEDBACK, "HR", "Rohit", LocalDateTime.now().withNano(0),
                 LocalDateTime.now().withNano(0), Arrays.asList(new CommentOutDTO()), Status.BEING_ADDRESSED);
-        TicketInfoOutDTO ticketInfoOutDTO3 = new TicketInfoOutDTO(1l, "Keyboard",
-                "qwerty", TicketType.FEEDBACK, "HR", "Mohit", LocalDateTime.now().withNano(0),
+        TicketInfoOutDTO ticketInfoOutDTO3 = new TicketInfoOutDTO(1l, "Keyboard Problem",
+                "qwerty", TicketType.FEEDBACK, "HR", "mohit", LocalDateTime.now().withNano(0),
                 LocalDateTime.now().withNano(0), Arrays.asList(new CommentOutDTO()), Status.BEING_ADDRESSED);
               
         assertEquals(ticketInfoOutDTO1.hashCode(), ticketInfoOutDTO2.hashCode());

@@ -47,20 +47,19 @@ public class TicketInfoOutDTO {
     /**
      * This is @CommentOutDTO list.
      */
-    private List<CommentOutDTO> comments;  
+    private List<CommentOutDTO> comments;
     /**
      * This is status.
      */
     private Status status;
-    
+
     /**
      * This is no-argument constructor.
      */
     public TicketInfoOutDTO() {
         super();
     }
-    
-    
+
     /**
      * This is all-argument constructor.
      * @param ticketId
@@ -74,9 +73,10 @@ public class TicketInfoOutDTO {
      * @param comments
      * @param status
      */
-    public TicketInfoOutDTO(Long ticketId, String title, String description, TicketType ticketType, String assignedTo,
-            String assignedBy, LocalDateTime creationTime, LocalDateTime lastUpdatedTime, List<CommentOutDTO> comments,
-            Status status) {
+    public TicketInfoOutDTO(final Long ticketId, final String title, final String description,
+            final TicketType ticketType, final String assignedTo, final String assignedBy,
+            final LocalDateTime creationTime, final LocalDateTime lastUpdatedTime, final List<CommentOutDTO> comments,
+            final Status status) {
         super();
         this.ticketId = ticketId;
         this.title = title;
@@ -105,7 +105,7 @@ public class TicketInfoOutDTO {
     public void setTicketId(final Long ticketId) {
         this.ticketId = ticketId;
     }
-    
+
     /**
      * getter method for @getTitle.
      * @return String - title
@@ -113,7 +113,7 @@ public class TicketInfoOutDTO {
     public String getTitle() {
         return title;
     }
-    
+
     /**
      * setter method for @setTitle.
      * @param title
@@ -121,7 +121,7 @@ public class TicketInfoOutDTO {
     public void setTitle(final String title) {
         this.title = title;
     }
-    
+
     /**
      * getter method for @getDescription.
      * @return String - description
@@ -129,7 +129,7 @@ public class TicketInfoOutDTO {
     public String getDescription() {
         return description;
     }
-    
+
     /**
      * setter method for @setDescription.
      * @param description
@@ -137,7 +137,7 @@ public class TicketInfoOutDTO {
     public void setDescription(final String description) {
         this.description = description;
     }
-    
+
     /**
      * getter method for @getTicketType.
      * @return TicketType - ticketType
@@ -145,7 +145,7 @@ public class TicketInfoOutDTO {
     public TicketType getTicketType() {
         return ticketType;
     }
-    
+
     /**
      * setter method for @setTicketType.
      * @param ticketType
@@ -153,7 +153,7 @@ public class TicketInfoOutDTO {
     public void setTicketType(final TicketType ticketType) {
         this.ticketType = ticketType;
     }
-    
+
     /**
      * getter method for @getAssignedTo.
      * @return String - assignedTo
@@ -161,7 +161,7 @@ public class TicketInfoOutDTO {
     public String getAssignedTo() {
         return assignedTo;
     }
-    
+
     /**
      * setter method for @setAssignedTo.
      * @param assignedTo
@@ -169,7 +169,7 @@ public class TicketInfoOutDTO {
     public void setAssignedTo(final String assignedTo) {
         this.assignedTo = assignedTo;
     }
-    
+
     /**
      * getter method for @getAssignedBy.
      * @return String - assignedBy
@@ -177,7 +177,7 @@ public class TicketInfoOutDTO {
     public String getAssignedBy() {
         return assignedBy;
     }
-    
+
     /**
      * setter method for @setAssignedBy.
      * @param assignedBy
@@ -185,7 +185,7 @@ public class TicketInfoOutDTO {
     public void setAssignedBy(final String assignedBy) {
         this.assignedBy = assignedBy;
     }
-    
+
     /**
      * getter method for @getCreationTime.
      * @return LocalDateTime - creationTime
@@ -193,7 +193,7 @@ public class TicketInfoOutDTO {
     public LocalDateTime getCreationTime() {
         return creationTime;
     }
-    
+
     /**
      * setter method for @setCreationTime.
      * @param creationTime
@@ -201,7 +201,7 @@ public class TicketInfoOutDTO {
     public void setCreationTime(final LocalDateTime creationTime) {
         this.creationTime = creationTime;
     }
-    
+
     /**
      * getter method for @getCreationTime.
      * @return LocalDateTime - creationTime
@@ -209,7 +209,7 @@ public class TicketInfoOutDTO {
     public LocalDateTime getLastUpdatedTime() {
         return lastUpdatedTime;
     }
-    
+
     /**
      * setter method for @setCreationTime.
      * @param creationTime
@@ -217,7 +217,7 @@ public class TicketInfoOutDTO {
     public void setLastUpdatedTime(final LocalDateTime lastUpdatedTime) {
         this.lastUpdatedTime = lastUpdatedTime;
     }
-    
+
     /**
      * getter method for @getCoomment.
      * @return List<Comment> - comments
@@ -225,7 +225,7 @@ public class TicketInfoOutDTO {
     public List<CommentOutDTO> getComments() {
         return comments;
     }
-    
+
     /**
      * setter method for @setCoomment.
      * @param comments
@@ -233,7 +233,7 @@ public class TicketInfoOutDTO {
     public void setComments(final List<CommentOutDTO> comments) {
         this.comments = comments;
     }
-    
+
     /**
      * getter method for @getStatus.
      * @return Status - status
@@ -241,7 +241,7 @@ public class TicketInfoOutDTO {
     public Status getStatus() {
         return status;
     }
-    
+
     /**
      * setter method for @setStatus.
      * @param status
@@ -249,9 +249,9 @@ public class TicketInfoOutDTO {
     public void setStatus(final Status status) {
         this.status = status;
     }
-    
+
     /**
-     *This is @hashCode method.
+     * This is @hashCode method.
      */
     @Override
     public int hashCode() {
@@ -260,7 +260,7 @@ public class TicketInfoOutDTO {
     }
 
     /**
-     *This is @equals method.
+     * This is @equals method.
      */
     @Override
     public boolean equals(final Object obj) {
@@ -283,15 +283,13 @@ public class TicketInfoOutDTO {
     }
 
     /**
-     *This is @toString method.
+     * This is @toString method.
      */
     @Override
     public String toString() {
         return "TicketInfoOutDTO [ticketId=" + ticketId + ", title=" + title + ", description=" + description
                 + ", ticketType=" + ticketType + ", assignedTo=" + assignedTo + ", assignedBy=" + assignedBy
-                + ", comments=" + comments
-                + ", status=" + status + "]";
+                + ", comments=" + comments + ", status=" + status + "]";
     }
-    
-    
+
 }

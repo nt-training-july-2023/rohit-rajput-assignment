@@ -64,7 +64,9 @@ public class UserTest {
     
     @Test
     public void testPersist() {
-        
+        User user = new User();
+        user.persist();
+        assertTrue(user.isFirst());
     }
     
     @Test
@@ -81,6 +83,12 @@ public class UserTest {
         user3.setName("Rohit");
         user3.setRole(Role.ADMIN);
         user3.setPassword("Rohit@1234");
+        
+        
+        assertTrue(user1.equals(user2));
+        assertFalse(user1.equals(null));
+        assertFalse(user1.equals(new Department()));
+        user2 = user1;
         assertTrue(user1.equals(user2));
         assertEquals(user1, user2);
         assertFalse(user1.equals(user3));

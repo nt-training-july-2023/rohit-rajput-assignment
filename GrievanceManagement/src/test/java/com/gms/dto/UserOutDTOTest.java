@@ -45,6 +45,7 @@ public class UserOutDTOTest {
         assertNotEquals(userOutDTO1.hashCode(), userOutDTO3.hashCode());
         
         assertFalse(userOutDTO1.equals(userOutDTO3));
+        assertTrue(userOutDTO1.equals(userOutDTO2));
         assertFalse(userOutDTO1.equals(null));
         assertFalse(userOutDTO1.equals(new DepartmentOutDTO()));
         

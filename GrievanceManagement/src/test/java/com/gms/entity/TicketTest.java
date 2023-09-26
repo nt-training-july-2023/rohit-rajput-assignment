@@ -61,6 +61,12 @@ public class TicketTest {
     }
     
     @Test
+    public void testPrePersist() {
+        Ticket ticket = new Ticket();
+        ticket.persist();
+    }
+    
+    @Test
     public void testEqualsAndHashCode() {
         Ticket ticket1 = new Ticket();
         ticket1.setTicketId(1);;
@@ -68,7 +74,13 @@ public class TicketTest {
         ticket2.setTicketId(1);;
         Ticket ticket3 = new Ticket();
         ticket3.setTicketId(2);
+        
+        assertFalse(ticket1.equals(null));
+        assertFalse(ticket1.equals(new Department()));
         assertTrue(ticket1.equals(ticket2));
+        ticket2 = ticket1;
+        assertTrue(ticket1.equals(ticket2));
+        
         assertEquals(ticket1, ticket2);
         assertFalse(ticket1.equals(ticket3));
         assertNotEquals(ticket1, ticket3);

@@ -24,7 +24,7 @@ function AdminRoutes() {
        <Route path='/get-my-ticket' element={<TicketTable/>}/>
        <Route path='/update-ticket/:ticketId' element={<ViewTicket/>}/>
        <Route path='/update-password' element={<ChangePassAgain/>}/>
-       <Route exact path='*' element={<PageNotFound/>}/>  
+       {/* <Route exact path='*' element={<PageNotFound/>}/>   */}
        <Route exact path='/login' element={<AdminDashboard/>} /> 
         
     </Routes>
