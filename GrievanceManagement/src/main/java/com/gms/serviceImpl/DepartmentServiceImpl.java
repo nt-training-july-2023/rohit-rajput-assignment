@@ -5,6 +5,8 @@ import java.util.List;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.gms.constants.MessageConstant;
@@ -26,7 +28,7 @@ public class DepartmentServiceImpl implements DepartmentService {
      * this is logger.
      */
     private static final Logger LOGGER = LogManager.getLogger(DepartmentServiceImpl.class);
-    
+
     /**
      * this is DepartmentRepository reference.
      */
@@ -35,21 +37,34 @@ public class DepartmentServiceImpl implements DepartmentService {
 
     /**
      * this is @getAllDepartment() method for getting list of @Department.
+     * 
      * @return List<DepartmentOutDTO>
      */
     @Override
-    public List<DepartmentOutDTO> getAllDepartment() {
-        List<DepartmentOutDTO> departmentList = departmentRepository.findAllDepartmentName();
-        if (departmentList.isEmpty()) {
-            LOGGER.warn("[DepartmentServiceImpl]: Department not available");
-            throw new NotFoundException(MessageConstant.NOT_FOUND);
+    public List<DepartmentOutDTO> getAllDepartment(Integer pageNumber, Boolean isPaginate) {
+        if (!isPaginate) {
+            List<DepartmentOutDTO> departmentList = departmentRepository.findAllDepartmentName();
+            if (departmentList.isEmpty()) {
+                LOGGER.warn("[DepartmentServiceImpl]: Department not available");
+                throw new NotFoundException(MessageConstant.NOT_FOUND);
+            }
+            LOGGER.info("returning department list");
+            return departmentList;
+        }else {
+            Pageable pageable = PageRequest.of(pageNumber, 10);
+            List<DepartmentOutDTO> departmentList = departmentRepository.findAllDepartmentName(pageable);
+            if (departmentList.isEmpty()) {
+                LOGGER.warn("[DepartmentServiceImpl]: Department not available");
+                throw new NotFoundException(MessageConstant.NOT_FOUND);
+            }
+            LOGGER.info("returning department list with pagination");
+            return departmentList;
         }
-        LOGGER.info("returning department list");
-        return departmentList;
     }
 
     /**
      * this is @deleteDepartment for deleting a @Department.
+     * 
      * @param id
      */
     @Override
@@ -68,9 +83,10 @@ public class DepartmentServiceImpl implements DepartmentService {
             throw new BadRequestException(MessageConstant.ACCESS_DENIED);
         }
     }
-    
+
     /**
      * this is @saveDepartment method for saving a @Department.
+     * 
      * @return String - departmentName.
      */
     @Override

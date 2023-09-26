@@ -10,6 +10,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 
+import com.gms.entity.Role;
+
 public class UserOutDTOTest {
     
     @Mock
@@ -37,9 +39,9 @@ public class UserOutDTOTest {
     
     @Test
     public void testHashCodeAndEquals() {
-        UserOutDTO userOutDTO1 = new UserOutDTO(1l, "Rohit", "HR");
-        UserOutDTO userOutDTO2 = new UserOutDTO(1l, "Rohit", "HR");
-        UserOutDTO userOutDTO3 = new UserOutDTO(2l, "Rohit", "HR");
+        UserOutDTO userOutDTO1 = new UserOutDTO(1l, "Rohit", "HR", Role.ADMIN);
+        UserOutDTO userOutDTO2 = new UserOutDTO(1l, "Rohit", "HR", Role.ADMIN);
+        UserOutDTO userOutDTO3 = new UserOutDTO(2l, "Rohit", "HR", Role.ADMIN);
         
         assertEquals(userOutDTO1.hashCode(), userOutDTO2.hashCode());
         assertNotEquals(userOutDTO1.hashCode(), userOutDTO3.hashCode());
@@ -55,8 +57,8 @@ public class UserOutDTOTest {
     
     @Test 
     public void testToString() {
-        UserOutDTO userOutDTO = new UserOutDTO(1l, "Rohit", "HR");
-        assertEquals("UserOutDTO [userId=1, name=Rohit, departmentName=HR]", userOutDTO.toString());
+        UserOutDTO userOutDTO = new UserOutDTO(1l, "Rohit", "HR", Role.ADMIN);
+        assertEquals("UserOutDTO [userId=1, name=Rohit, departmentName=HR, userRole=ADMIN]", userOutDTO.toString());
     }
 
 }

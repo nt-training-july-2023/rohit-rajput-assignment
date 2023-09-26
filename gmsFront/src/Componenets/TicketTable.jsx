@@ -8,7 +8,6 @@ import APIService from "../Service/api";
 import MemberDashboard from "./MemberDashboard";
 
 export default function TicketTable() {
-  const [myTicket,setMyTicket]=  useState(true);
   const [tickets, setTickets] = useState([]);
   const [show, setShow] = useState(false);
   const [filterStatus, setFilterStatus] = useState("");
@@ -18,7 +17,6 @@ export default function TicketTable() {
   const [userRole, setUserRole] = useState("");
 
   
-  console.log(myTicket);
   const path = useLocation().pathname;
 
   useEffect(()=>{
@@ -27,13 +25,10 @@ export default function TicketTable() {
 
   useEffect(() => {
     if(path==="/get-my-ticket"){
-        setMyTicket(true);
         fetchMyTickets();
     } else{
         fetchAllTickets();
-        setMyTicket(false);
     }
-    // fetchTickets();
 },[currentPage,path]);
 
   const handleSubmit = (e) =>{
@@ -162,7 +157,7 @@ export default function TicketTable() {
                   <td>{ticket.status}</td>
                   <td>{ticket.assignedBy}</td>
                   <td>{ticket.lastUpdationTime.replace("T"," : ")}</td>
-                  <td>
+                  <td style={{ textAlign: "center" }}>
                     <Link to={`/update-ticket/${ticket.ticketId}`} className="ticket-table-data-update">
                      
                         <AiOutlineEdit />

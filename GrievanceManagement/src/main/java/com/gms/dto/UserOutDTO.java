@@ -2,6 +2,8 @@ package com.gms.dto;
 
 import java.util.Objects;
 
+import com.gms.entity.Role;
+
 /**
  * This is @UserOutDTO for table of user.
  */
@@ -19,6 +21,11 @@ public class UserOutDTO {
      * This is departmentName.
      */
     private String departmentName;
+    
+    /**
+     * This is user role.
+     */
+    private Role userRole;
 
     /**
      * This is no-argument constructor.
@@ -33,11 +40,12 @@ public class UserOutDTO {
      * @param name
      * @param departmentName
      */
-    public UserOutDTO(final Long userId, final String name, final String departmentName) {
+    public UserOutDTO(final Long userId, final String name, final String departmentName, final Role userRole) {
         super();
         this.userId = userId;
         this.name = name;
         this.departmentName = departmentName;
+        this.userRole = userRole;
     }
 
     /**
@@ -87,13 +95,30 @@ public class UserOutDTO {
     public void setDepartmentName(final String departmentName) {
         this.departmentName = departmentName;
     }
+    
+    
+    /**
+     * getter method for @getUserRole.
+     * @return Role - userRole
+     */
+    public Role getUserRole() {
+        return userRole;
+    }
+
+    /**
+     * setter method for @setUserRole.
+     * @param userRole
+     */
+    public void setUserRole(final Role userRole) {
+        this.userRole = userRole;
+    }
 
     /**
      * This is @hashCode method.
      */
     @Override
     public int hashCode() {
-        return Objects.hash(departmentName, name, userId);
+        return Objects.hash(departmentName, name, userId, userRole);
     }
 
     /**
@@ -112,15 +137,16 @@ public class UserOutDTO {
         }
         UserOutDTO other = (UserOutDTO) obj;
         return Objects.equals(departmentName, other.departmentName) && Objects.equals(name, other.name)
-                && Objects.equals(userId, other.userId);
+                && Objects.equals(userId, other.userId) && userRole == other.userRole;
     }
+    
 
     /**
      * This is @toString method.
      */
     @Override
     public String toString() {
-        return "UserOutDTO [userId=" + userId + ", name=" + name + ", departmentName=" + departmentName + "]";
-    }
-
+        return "UserOutDTO [userId=" + userId + ", name=" + name + ", departmentName=" + departmentName + ", userRole="
+                + userRole + "]";
+    }   
 }

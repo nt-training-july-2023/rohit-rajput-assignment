@@ -91,7 +91,7 @@ public class UserController {
     }
     
     @GetMapping(UrlConstant.ADMIN_URL)
-    public APIResponseEntity getAllUser(@RequestParam Integer pageNumber, @RequestParam(required = false)final String filterDepartment) {
+    public APIResponseEntity getAllUser(@RequestParam Integer pageNumber, @RequestParam final String filterDepartment) {
         if(pageNumber<=0) {
             pageNumber = 1;
         }

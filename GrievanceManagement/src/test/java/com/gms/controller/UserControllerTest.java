@@ -138,8 +138,8 @@ public class UserControllerTest {
     
     @Test
     public void testGetAllUser() throws Exception {
-        UserOutDTO userOutDTO1 = new UserOutDTO(1l, "Rohit", "HR");
-        UserOutDTO userOutDTO2 = new UserOutDTO(2l, "Mohit", "HR");
+        UserOutDTO userOutDTO1 = new UserOutDTO(1l, "Rohit", "HR", Role.ADMIN);
+        UserOutDTO userOutDTO2 = new UserOutDTO(2l, "Mohit", "HR", Role.ADMIN);
         List<UserOutDTO> userOutDTOs = Arrays.asList(userOutDTO1, userOutDTO2);
         mockMvc.perform(get(UrlConstant.BASE_URL + UrlConstant.ADMIN_URL)
                 .param("pageNumber", "0")

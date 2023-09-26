@@ -13,6 +13,8 @@ const AddNewUser = () => {
   const[isNavigate,setIsNavigate]=useState(false);
   const [departmentErr, setDepartmentErr] = useState("");
   const [department, setDepartment] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [isPaginated, setIsPaginated] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -28,7 +30,7 @@ const AddNewUser = () => {
   });
 
   const fetchDepartment = async () =>{
-       await APIService.getAllDepartment()
+       await APIService.getAllDepartment(currentPage, isPaginated)
        .then((res)=>{
         console.log(res);
           if(res.data.hasdata){

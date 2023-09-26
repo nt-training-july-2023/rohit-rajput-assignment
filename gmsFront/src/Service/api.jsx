@@ -9,10 +9,6 @@ const APIService = {
       username: loginCredentials.email,
       encodedPassword: btoa(loginCredentials.password),
     };
-    console.log(loginCredentials);
-    console.log(header.username);
-    console.log(header.encodedPassword);
-    console.log(header);
     return axios.post(BASEURL + "auth/login", loginCredentials, {
       headers: {
         username: loginCredentials.email,
@@ -29,11 +25,6 @@ const APIService = {
 
   getAllTicket(currentPage, filterStatus, myTicket) {
     const userId = JSON.parse(localStorage.getItem("user"))?.id;
-    console.log(userId);
-    // const myTicket = false;
-    console.log(myTicket);
-    console.log(currentPage);
-    console.log(filterStatus);
     if(filterStatus === ""){
     return axios.get(
       `${BASEURL}user/ticket?userId=${userId}&myTicket=${myTicket}&pageNumber=${currentPage}`,{headers:AuthHeader()});
@@ -44,17 +35,19 @@ const APIService = {
   },
 
 
-  getAllDepartment() {
-    return axios.get(BASEURL + "user/department",{headers:AuthHeader()});
+  getAllDepartment(currentPage, isPaginated) {
+    return axios.get(`${BASEURL}user/department?pageNumber=${currentPage}&isPaginate=${isPaginated}`,{headers:AuthHeader()});
+  },
+
+
+  getAllUser(currentPage, filterDepartment) {
+    const filter = filterDepartment === undefined ? "all" : filterDepartment;
+    return axios.get(`${BASEURL}admin?pageNumber=${currentPage}&filterDepartment=${filter}`,{headers:AuthHeader()});
   },
 
 
   changePassword(password, newPassword) {
     const userId = JSON.parse(localStorage.getItem('user'))?.id;
-    // const userId = localStorage.getItem('userId');
-    console.log(userId);
-    console.log(password);
-    console.log(newPassword);
     return axios.post(BASEURL + "auth/change-password", {
       userId,
       password,
@@ -64,7 +57,6 @@ const APIService = {
 
 
   addDepartment(departmentName) {
-    console.log(departmentName);
     return axios.post(
       `${BASEURL}admin/department?departmentName=${departmentName}`,{headers:AuthHeader()}
     );
@@ -87,6 +79,14 @@ const APIService = {
     console.log(userId);
     console.log(comment);
     return axios.put(BASEURL + "user/ticket",{status, ticketId, userId, comment},{headers:AuthHeader()});
+  },
+
+  deleteUserById(userId){
+    return axios.delete(`${BASEURL}admin/${userId}`,{headers:AuthHeader()})
+  },
+
+  deleteDepartmentById(departmentId){
+    return axios.delete(`${BASEURL}admin/department/${departmentId}`,{headers:AuthHeader()})
   }
 };
 

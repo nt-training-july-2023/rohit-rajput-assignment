@@ -84,7 +84,7 @@ public class Ticket {
     /**
      * This is the list of comment belongs to a ticket.
      */
-    @OneToMany(mappedBy = "ticket")
+    @OneToMany(mappedBy = "ticket", orphanRemoval = true)
     private List<Comment> comments;
 
     /**

@@ -67,8 +67,10 @@ public class DepartmentControllerTest {
     @Test
     public void testGetAllDepartmentSuccess() throws Exception {
         List<DepartmentOutDTO> departmentOutDTOs = Arrays.asList(new DepartmentOutDTO(1l, "HR"));
-        when(departmentService.getAllDepartment()).thenReturn(departmentOutDTOs);
-         mockMvc.perform(get(UrlConstant.BASE_URL + UrlConstant.COMMON_URL + UrlConstant.DEPARTMENT_URL))
+        when(departmentService.getAllDepartment(0,true)).thenReturn(departmentOutDTOs);
+         mockMvc.perform(get(UrlConstant.BASE_URL + UrlConstant.COMMON_URL + UrlConstant.DEPARTMENT_URL)
+                 .param("pageNumber", "0")
+                 .param("isPaginate", "true"))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.message", is(MessageConstant.SUCCESS)))
         .andExpect(jsonPath("$.data.size()", is(1)));
@@ -76,8 +78,10 @@ public class DepartmentControllerTest {
     }
     @Test
     public void testGetAllDepartmentFailure() throws Exception {        
-        when(departmentService.getAllDepartment()).thenThrow(NotFoundException.class);
-         mockMvc.perform(get(UrlConstant.BASE_URL + UrlConstant.DEPARTMENT_URL))
+        when(departmentService.getAllDepartment(0,false)).thenThrow(NotFoundException.class);
+         mockMvc.perform(get(UrlConstant.BASE_URL + UrlConstant.DEPARTMENT_URL)
+                 .param("pageNumber", "0")
+                 .param("isPaginate", "false"))
         .andExpect(status().isNotFound());            
     }
     

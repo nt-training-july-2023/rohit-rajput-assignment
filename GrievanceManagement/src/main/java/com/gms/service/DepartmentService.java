@@ -13,7 +13,7 @@ public interface DepartmentService {
      * this is @getAllDepartment method.
      * @return List<DepartmentOutDTO>
      */
-    List<DepartmentOutDTO> getAllDepartment();
+    List<DepartmentOutDTO> getAllDepartment(Integer pageNumber, Boolean isPaginate);
 
     /**
      * This is @deleteDepartment method.

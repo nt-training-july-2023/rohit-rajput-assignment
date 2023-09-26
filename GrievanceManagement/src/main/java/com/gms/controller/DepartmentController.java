@@ -41,9 +41,13 @@ public class DepartmentController {
      * @return APIResponseEntity
      */
     @GetMapping(UrlConstant.COMMON_URL + UrlConstant.DEPARTMENT_URL)
-    public APIResponseEntity getAllDepartment() {
+    public APIResponseEntity getAllDepartment(@RequestParam(required = false) Integer pageNumber,
+            @RequestParam(defaultValue = "false") final Boolean isPaginate) {
+        if(pageNumber<=0) {
+            pageNumber = 1;
+        }
         LOGGER.info("[DepartmentController]: sending get-all-department request to departmentService");
-        return new APIResponseEntity(true, departmentService.getAllDepartment(), MessageConstant.SUCCESS);
+        return new APIResponseEntity(true, departmentService.getAllDepartment(pageNumber-1, isPaginate), MessageConstant.SUCCESS);
     }
 
     /**
@@ -60,10 +64,10 @@ public class DepartmentController {
      * @param id - departmentId
      * @return APIResponseEntity
      */
-    @DeleteMapping(UrlConstant.ADMIN_URL + UrlConstant.DEPARTMENT_URL +"/{id}")
-    public APIResponseEntity deleteDepartment(@PathVariable final Long id) {
+    @DeleteMapping(UrlConstant.ADMIN_URL + UrlConstant.DEPARTMENT_URL +"/{departmentId}")
+    public APIResponseEntity deleteDepartment(@PathVariable final Long departmentId) {
         LOGGER.info("[DepartmentController]: sending delete department request to departmentService");
-        return new APIResponseEntity(false, departmentService.deleteDepartment(id));
+        return new APIResponseEntity(false, departmentService.deleteDepartment(departmentId));
     }
 
 }

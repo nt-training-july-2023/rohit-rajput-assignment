@@ -13,6 +13,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.gms.constants.MessageConstant;
+import com.gms.constants.VariableConstant;
 import com.gms.dto.AddUserInDTO;
 import com.gms.dto.LoginRequestInDTO;
 import com.gms.dto.LoginResponseOutDTO;
@@ -136,7 +137,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<UserOutDTO> getAllUser(Integer pageNumber, String filterDepartment) {
         Pageable pageable = PageRequest.of(pageNumber, 10);
-        if (Objects.isNull(filterDepartment)) {
+        if (filterDepartment.equals(VariableConstant.ALL_USER)) {
             List<UserOutDTO> userOutDTOs = userRepository.getAllUser(pageable);
             if (userOutDTOs.isEmpty()) {
                 LOGGER.warn("[LoginResponseOutDTO]: there is no user");

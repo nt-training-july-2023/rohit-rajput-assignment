@@ -15,6 +15,8 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
 import com.gms.constants.MessageConstant;
 import com.gms.dto.DepartmentOutDTO;
@@ -55,24 +57,46 @@ public class DepartmentServiceImplTest {
     }
     
     @Test
-    public void testGetAllDepartmentFailure() {
+    public void testGetAllDepartmentIfPaginateIsFalseFailure() {
         List<DepartmentOutDTO> list = Arrays.asList();
         when(departmentRepository.findAllDepartmentName()).thenReturn(list);
         NotFoundException exception = assertThrows(NotFoundException.class, ()->{
-           departmentServiceImpl.getAllDepartment(); 
+           departmentServiceImpl.getAllDepartment(0,false); 
         });
         assertEquals(MessageConstant.NOT_FOUND, exception.getMessage());
     }
     
     @Test
-    public void testGetAllDepartmentSuccess() {
+    public void testGetAllDepartmentIfPaginateIsFalseSuccess() {
         List<DepartmentOutDTO> list = Arrays.asList(new DepartmentOutDTO(1l, "HR"));
         when(departmentRepository.findAllDepartmentName()).thenReturn(list);
-        List<DepartmentOutDTO> list2 = departmentServiceImpl.getAllDepartment();
+        List<DepartmentOutDTO> list2 = departmentServiceImpl.getAllDepartment(0,false);
         assertEquals(list, list2);
         assertEquals(list.size(), list2.size());
         assertSame(list, list2);
-    }   
+    }
+    
+    @Test
+    public void testGetAllDepartmentIfPaginateIsTrueFailure() {
+        Pageable pageable = PageRequest.of(0, 10);
+        List<DepartmentOutDTO> list = Arrays.asList();
+        when(departmentRepository.findAllDepartmentName(pageable)).thenReturn(list);
+        NotFoundException exception = assertThrows(NotFoundException.class, ()->{
+           departmentServiceImpl.getAllDepartment(0,true); 
+        });
+        assertEquals(MessageConstant.NOT_FOUND, exception.getMessage());
+    }
+    
+    @Test
+    public void testGetAllDepartmentIfPaginateIsTrueSuccess() {
+        Pageable pageable = PageRequest.of(0, 10);
+        List<DepartmentOutDTO> list = Arrays.asList(new DepartmentOutDTO(1l, "HR"));
+        when(departmentRepository.findAllDepartmentName(pageable)).thenReturn(list);
+        List<DepartmentOutDTO> list2 = departmentServiceImpl.getAllDepartment(0,true);
+        assertEquals(list, list2);
+        assertEquals(list.size(), list2.size());
+        assertSame(list, list2);
+    }
     
     @Test
     public void testDeleteDepartmentIfdepartmentPresentAndSizemoreThanOne() {

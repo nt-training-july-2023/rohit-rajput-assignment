@@ -13,6 +13,8 @@ export default function AddNewTicket() {
   const[departmentIdErr,setDepartmentIdErr]=useState("")
   const [userRole, setUserRole] = useState("");
   const [department, setDepartment] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [isPaginated, setIsPaginated] = useState(false);
   const [ticket, setTicket] = useState({
     ticketType: "GRIEVANCE",
     title: "",
@@ -56,7 +58,7 @@ export default function AddNewTicket() {
 
   const fetchDepartment = async () => {
     await APIService
-      .getAllDepartment()
+      .getAllDepartment(currentPage, isPaginated)
       .then((res) => {
         if (res.data.hasdata) {
           setDepartment(res.data.data);

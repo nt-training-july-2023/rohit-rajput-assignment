@@ -56,7 +56,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
      * @param pageable
      * @return List<UserOutDTO>
      */
-    @Query("select new com.gms.dto.UserOutDTO(u.id, u.name, d.departmentName) from User u JOIN u.department d")
+    @Query("select new com.gms.dto.UserOutDTO(u.id, u.name, d.departmentName, u.role) from User u JOIN u.department d")
     List<UserOutDTO> getAllUser(Pageable pageable);
 
     /**
@@ -65,6 +65,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
      * @param pageable
      * @return List<UserOutDTO>
      */
-    @Query("select new com.gms.dto.UserOutDTO(u.id, u.name, d.departmentName) from User u JOIN u.department d where d.departmentName = ?1")
+    @Query("select new com.gms.dto.UserOutDTO(u.id, u.name, d.departmentName, u.role) from User u JOIN u.department d where d.departmentName = ?1")
     List<UserOutDTO> getAllUserByDepartment(String filterDepartment, Pageable pageable);
 }

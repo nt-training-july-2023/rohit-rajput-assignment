@@ -37,13 +37,13 @@ public class Department {
     /**
      * This is List<User> beLongs to department.
      */
-    @OneToMany(mappedBy = "department")
+    @OneToMany(mappedBy = "department", orphanRemoval = true)
     private List<User> users;
 
     /**
      * This is List<Ticket> assigned to department.
      */
-    @OneToMany(mappedBy = "department")
+    @OneToMany(mappedBy = "department", orphanRemoval = true)
     private List<Ticket> tickets;
 
     /**

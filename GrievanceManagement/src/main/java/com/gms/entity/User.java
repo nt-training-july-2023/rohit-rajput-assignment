@@ -83,7 +83,7 @@ public class User {
     /**
      * This is @List<Ticket> beLongs to user.
      */
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", orphanRemoval = true)
     private List<Ticket> ticket;
 
     /**
@@ -95,7 +95,7 @@ public class User {
     /**
      * This is @List<comment> beLongs to a user.
      */
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", orphanRemoval = true)
     private List<Comment> comments;
 
     /**

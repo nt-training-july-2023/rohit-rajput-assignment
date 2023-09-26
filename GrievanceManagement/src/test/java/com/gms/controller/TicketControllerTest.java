@@ -63,7 +63,6 @@ public class TicketControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(ticketSaveInDTO)))
         .andExpect(status().isNotFound()).andReturn();
-        System.out.println(mvcResult.getResponse().getContentAsString());
     }
     @Test
     public void testSaveTicketSuccessful() throws JsonProcessingException, Exception {
@@ -81,7 +80,6 @@ public class TicketControllerTest {
                 .content(objectMapper.writeValueAsString(ticketSaveInDTO)))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.message",is(MessageConstant.ADDED))).andReturn();
-        System.out.println(mvcResult.getResponse().getContentAsString());
     }
     
     @Test

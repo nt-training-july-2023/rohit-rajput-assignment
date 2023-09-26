@@ -23,4 +23,6 @@ public class VariableConstant {
      * This is maximum length of password.
      */
     public static final int PASSWORD_MAX_LENGTH = 20;
+    
+    public static final Object ALL_USER = "all";
 }

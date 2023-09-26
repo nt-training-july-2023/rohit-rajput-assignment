@@ -24,6 +24,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 
 import com.gms.constants.MessageConstant;
+import com.gms.constants.VariableConstant;
 import com.gms.dto.AddUserInDTO;
 import com.gms.dto.LoginRequestInDTO;
 import com.gms.dto.LoginResponseOutDTO;
@@ -197,16 +198,16 @@ public class UserServiceImplTest {
     public void testGetAllUserIfListIsempty() {
         Pageable pageable = PageRequest.of(1, 10);
         when(userRepository.getAllUser(pageable)).thenReturn(Arrays.asList());
-        NotFoundException notFoundException = assertThrows(NotFoundException.class, ()->userServiceImpl.getAllUser(0, null));
+        NotFoundException notFoundException = assertThrows(NotFoundException.class, ()->userServiceImpl.getAllUser(0, "all"));
         assertEquals(MessageConstant.NOT_FOUND, notFoundException.getMessage());
     }
     
     @Test
     public void testGetAllUserIfListIsNotEmpty() {
         Pageable pageable = PageRequest.of(0, 10);
-        List<UserOutDTO> userOutDTOs = Arrays.asList(new UserOutDTO(1l,"Rohit","HR"));
+        List<UserOutDTO> userOutDTOs = Arrays.asList(new UserOutDTO(1l,"Rohit","HR", Role.ADMIN));
         when(userRepository.getAllUser(pageable)).thenReturn(userOutDTOs);
-        List<UserOutDTO> userOutDTOs1 = userServiceImpl.getAllUser(0, null);
+        List<UserOutDTO> userOutDTOs1 = userServiceImpl.getAllUser(0, "all");
         assertEquals(1, userOutDTOs1.size());
     }
     
@@ -214,7 +215,7 @@ public class UserServiceImplTest {
     public void testGetAllUserIfListIsNotEmptyWithFilteration() {
         Pageable pageable = PageRequest.of(0, 10);
         String filterDepartment = "HR";
-        UserOutDTO userOutDTO1 = new UserOutDTO(1l,"Rohit","HR");
+        UserOutDTO userOutDTO1 = new UserOutDTO(1l,"Rohit","HR",Role.ADMIN);
         List<UserOutDTO> userOutDTOs = Arrays.asList(userOutDTO1);
         when(userRepository.getAllUser(pageable)).thenReturn(userOutDTOs);
         when(userRepository.getAllUserByDepartment(filterDepartment, pageable)).thenReturn(userOutDTOs);
