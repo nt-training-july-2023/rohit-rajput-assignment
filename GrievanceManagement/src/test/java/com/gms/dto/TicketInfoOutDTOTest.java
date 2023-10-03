@@ -28,6 +28,10 @@ public class TicketInfoOutDTOTest {
     
     @Test
     public void getterAndSetterTesting() {
+        assertNull(ticketInfoOutDTO.getUserId());
+        ticketInfoOutDTO.setUserId(1l);
+        assertEquals(1l, ticketInfoOutDTO.getUserId());
+        
         assertNull(ticketInfoOutDTO.getTitle());
         ticketInfoOutDTO.setTitle("Keyboard Problem");
         assertEquals("Keyboard Problem", ticketInfoOutDTO.getTitle());
@@ -73,8 +77,9 @@ public class TicketInfoOutDTOTest {
     }
     
     @Test
-    public void testingHashCodeAndEqualsAndToStringMethod() {
+    public void testingHashCodeAndEquals() {
         TicketInfoOutDTO ticketInfoOutDTO1 = new TicketInfoOutDTO();
+        ticketInfoOutDTO1.setUserId(1l);
         ticketInfoOutDTO1.setAssignedBy("Rohit");
         ticketInfoOutDTO1.setTitle("qwerty");
         ticketInfoOutDTO1.setTicketType(TicketType.FEEDBACK);
@@ -87,6 +92,7 @@ public class TicketInfoOutDTOTest {
         ticketInfoOutDTO1.setCreationTime(LocalDateTime.now().withNano(0));
         
         TicketInfoOutDTO ticketInfoOutDTO2 = new TicketInfoOutDTO();
+        ticketInfoOutDTO2.setUserId(1l);
         ticketInfoOutDTO2.setAssignedBy("Rohit");
         ticketInfoOutDTO2.setTitle("qwerty");
         ticketInfoOutDTO2.setTicketType(TicketType.FEEDBACK);
@@ -99,6 +105,7 @@ public class TicketInfoOutDTOTest {
         ticketInfoOutDTO2.setCreationTime(LocalDateTime.now().withNano(0));
         
         TicketInfoOutDTO ticketInfoOutDTO3 = new TicketInfoOutDTO();
+        ticketInfoOutDTO3.setUserId(2l);
         ticketInfoOutDTO3.setAssignedBy("Mohit");
         ticketInfoOutDTO3.setTitle("qwerty");
         ticketInfoOutDTO3.setTicketType(TicketType.FEEDBACK);
@@ -124,6 +131,7 @@ public class TicketInfoOutDTOTest {
     @Test
     public void testToString() {
         TicketInfoOutDTO ticketInfoOutDTO = new TicketInfoOutDTO();
+        ticketInfoOutDTO.setUserId(1l);
         ticketInfoOutDTO.setAssignedBy("Rohit");
         ticketInfoOutDTO.setTitle("qwerty");
         ticketInfoOutDTO.setTicketType(TicketType.FEEDBACK);
@@ -134,7 +142,8 @@ public class TicketInfoOutDTOTest {
         ticketInfoOutDTO.setComments(Arrays.asList(new CommentOutDTO()));
         ticketInfoOutDTO.setAssignedTo("HR");
         ticketInfoOutDTO.setCreationTime(LocalDateTime.now().withNano(0));
-        assertEquals("TicketInfoOutDTO [ticketId=1, title=qwerty, description=good, ticketType=FEEDBACK, assignedTo=HR, assignedBy=Rohit, comments=[CommentOutDTO [comment=null, name=null]], status=BEING_ADDRESSED]"
+        assertEquals("TicketInfoOutDTO [userId=1, ticketId=1, title=qwerty, description=good, ticketType=FEEDBACK, assignedTo=HR, assignedBy=Rohit, comments=[CommentOutDTO [comment=null, name=null]], status=BEING_ADDRESSED]"
+                + ""
                 , ticketInfoOutDTO.toString());
     }
 }

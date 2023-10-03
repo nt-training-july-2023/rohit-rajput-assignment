@@ -6,28 +6,22 @@
   justify-content: end;
   padding-right: 15vw;
   box-sizing: border-box;
-  /* background-color: #002d52; */
-  /* margin: 1% 0; */
 }
 .parent-register-container .register-container {
   margin-left: 25%;
   margin: 1% 0;
   position: relative;
   max-width: 65rem;
-  /* max-width: 60rem; */
   height: 0%;
   width: 100%;
   background: #fff;
   padding: 4rem;
   padding-bottom: 1rem;
   padding-top: 1rem;
-  /* padding:1.5rem; */
   border-radius: 1rem;
   box-shadow: 0 0 1.5rem grey;
-  /* border: 1px solid blue; */
 }
 .register-container header {
-  /* font-size: 1.5rem; */
   color: #333;
   font-weight: 800;
   text-align: center;
@@ -50,7 +44,6 @@
   outline: none;
   font-size: 1rem;
   color: #707070;
-  /* margin-top: 8px; */
   border: 1px solid #ddd;
   border-radius: 6px;
   padding: 0 15px;
@@ -120,9 +113,6 @@
   font-size: 3rem !important;
   font-weight: 700;
 }
-/* .addUser_option{
-    font-size: 18px;
-} */
 
 .select-box .addnewuser_option {
   font-size: 1.5rem;

@@ -15,6 +15,7 @@ export default function ViewTicket() {
   const [startingStatus, setStartingStatus] = useState("");
   const [updatedStatus, setUpdatedStatus] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
+  const userId = JSON.parse(localStorage.getItem('user'))?.id;
   const [err, setErr] = useState("");
   const navigate = useNavigate();
   const param = useParams();
@@ -186,12 +187,10 @@ export default function ViewTicket() {
                       handleStatus(e);
                     }}
                     value={updatedStatus}
-                    disabled={
-                      startingStatus === "RESOLVED" ||
-                      ticketDepartmentName !== userDepartment
-                        ? true
-                        : false
-                    }
+                   disabled ={startingStatus === "RESOLVED" ? true :
+                    userId === ticketInfo.userId ? false : 
+                    ticketDepartmentName !== userDepartment ?true : false}
+
                   >
                     <option hidden>OPEN</option>
                     <option>BEING_ADDRESSED</option>
@@ -257,22 +256,16 @@ export default function ViewTicket() {
                 value={updateComment}
                 placeholder="Write comment here"
                 disabled={updatedStatus === "OPEN" ? true : false}
-                hidden={
-                  startingStatus === "RESOLVED" ||
-                  ticketDepartmentName !== userDepartment
-                    ? true
-                    : false
-                }
+                hidden={startingStatus === "RESOLVED" ? true :
+                userId === ticketInfo.userId ? false : 
+                ticketDepartmentName !== userDepartment ?true : false}
               />
                <button
                 className="view-ticket-btn"
                 type="submit"
-                hidden={
-                  startingStatus === "RESOLVED" ||
-                  ticketDepartmentName !== userDepartment
-                    ? true
-                    : false
-                }
+                hidden={startingStatus === "RESOLVED" ? true :
+                userId === ticketInfo.userId ? false : 
+                ticketDepartmentName !== userDepartment ?true : false}
               >
                 Update Ticket
               </button>

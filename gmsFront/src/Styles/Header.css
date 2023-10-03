@@ -1,13 +1,9 @@
-/* *{
-    font-family: montserrat;
-} */
+
 nav {
   background-color: #024074;
-  /* background-color: black; */
   height: 7rem;
   width: 100%;
   position: relative;
-  /* overflow: hidden; */
 }
 label.logo {
   color: white;
@@ -30,20 +26,9 @@ nav ul li a {
   font-size: 1.7rem;
   padding: 0.7rem 1.3rem;
   border-radius: 0.3rem;
-  /* text-transform: uppercase; */
   text-decoration: none;
 }
 nav ul li a:hover {
-  /* background: black; */
   background: #045faa;
   transition: 0.5s;
 }
-/* @media(max-width:910px){
-    
-}
-@media(max-width:802px){
-    html{
-        font-size: 45%;
-    }
-    
-}  */

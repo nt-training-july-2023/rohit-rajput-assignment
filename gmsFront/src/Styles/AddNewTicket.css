@@ -6,7 +6,6 @@
   width: 100vw;
   justify-content: center;
   box-sizing: border-box;
-  /* margin: 1% 0; */
 }
 .add-new-ticket-container .new-ticket-container {
   margin: 1% 0;
@@ -78,12 +77,8 @@
   border-radius: 6px;
   font-weight: 400;
   margin: 2rem 0;
-  /* transition: all 0.2s ease; */
   background-color: #024074;
 }
-/* .add_new_ticket_admin_dashboard {
-  border: 1px solid green;
-} */
 .select-box option{
   font-size:large;
 }

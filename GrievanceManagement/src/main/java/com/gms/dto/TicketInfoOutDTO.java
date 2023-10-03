@@ -13,6 +13,10 @@ import com.gms.entity.TicketType;
 public class TicketInfoOutDTO {
 
     /**
+     * This is userId.
+     */
+    private Long userId;
+    /**
      * This is ticketId.
      */
     private Long ticketId;
@@ -58,6 +62,22 @@ public class TicketInfoOutDTO {
      */
     public TicketInfoOutDTO() {
         super();
+    }
+
+    /**
+     * getter method for @getUserId.
+     * @return Long - userId
+     */
+    public Long getUserId() {
+        return userId;
+    }
+
+    /**
+     * setter method for @setUserId.
+     * @param userId
+     */
+    public void setUserId(final Long userId) {
+        this.userId = userId;
     }
 
     /**
@@ -221,16 +241,16 @@ public class TicketInfoOutDTO {
     }
 
     /**
-     * This is @hashCode method.
+     *This is @hashCode method.
      */
     @Override
     public int hashCode() {
         return Objects.hash(assignedBy, assignedTo, comments, creationTime, description, lastUpdatedTime, status,
-                ticketId, ticketType, title);
+                ticketId, ticketType, title, userId);
     }
 
     /**
-     * This is @equals method.
+     *This is @equals method.
      */
     @Override
     public boolean equals(final Object obj) {
@@ -249,17 +269,18 @@ public class TicketInfoOutDTO {
                 && Objects.equals(description, other.description)
                 && Objects.equals(lastUpdatedTime, other.lastUpdatedTime) && status == other.status
                 && Objects.equals(ticketId, other.ticketId) && ticketType == other.ticketType
-                && Objects.equals(title, other.title);
+                && Objects.equals(title, other.title) && Objects.equals(userId, other.userId);
     }
 
     /**
-     * This is @toString method.
+     *This is @toString method.
      */
     @Override
     public String toString() {
-        return "TicketInfoOutDTO [ticketId=" + ticketId + ", title=" + title + ", description=" + description
-                + ", ticketType=" + ticketType + ", assignedTo=" + assignedTo + ", assignedBy=" + assignedBy
-                + ", comments=" + comments + ", status=" + status + "]";
+        return "TicketInfoOutDTO [userId=" + userId + ", ticketId=" + ticketId + ", title=" + title + ", description="
+                + description + ", ticketType=" + ticketType + ", assignedTo=" + assignedTo + ", assignedBy="
+                + assignedBy + ", comments="
+                + comments + ", status=" + status + "]";
     }
 
 }

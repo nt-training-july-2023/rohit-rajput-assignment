@@ -1,6 +1,5 @@
 import React from 'react'
 import {Routes ,Route } from 'react-router-dom'
-import AdminDashboard from './Componenets/AdminDashboard'
 import AddNewUser from './Componenets/AddNewUser'
 import AddDepartment from './Componenets/AddDepartment'
 import AddNewTicket from './Componenets/AddNewTicket'
@@ -28,7 +27,6 @@ function AdminRoutes() {
        <Route path='/update-ticket/:ticketId' element={<ViewTicket/>}/>
        <Route path='/update-password' element={<ChangePassAgain/>}/>
        <Route exact path='*' element={<PageNotFound/>}/>  
-       <Route exact path='/login' element={<AdminDashboard/>} /> 
         
     </Routes>
     

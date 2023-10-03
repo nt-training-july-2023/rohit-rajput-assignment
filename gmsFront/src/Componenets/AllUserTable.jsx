@@ -164,6 +164,7 @@ export default function AllUserTable() {
             </thead>
             {users?.map((user, index) => {
               return (
+                <tbody key={user.userId}>
                 <tr key={user.userId}>
                   <td>{(currentPage - 1) * 10 + (index + 1)}</td>
                   <td>{user.name}</td>
@@ -181,6 +182,7 @@ export default function AllUserTable() {
                     </button>
                   </td>
                 </tr>
+                </tbody>
               );
             })}
           </table>

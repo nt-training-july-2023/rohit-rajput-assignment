@@ -147,7 +147,7 @@ export default function TicketTable() {
             </thead>
             {tickets?.map((ticket) => {
               return (
-                <tbody>
+                <tbody key={ticket.ticketId}>
                 <tr key={ticket.ticketId}>
                   <td>{ticket.title}</td>
                   <td>{ticket.departmentName}</td>

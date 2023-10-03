@@ -102,6 +102,7 @@ export default function AllDepartmentTable() {
             </thead>
             {departments?.map((department, index) => {
               return (
+                <tbody key={department.id}>
                 <tr key={department.id}>
                   <td>{(currentPage - 1) * 10 + (index + 1)}</td>
                   <td>{department.departmentName}</td>
@@ -120,6 +121,7 @@ export default function AllDepartmentTable() {
                     </button>
                   </td>
                 </tr>
+                </tbody>
               );
             })}
           </table>

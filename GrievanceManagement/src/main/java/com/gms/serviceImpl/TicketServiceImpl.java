@@ -159,11 +159,6 @@ public class TicketServiceImpl implements TicketService {
             LOGGER.error("[TicketServiceImpl]: user id does not exists");
             throw new NotFoundException(MessageConstant.NOT_FOUND);
         }
-        if (!(ticket.get().getDepartment().getDepartmentId().equals(user.get().getDepartment().getDepartmentId()))
-                && user.get().getRole().equals(Role.MEMBER)) {
-            LOGGER.warn("[TicketServiceImpl]: you does not have rights to access this ticket");
-            throw new BadRequestException(MessageConstant.ACCESS_DENIED);
-        }
         List<CommentOutDTO> commentOutDTOs = ticket.get().getComments().stream().map(comment -> {
             CommentOutDTO commentOutDTO = new CommentOutDTO();
             commentOutDTO.setComment(comment.getComment());
@@ -171,6 +166,7 @@ public class TicketServiceImpl implements TicketService {
             return commentOutDTO;
         }).collect(Collectors.toList());
         TicketInfoOutDTO ticketInfoOutDTO = new TicketInfoOutDTO();
+        ticketInfoOutDTO.setUserId(ticket.get().getUser().getId());
         ticketInfoOutDTO.setTitle(ticket.get().getTitle());
         ticketInfoOutDTO.setTicketType(ticket.get().getTicketType());
         ticketInfoOutDTO.setTicketId(ticket.get().getTicketId());

@@ -10,7 +10,6 @@
 }
 .ticket-table{
     border-collapse: collapse;
-    /* font-size: 1.5vw; */
     width: 100%;
 }
 .ticket-table td{

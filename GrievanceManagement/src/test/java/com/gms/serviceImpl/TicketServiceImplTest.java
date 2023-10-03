@@ -562,31 +562,6 @@ public class TicketServiceImplTest {
     }
     
     @Test
-    public void testTicketByIdIfUserNotBelongToTicketDepartment() {
-        Department department1 = new Department();
-        department1.setDepartmentId(1l);
-        Department department2 = new Department();
-        department2.setDepartmentId(2l);
-        Long ticketId = 1l;
-        Long userId = 1l;
-        User user1 = new User();
-        user1.setId(userId);
-        user1.setRole(Role.MEMBER);
-        user1.setDepartment(department1);
-        User user2 = new User();
-        user2.setId(2l);
-        Ticket ticket = new Ticket();
-        ticket.setTicketId(ticketId);
-        ticket.setUser(user2);
-        ticket.setDepartment(department2);
-        when(ticketRepository.findById(ticketId)).thenReturn(Optional.of(ticket));
-        when(userRepository.findById(userId)).thenReturn(Optional.of(user1));
-        BadRequestException badRequestException = assertThrows(BadRequestException.class, ()->
-        ticketServiceImpl.getTicketById(ticketId, userId));
-        assertEquals(MessageConstant.ACCESS_DENIED, badRequestException.getMessage());
-    }
-    
-    @Test
     public void testTicketByIdSuccessfully() {
         Department department = new Department();
         department.setDepartmentId(1l);
