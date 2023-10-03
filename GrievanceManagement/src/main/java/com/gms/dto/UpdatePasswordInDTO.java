@@ -2,56 +2,56 @@ package com.gms.dto;
 
 import java.util.Objects;
 
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.Pattern;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.NotNull;
 
 public class UpdatePasswordInDTO {
     /**
-     * This is minimum length of password.
-     */
-    private static final int PASSWORD_MIN_LENGTH = 8;
-    /**
-     * This is maximum length of password.
-     */
-    private static final int PASSWORD_MAX_LENGTH = 20;
-    /**
      * this is userId.
      */
-    private long userId;
-    @Size(min = PASSWORD_MIN_LENGTH, max = PASSWORD_MAX_LENGTH, message = "password must be 8-20 character long")
-    @NotEmpty(message = "please enter your password")
-    @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])"
-            + "(?=.*[@$!%*?&])[A-Za-z0-9@$!%*?&]{8,20}$", message = "enter strong password")
+    @NotNull(message = "Id can not be null")
+    private Long userId;
+    /**
+     * This is password.
+     */
     private String password;
+
     /**
      * this is newPassword.
      */
-    @Size(min = PASSWORD_MIN_LENGTH, max = PASSWORD_MAX_LENGTH, message = "password must be 8-20 character long")
-    @NotEmpty(message = "please enter your password")
-    @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])"
-            + "(?=.*[@$!%*?&])[A-Za-z0-9@$!%*?&]{8,20}$", message = "enter strong password")
     private String newPassword;
+
     /**
      * getter method for @getUserId.
-     * @return long - userId.
+     * @return Long - userId.
      */
-    public long getUserId() {
+    public Long getUserId() {
         return userId;
     }
+
     /**
      * setter method for @setUserId.
      * @param userId
      */
-    public void setUserId(final long userId) {
+    public void setUserId(final Long userId) {
         this.userId = userId;
     }
+
+    /**
+     * getter method for @getPassword.
+     * @return String - password.
+     */
     public String getPassword() {
         return password;
     }
-    public void setPassword(String password) {
+
+    /**
+     * setter method for @setPassword.
+     * @param password
+     */
+    public void setPassword(final String password) {
         this.password = password;
     }
+
     /**
      * getter method for @getNewPassword.
      * @return String - newPassword
@@ -59,6 +59,7 @@ public class UpdatePasswordInDTO {
     public String getNewPassword() {
         return newPassword;
     }
+
     /**
      * setter method for @setNewPassword.
      * @param newPassword
@@ -66,41 +67,62 @@ public class UpdatePasswordInDTO {
     public void setNewPassword(final String newPassword) {
         this.newPassword = newPassword;
     }
+
     /**
      * this is no-argument constructor.
      */
     public UpdatePasswordInDTO() {
         super();
     }
-     
-    public UpdatePasswordInDTO(long userId,
-            @Size(min = 8, max = 20, message = "password must be 8-20 character long") @NotEmpty(message = "please enter your password") @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[@$!%*?&])[A-Za-z0-9@$!%*?&]{8,20}$", message = "enter strong password") String password,
-            @Size(min = 8, max = 20, message = "password must be 8-20 character long") @NotEmpty(message = "please enter your password") @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[@$!%*?&])[A-Za-z0-9@$!%*?&]{8,20}$", message = "enter strong password") String newPassword) {
+
+    /**
+     * This is all-argument constructor.
+     * @param userId
+     * @param password
+     * @param newPassword
+     */
+    public UpdatePasswordInDTO(@NotNull(message = "Id can not be null") final Long userId,
+            final String password, final String newPassword) {
         super();
         this.userId = userId;
         this.password = password;
         this.newPassword = newPassword;
     }
+
+    /**
+     * This is @hashCode method.
+     */
     @Override
     public int hashCode() {
         return Objects.hash(newPassword, password, userId);
     }
+
+    /**
+     * This is @equals method.
+     */
     @Override
-    public boolean equals(Object obj) {
-        if (this == obj)
+    public boolean equals(final Object obj) {
+        if (this == obj) {
             return true;
-        if (obj == null)
+        }
+        if (obj == null) {
             return false;
-        if (getClass() != obj.getClass())
+        }
+        if (getClass() != obj.getClass()) {
             return false;
+        }
         UpdatePasswordInDTO other = (UpdatePasswordInDTO) obj;
         return Objects.equals(newPassword, other.newPassword) && Objects.equals(password, other.password)
-                && userId == other.userId;
+                && userId.equals(other.userId);
     }
+
+    /**
+     * This is @toString method.
+     */
     @Override
     public String toString() {
         return "UpdatePasswordInDTO [userId=" + userId + ", password=" + password + ", newPassword=" + newPassword
                 + "]";
     }
-   
+
 }

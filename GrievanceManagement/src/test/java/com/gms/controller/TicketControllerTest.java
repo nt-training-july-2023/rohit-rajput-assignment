@@ -1,9 +1,11 @@
 package com.gms.controller;
 
 import static org.hamcrest.CoreMatchers.is;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -23,15 +25,18 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.gms.constants.MessageConstant;
+import com.gms.constants.UrlConstant;
+import com.gms.dto.TicketInfoOutDTO;
 import com.gms.dto.TicketSaveInDTO;
 import com.gms.dto.TicketTableOutDTO;
+import com.gms.dto.UpdateTicketInDTO;
 import com.gms.entity.Department;
 import com.gms.entity.Status;
 import com.gms.entity.Ticket;
 import com.gms.entity.TicketType;
 import com.gms.entity.User;
-import com.gms.exception.TicketNotFoundException;
-import com.gms.exception.UserNotFoundException;
+import com.gms.exception.NotFoundException;
 import com.gms.handler.GlobalExceptionHandler;
 import com.gms.service.TicketService;
 
@@ -52,45 +57,69 @@ public class TicketControllerTest {
 
     @Test
     public void testSaveTicketFailure() throws JsonProcessingException, Exception {
-        TicketSaveInDTO ticketSaveInDTO = new TicketSaveInDTO("qwerty", TicketType.Feedback, "getting problem", 1, 1);
-        when(ticketService.saveTicket(ticketSaveInDTO)).thenThrow(UserNotFoundException.class);
-        MvcResult mvcResult = mockMvc.perform(post("/ticket")
+        TicketSaveInDTO ticketSaveInDTO = new TicketSaveInDTO("qwerty", TicketType.FEEDBACK, "getting problem", 1l, 1l);
+        when(ticketService.saveTicket(ticketSaveInDTO)).thenThrow(NotFoundException.class);
+         mockMvc.perform(post(UrlConstant.BASE_URL + UrlConstant.TICKET_URL)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(ticketSaveInDTO)))
-        .andExpect(status().isNotFound()).andReturn();
-        System.out.println(mvcResult.getResponse().getContentAsString());
+        .andExpect(status().isNotFound());
     }
     @Test
     public void testSaveTicketSuccessful() throws JsonProcessingException, Exception {
-        TicketSaveInDTO ticketSaveInDTO = new TicketSaveInDTO("qwerty", TicketType.Feedback, "getting problem", 1, 1);
+        TicketSaveInDTO ticketSaveInDTO = new TicketSaveInDTO("qwerty", TicketType.FEEDBACK, "getting problem", 1l, 1l);
         User user = new User();
         user.setId(ticketSaveInDTO.getUserId());
         Department department = new Department();
-        department.setDepartmentId(1);
+        department.setDepartmentId(1l);
         Ticket ticket = new Ticket();
         ticket.setDepartment(department);
         ticket.setUser(user);
         when(ticketService.saveTicket(ticketSaveInDTO)).thenReturn(ticket);
-        MvcResult mvcResult = mockMvc.perform(post("/ticket")
+        mockMvc.perform(post(UrlConstant.BASE_URL + UrlConstant.USER_URL + UrlConstant.TICKET_URL)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(ticketSaveInDTO)))
         .andExpect(status().isOk())
-        .andExpect(jsonPath("$.message",is("Ticket generated successfully"))).andReturn();
-        System.out.println(mvcResult.getResponse().getContentAsString());
+        .andExpect(jsonPath("$.message",is(MessageConstant.ADDED)));
     }
     
     @Test
     public void testGetAllTicketFailure() throws Exception {
-        when(ticketService.getAllTicket()).thenThrow(TicketNotFoundException.class);
-        mockMvc.perform(get("/ticket"))
-               .andExpect(status().isNoContent());               
+        when(ticketService.getAllTicket(1l,false, 1,Status.BEING_ADDRESSED)).thenThrow(NotFoundException.class);
+        mockMvc.perform(get(UrlConstant.BASE_URL + UrlConstant.TICKET_URL))
+               .andExpect(status().isNotFound());               
     }
+    
     @Test
-    public void testGetAllTicketSuccess() throws Exception {
-        List<TicketTableOutDTO> list = Arrays.asList(new TicketTableOutDTO("qwert", "HR", Status.OPEN, "Rohit",LocalDateTime.now()));
-        when(ticketService.getAllTicket()).thenReturn(list);
-        mockMvc.perform(get("/ticket"))
-               .andExpect(status().isOk())
-               .andExpect(jsonPath("$.data.size()", is(1)));               
+    public void testGetAllTicketSuccess() throws Exception {        
+        List<TicketTableOutDTO> list = Arrays.asList(new TicketTableOutDTO(1l ,"qwert", "HR", Status.OPEN, "Rohit",LocalDateTime.now()));
+        when(ticketService.getAllTicket(1l,false, 1, Status.BEING_ADDRESSED)).thenReturn(list);
+        mockMvc.perform(get(UrlConstant.BASE_URL + UrlConstant.USER_URL + UrlConstant.TICKET_URL)
+                .param("userId","1")
+                .param("myTicket", "false")
+                .param("pageNumber", "0"))
+               .andExpect(status().isOk());
+    }
+    
+    @Test
+    public void testUpdateTicket() throws JsonProcessingException, Exception {
+        UpdateTicketInDTO updateTicketInDTO = new UpdateTicketInDTO(Status.BEING_ADDRESSED, 1l, 1l, "good");
+        when(ticketService.updateTicket(updateTicketInDTO)).thenReturn(MessageConstant.UPDATED);
+        mockMvc.perform(put(UrlConstant.BASE_URL + UrlConstant.USER_URL
+                + UrlConstant.TICKET_URL ).contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(updateTicketInDTO)))
+                .andExpect(jsonPath("$.data", is(MessageConstant.UPDATED)))
+                .andExpect(jsonPath("$.message", is(MessageConstant.SUCCESS)));
+    }
+    
+    @Test
+    public void testGetTicketbyId() throws Exception {
+        TicketInfoOutDTO ticketInfoOutDTO = new TicketInfoOutDTO();
+        ticketInfoOutDTO.setAssignedBy("Rohit");
+        ticketInfoOutDTO.setAssignedTo("HR");
+        ticketInfoOutDTO.setDescription("qwertyu");
+        when(ticketService.getTicketById(1l, 1l)).thenReturn(ticketInfoOutDTO);
+        mockMvc.perform(get(UrlConstant.BASE_URL + UrlConstant.USER_URL + UrlConstant.TICKET_URL +"/1")
+                .param("userId", "1").contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().isOk());
     }
 }

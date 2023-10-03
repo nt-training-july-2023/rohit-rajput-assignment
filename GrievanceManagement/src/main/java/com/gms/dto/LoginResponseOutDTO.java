@@ -5,38 +5,37 @@ import java.util.Objects;
 import com.gms.entity.Role;
 
 /**
- * <p>
  * This is LoginResponseOutDTO for returning the values of user after successful
- * login
- * <p>
- * .
+ * login.
  */
 public class LoginResponseOutDTO {
     /**
-     * id of login user.
+     * This is id of login user.
      */
-    private long id;
+    private Long id;
     /**
-     * role of the user.
+     *This is role of the user.
      */
     private Role role;
     /**
-     * name of the user.
+     *This is  name of the user.
      */
     private String name;
     /**
-     * this is firstLogin for check that user is login first time are not.
+     * This is firstLogin for check that user is login first time are not.
      */
     private boolean firstLogin;
     /**
-     * user email.
+     *This is user email.
      */
     private String email;
     /**
-     * departmentId user belongs to.
+     * This is name of the department user belongs.
      */
-    private long departmentId;
-    
+    private String departmentName;
+    /**
+     * This is encodePassword.
+     */
     private String encodePassword;
 
     /**
@@ -45,25 +44,26 @@ public class LoginResponseOutDTO {
     public LoginResponseOutDTO() {
         super();
     }
-    
+
     /**
      * @param id
      * @param role
      * @param name
      * @param firstLogin
      * @param email
-     * @param departmentId
+     * @param departmentName
      * @param encodePassword
      */
-    public LoginResponseOutDTO(long id, Role role, String name, boolean firstLogin, String email, long departmentId,
-            String encodePassword) {
+    public LoginResponseOutDTO(final Long id, final Role role, final String name,
+            final boolean firstLogin, final String email, final String departmentName,
+            final String encodePassword) {
         super();
         this.id = id;
         this.role = role;
         this.name = name;
         this.firstLogin = firstLogin;
         this.email = email;
-        this.departmentId = departmentId;
+        this.departmentName = departmentName;
         this.encodePassword = encodePassword;
     }
 
@@ -74,6 +74,7 @@ public class LoginResponseOutDTO {
     public String getName() {
         return name;
     }
+
     /**
      * setter method for @setName.
      * @param name
@@ -81,6 +82,7 @@ public class LoginResponseOutDTO {
     public void setName(final String name) {
         this.name = name;
     }
+
     /**
      * getter method for @getEmail.
      * @return String - email
@@ -88,6 +90,7 @@ public class LoginResponseOutDTO {
     public String getEmail() {
         return email;
     }
+
     /**
      * setter method for @setEmail.
      * @param email
@@ -95,34 +98,39 @@ public class LoginResponseOutDTO {
     public void setEmail(final String email) {
         this.email = email;
     }
+
     /**
-     * getter method for @getDepartmnetId.
-     * @return long - departmentId
+     * getter method for @getDepartmnetName.
+     * @return String - departmentName
      */
-    public long getDepartmentId() {
-        return departmentId;
+    public String getDepartmentName() {
+        return departmentName;
     }
+
     /**
-     * setter method for @setDepartmentId.
-     * @param departmentId
+     * setter method for @setDepartmentName.
+     * @param departmentName
      */
-    public void setDepartmentId(final long departmentId) {
-        this.departmentId = departmentId;
+    public void setDepartmentName(final String departmentName) {
+        this.departmentName = departmentName;
     }
+
     /**
      * getter method for @getId.
      * @return long - id
      */
-    public long getId() {
+    public Long getId() {
         return id;
     }
+
     /**
      * setter method for @setId.
      * @param id
      */
-    public void setId(final long id) {
+    public void setId(final Long id) {
         this.id = id;
     }
+
     /**
      * getter method for @getRole.
      * @return Role - role
@@ -130,6 +138,7 @@ public class LoginResponseOutDTO {
     public Role getRole() {
         return role;
     }
+
     /**
      * setter method for @setRole.
      * @param string
@@ -137,6 +146,7 @@ public class LoginResponseOutDTO {
     public void setRole(final Role string) {
         this.role = string;
     }
+
     /**
      * setter method for @isFirstLogin.
      * @return boolean - firstLogin
@@ -144,6 +154,7 @@ public class LoginResponseOutDTO {
     public boolean isFirstLogin() {
         return firstLogin;
     }
+
     /**
      * setter method for @setFirstLogin.
      * @param firstLogin
@@ -151,41 +162,58 @@ public class LoginResponseOutDTO {
     public void setFirstLogin(final boolean firstLogin) {
         this.firstLogin = firstLogin;
     }
-    
+
+    /**
+     * getter method for @getEncodePassword.
+     * @return String - encodedPassword
+     */
     public String getEncodePassword() {
         return encodePassword;
     }
 
-    public void setEncodePassword(String encodePassword) {
+    /**
+     * setter method for @setEncodedPassword.
+     * @param encodePassword
+     */
+    public void setEncodePassword(final String encodePassword) {
         this.encodePassword = encodePassword;
     }
 
+    /**
+     * This is @hashCode method.
+     */
     @Override
     public int hashCode() {
-        return Objects.hash(departmentId, email, encodePassword, firstLogin, id, name, role);
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null)
-            return false;
-        if (getClass() != obj.getClass())
-            return false;
-        LoginResponseOutDTO other = (LoginResponseOutDTO) obj;
-        return departmentId == other.departmentId && Objects.equals(email, other.email)
-                && Objects.equals(encodePassword, other.encodePassword) && firstLogin == other.firstLogin
-                && id == other.id && Objects.equals(name, other.name) && role == other.role;
+        return Objects.hash(departmentName, email, encodePassword, firstLogin, id, name, role);
     }
 
     /**
-     *this is @toString method.
+     * This is @equals method.
+     */
+    @Override
+    public boolean equals(final Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        LoginResponseOutDTO other = (LoginResponseOutDTO) obj;
+        return departmentName.equals(other.departmentName) && Objects.equals(email, other.email)
+                && Objects.equals(encodePassword, other.encodePassword) && firstLogin == other.firstLogin
+                && id.equals(other.id) && Objects.equals(name, other.name) && role == other.role;
+    }
+
+    /**
+     * this is @toString method.
      */
     @Override
     public String toString() {
         return "LoginResponseOutDTO [id=" + id + ", role=" + role + ", name=" + name + ", firstLogin=" + firstLogin
-                + ", email=" + email + ", departmentId=" + departmentId + ", encodePassword=" + encodePassword + "]";
+                + ", email=" + email + ", departmentName=" + departmentName + ", encodePassword=" + encodePassword + "]";
     }
-    
+
 }

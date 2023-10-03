@@ -9,6 +9,8 @@
     align-items: start;
 }
 .add-department-container{
+    top: 35%;
+    left: 10%;
     background-color: #fff;
     border: 1px solid #ccc;
     border-radius: 4px;

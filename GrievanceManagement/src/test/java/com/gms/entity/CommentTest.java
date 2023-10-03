@@ -21,11 +21,11 @@ public class CommentTest {
     public void init() {
        comment = new Comment();  
     }
+    
     @Test
-    @DisplayName("Getter & Setter")
     public void testSetAndSetCommentId() {
-        assertEquals(0, comment.getCommentId());
-        comment.setCommentId(1);
+        assertNull(comment.getCommentId());
+        comment.setCommentId(1l);
         assertEquals(1, comment.getCommentId());
     
         assertNull(comment.getComment());
@@ -44,17 +44,31 @@ public class CommentTest {
         comment.setCommentTime(LocalDateTime.now().withNano(0));
         assertNotNull(comment.getCommentTime());
     }
+    
+    @Test
+    public void testPrePersist() {
+        Comment comment = new Comment();
+        comment.persist();
+    }
+    
     @Test
     public void testEqualsAndHashCode() {
         Comment comment1 = new Comment();
         comment1.setComment("good");
-        comment1.setCommentId(1);
+        comment1.setCommentId(1l);
         Comment comment2 = new Comment();
         comment2.setComment("good");
-        comment2.setCommentId(1);
+        comment2.setCommentId(1l);
         Comment comment3 = new Comment();
         comment3.setComment("qwerty");
-        comment3.setCommentId(2);
+        comment3.setCommentId(2l);
+        
+        
+        assertTrue(comment1.equals(comment2));
+        assertFalse(comment1.equals(null));
+        assertFalse(comment1.equals(new Department()));
+        
+        comment2 = comment1;
         assertTrue(comment1.equals(comment2));
         assertEquals(comment1, comment2);
         assertFalse(comment1.equals(comment3));

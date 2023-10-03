@@ -29,11 +29,11 @@ public class TicketSaveInDTO {
     /**
      * this is departmentId ticket to be assigned.
      */
-    private long departmentId;
+    private Long departmentId;
     /**
      *this is userId how raised ticket.
      */
-    private long userId;
+    private Long userId;
 
     /**
      * getter method for @getTitle.
@@ -85,9 +85,9 @@ public class TicketSaveInDTO {
 
     /**
      * getter method for @getDepartmentId.
-     * @return long - departmentId.
+     * @return Long - departmentId.
      */
-    public long getDepartmentId() {
+    public Long getDepartmentId() {
         return departmentId;
     }
 
@@ -95,22 +95,22 @@ public class TicketSaveInDTO {
      * setter method for @setDepartmentId.
      * @param departmentId
      */
-    public void setDepartmentId(final long departmentId) {
+    public void setDepartmentId(final Long departmentId) {
         this.departmentId = departmentId;
     }
 
     /**
      * getter method for @getTicketType.
-     * @return long - userId
+     * @return Long - userId
      */
-    public long getUserId() {
+    public Long getUserId() {
         return userId;
     }
     /**
      *  setter method for @setUserId.
      * @param userId
      */
-    public void setUserId(final long userId) {
+    public void setUserId(final Long userId) {
         this.userId = userId;
     }
 
@@ -130,7 +130,7 @@ public class TicketSaveInDTO {
      */
     public TicketSaveInDTO(@NotEmpty(message = "please enter ticket title") final String title, final TicketType ticketType,
             @NotEmpty(message = "add description of ticket") final String description,
-            final long departmentId, final long userId) {
+            final Long departmentId, final Long userId) {
         super();
         this.title = title;
         this.ticketType = ticketType;
@@ -162,8 +162,8 @@ public class TicketSaveInDTO {
             return false;
         }
         TicketSaveInDTO other = (TicketSaveInDTO) obj;
-        return departmentId == other.departmentId && Objects.equals(description, other.description)
-                && ticketType == other.ticketType && Objects.equals(title, other.title) && userId == other.userId;
+        return departmentId.equals(other.departmentId) && Objects.equals(description, other.description)
+                && ticketType == other.ticketType && Objects.equals(title, other.title) && userId.equals(other.userId);
     }
 
     /**

@@ -1,0 +1,120 @@
+.view-ticket-parent-container {
+  position: relative;
+  margin-left: auto;
+  width: 80vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.view-ticket-container {
+
+  position: fixed;
+  width: 79%;
+  display: block;
+  background: white;
+  box-shadow: 0 0 1.5rem grey;
+  border: 1px solid #084b83;
+}
+.view-ticket-container .heading {
+  font-size: 3rem;
+  text-align: center;
+  margin: 10px 0;
+}
+.view-ticket-content {
+  display: flex;
+  margin-bottom: 2vh;
+}
+.ticket-info {
+  width: 60%;
+  height: 95%;
+  padding: auto;
+  margin: 10px;
+  border: 1px solid rgb(238, 236, 236);
+}
+.view-ticket-content .view-ticket-input-box {
+  display: grid;
+  margin: 1vh;
+}
+.view-ticket-content .view-ticket-input-comment-box {
+  padding: 10px;
+  width: 40%;
+  height: 76vh;
+  border: 1px solid rgb(238, 236, 236);
+  margin: 10px;
+  overflow: hidden;
+  overflow-y: scroll;
+}
+.view-ticket-content .ticket-info-label {
+  font-size: 18px;
+  font-weight: 700;
+}
+.view-ticket-content .ticket-info-comment-label {
+  font-size: 18px;
+  font-weight: 700;
+  width: 100%;
+  text-align: center;
+  margin-bottom: 10px;
+}
+.view-ticket-content .ticket-info-input {
+  font-size: 15px;
+  border: 1px solid gray;
+  padding: 0.5vw;
+  margin: 0.5vw;
+  border-radius: 3px;
+  margin: 0.1vh;
+  position: relative;
+  height: 5vh;
+  width: 90%;
+}
+.view-ticket-content .ticket-info-comment-input-div  {
+  padding: 0.5vw;
+  border: 1px solid rgb(238, 236, 236);
+}
+.view-ticket-content .ticket-info-comment-input {
+  font-size: 15px;
+}
+.view-ticket-content .ticket-info-comment-input-lable {
+  font-size: 15px;
+  font-weight: bold;
+  margin-right: 5px;
+}
+.view-comment-add {
+    display: flex;
+    justify-content: space-between;
+}
+.view-comment-add input {
+    margin-left: 1vw;
+    margin-bottom: 10px;
+    width: 30vw;
+    font-size: 20px;
+    border: 1px solid rgb(126, 125, 125);
+    border-radius: 36px;
+    height: 7vh;
+    padding-left: 10px;
+    margin-right: 10px;
+}
+.view-comment-add button {
+    height: 4.5rem;
+    width: 38%;
+    margin-right: 1vh;
+    color: aliceblue;
+    font-size: 2rem;
+    cursor: pointer;
+    border-radius: 10px;
+    font-weight: 400;
+    background-color: #084b83;;
+  }
+.view-ticket-selectbox{
+    font-size: 15px;
+    border: 1px solid gray;
+    padding: 0.5vw;
+    margin: 0.5vw;
+    border-radius: 3px;
+    margin: 0.1vh;
+    position: relative;
+    height: 5vh;
+    width: 90%;
+}
+
+

@@ -1,5 +1,7 @@
 package com.gms.controller;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -10,17 +12,25 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.gms.response.APIResponseEntity;
+import com.gms.constants.MessageConstant;
+import com.gms.constants.UrlConstant;
+import com.gms.response.ResponseDTO;
 import com.gms.service.DepartmentService;
 
 /**
- * This is DepartmentController for handling all the end-point
- * related to department.
+ * This is DepartmentController for handling all the end-point related to
+ * department.
  */
 @CrossOrigin("*")
 @RestController
-@RequestMapping("/department")
+@RequestMapping(UrlConstant.BASE_URL)
 public class DepartmentController {
+
+    /**
+     * This is @Logger class object.
+     */
+    private static final Logger LOGGER = LogManager.getLogger(DepartmentController.class);
+
     /**
      * This is DepartmentService object.
      */
@@ -28,28 +38,41 @@ public class DepartmentController {
     private DepartmentService departmentService;
 
     /**
-     * @return APIResponseEntity
+     * This is @getAllDepartment for getting list of department.
+     * @param pageNumber
+     * @param isPaginate
+     * @return ResponseDTO
      */
-    @GetMapping
-    public APIResponseEntity getAllDepartment() {
-        return new APIResponseEntity(true, departmentService.getAllDepartment(), "List of Department");
+    @GetMapping(UrlConstant.USER_URL + UrlConstant.DEPARTMENT_URL)
+    public ResponseDTO getAllDepartment(@RequestParam(required = false)final Integer pageNumber,
+            @RequestParam(defaultValue = "false") final Boolean isPaginate) {
+        Integer currentPage = pageNumber - 1;
+        if (currentPage < 0) {
+            currentPage = 0;
+        }
+        LOGGER.info("[DepartmentController]: sending get-all-department request to departmentService");
+        return new ResponseDTO(true, departmentService.getAllDepartment(currentPage, isPaginate),
+                MessageConstant.SUCCESS);
     }
+
     /**
      * @param departmentName
-     * @return APIResponseEntity
+     * @return ResponseDTO
      */
-    @PostMapping
-    public APIResponseEntity saveDepartment(@RequestParam final String departmentName) {
-        return new APIResponseEntity(true, departmentService.saveDepartment(departmentName), "Department saved");
+    @PostMapping(UrlConstant.ADMIN_URL + UrlConstant.DEPARTMENT_URL)
+    public ResponseDTO saveDepartment(@RequestParam final String departmentName) {
+        LOGGER.info("[DepartmentController]: sending save department request to departmentService");
+        return new ResponseDTO(true, departmentService.saveDepartment(departmentName), MessageConstant.ADDED);
     }
+
     /**
-     * @param id - departmentId
-     * @return APIResponseEntity
+     * @param departmentId
+     * @return ResponseDTO
      */
-    @DeleteMapping("/{id}")
-    public APIResponseEntity deleteDepartment(@PathVariable final long id) {
-        departmentService.deleteDepartment(id);
-        return new APIResponseEntity(false, null, "Department deleted");
+    @DeleteMapping(UrlConstant.ADMIN_URL + UrlConstant.DEPARTMENT_URL + "/{departmentId}")
+    public ResponseDTO deleteDepartment(@PathVariable final Long departmentId) {
+        LOGGER.info("[DepartmentController]: sending delete department request to departmentService");
+        return new ResponseDTO(false, departmentService.deleteDepartment(departmentId));
     }
 
 }

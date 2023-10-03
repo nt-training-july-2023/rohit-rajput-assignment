@@ -18,66 +18,75 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
-
 /**
- * <p>This is @Ticket class for representing ticket_details
- * in database<p>.
+ * This is @Ticket class for representing ticket_details in database.
  */
 @Entity
 @Table(name = "ticket_details")
 public class Ticket {
+
     /**
-     * <p>This is @ticketId of Ticket table which is primary key of
-     * ticket_details table<p>.
+     * This is @ticketId of Ticket table which is primary key of ticket_details
+     * table.
      */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long ticketId;
+
     /**
      * This is title of our ticket.
      */
     @NotEmpty(message = "title can't be blank")
     private String title;
+
     /**
      * This is description of ticket.
      */
     @NotEmpty(message = "please describe the problem")
     private String description;
+
     /**
      * This is status of ticket.
      */
     @Enumerated(EnumType.STRING)
     private Status status;
+
     /**
      * This is type of ticket.
      */
     @NotNull(message = "ticket type can not be null")
     @Enumerated(EnumType.STRING)
     private TicketType ticketType;
+
     /**
      * This is creation time of ticket.
      */
     private LocalDateTime creationTime;
+
     /**
      * This is last updated time of ticket.
      */
     private LocalDateTime lastUpdationTime;
+
     /**
      * This is the user who generate ticket.
      */
     @ManyToOne
     private User user;
+
     /**
      * This is the department to which ticket is assigned.
      */
     @ManyToOne
     @JoinColumn(name = "assigned_to")
     private Department department;
+
     /**
      * This is the list of comment belongs to a ticket.
      */
-    @OneToMany(mappedBy = "ticket")
+    @OneToMany(mappedBy = "ticket", orphanRemoval = true)
     private List<Comment> comments;
+
     /**
      * getter method for @getTicketId.
      * @return long - ticketId
@@ -85,6 +94,7 @@ public class Ticket {
     public long getTicketId() {
         return ticketId;
     }
+
     /**
      * setter method for @setTicketId.
      * @param ticketId
@@ -92,6 +102,7 @@ public class Ticket {
     public void setTicketId(final long ticketId) {
         this.ticketId = ticketId;
     }
+
     /**
      * getter method for @getTitle.
      * @return String - title
@@ -99,6 +110,7 @@ public class Ticket {
     public String getTitle() {
         return title;
     }
+
     /**
      * setter method for @setTitle.
      * @param title
@@ -106,6 +118,7 @@ public class Ticket {
     public void setTitle(final String title) {
         this.title = title;
     }
+
     /**
      * getter method for @getDescription.
      * @return String - description
@@ -113,6 +126,7 @@ public class Ticket {
     public String getDescription() {
         return description;
     }
+
     /**
      * setter method for @setDescription.
      * @param description
@@ -120,6 +134,7 @@ public class Ticket {
     public void setDescription(final String description) {
         this.description = description;
     }
+
     /**
      * getter method for @getTicketType.
      * @return TicketType - ticketType
@@ -127,6 +142,7 @@ public class Ticket {
     public TicketType getTicketType() {
         return ticketType;
     }
+
     /**
      * setter method for @setTicketType.
      * @param ticketType
@@ -134,24 +150,55 @@ public class Ticket {
     public void setTicketType(final TicketType ticketType) {
         this.ticketType = ticketType;
     }
+
+    /**
+     * getter method for @getStatus.
+     * @return Status - status
+     */
     public Status getStatus() {
         return status;
     }
-    public void setStatus(Status status) {
+
+    /**
+     * setter method for @setStatus.
+     * @param status
+     */
+    public void setStatus(final Status status) {
         this.status = status;
     }
+
+    /**
+     * getter method for @getCreationTime.
+     * @return LocalDateTime - creationTime
+     */
     public LocalDateTime getCreationTime() {
         return creationTime;
     }
-    public void setCreationTime(LocalDateTime creationTime) {
+
+    /**
+     * setter method for @setCreationTime.
+     * @param creationTime
+     */
+    public void setCreationTime(final LocalDateTime creationTime) {
         this.creationTime = creationTime;
     }
+
+    /**
+     * getter method for @getUpdationTime.
+     * @return LocalDateTime - lastUpdationTime
+     */
     public LocalDateTime getLastUpdationTime() {
         return lastUpdationTime;
     }
-    public void setLastUpdationTime(LocalDateTime lastUpdationTime) {
+
+    /**
+     * setter method for @setUpdationTime.
+     * @param lastUpdationTime
+     */
+    public void setLastUpdationTime(final LocalDateTime lastUpdationTime) {
         this.lastUpdationTime = lastUpdationTime;
     }
+
     /**
      * getter method for @getUser.
      * @return User - user
@@ -159,6 +206,7 @@ public class Ticket {
     public User getUser() {
         return user;
     }
+
     /**
      * setter method for @setUser.
      * @param user
@@ -166,6 +214,7 @@ public class Ticket {
     public void setUser(final User user) {
         this.user = user;
     }
+
     /**
      * getter method for @getDepartment.
      * @return Department - department
@@ -173,6 +222,7 @@ public class Ticket {
     public Department getDepartment() {
         return department;
     }
+
     /**
      * setter method for @setDepartment.
      * @param department
@@ -180,6 +230,7 @@ public class Ticket {
     public void setDepartment(final Department department) {
         this.department = department;
     }
+
     /**
      * getter method for @getComments.
      * @return List<Comment> - comments
@@ -187,6 +238,7 @@ public class Ticket {
     public List<Comment> getComments() {
         return comments;
     }
+
     /**
      * setter method for @setComments.
      * @param comments
@@ -194,32 +246,41 @@ public class Ticket {
     public void setComments(final List<Comment> comments) {
         this.comments = comments;
     }
+
     /**
-     * <p>This is @persist method for setting default value of status,
-     * creationTime and updationTime<p>.
+     * This is @persist method for setting default value of status, creationTime and
+     * updationTime.
      */
     @PrePersist
     public void persist() {
         status = Status.OPEN;
-        lastUpdationTime =  LocalDateTime.now().withNano(0);
+        lastUpdationTime = LocalDateTime.now().withNano(0);
         creationTime = lastUpdationTime;
     }
+
     /**
-     *this is hashCode method.
+     * this is @hashCode method.
      */
     @Override
     public int hashCode() {
         return Objects.hash(comments, creationTime, department, description, lastUpdationTime, status, ticketId,
                 ticketType, title, user);
     }
+
+    /**
+     * This is @equals method.
+     */
     @Override
-    public boolean equals(Object obj) {
-        if (this == obj)
+    public boolean equals(final Object obj) {
+        if (this == obj) {
             return true;
-        if (obj == null)
+        }
+        if (obj == null) {
             return false;
-        if (getClass() != obj.getClass())
+        }
+        if (getClass() != obj.getClass()) {
             return false;
+        }
         Ticket other = (Ticket) obj;
         return Objects.equals(comments, other.comments) && Objects.equals(creationTime, other.creationTime)
                 && Objects.equals(department, other.department) && Objects.equals(description, other.description)
@@ -227,6 +288,4 @@ public class Ticket {
                 && ticketId == other.ticketId && ticketType == other.ticketType && Objects.equals(title, other.title)
                 && Objects.equals(user, other.user);
     }
-    
-    
 }

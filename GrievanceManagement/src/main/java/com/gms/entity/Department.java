@@ -12,50 +12,55 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotEmpty;
 
-
-
 /**
- * <p>This is @Department class for representing
- * department_details table in database<p>.
+ * This is @Department class for representing department_details table in
+ * database.
  */
 @Entity
 @Table(name = "department_details")
 public class Department {
+
     /**
      * This is departmentId.
      */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long departmentId;
+    private Long departmentId;
+
     /**
      * This is departmentName.
      */
     @NotEmpty
     @Column(name = "department_name")
     private String departmentName;
+
     /**
-     * This is List<User> belongs to department.
+     * This is List<User> beLongs to department.
      */
-    @OneToMany(mappedBy = "department")
+    @OneToMany(mappedBy = "department", orphanRemoval = true)
     private List<User> users;
+
     /**
      * This is List<Ticket> assigned to department.
      */
-    @OneToMany(mappedBy = "department")
+    @OneToMany(mappedBy = "department", orphanRemoval = true)
     private List<Ticket> tickets;
+
     /**
      * getter for @getDepartmentId.
-     * @return long - departmentId
+     * @return Long - departmentId
      */
-    public long getDepartmentId() {
+    public Long getDepartmentId() {
         return departmentId;
     }
+
     /**
      * @param departmentId
      */
-    public void setDepartmentId(final long departmentId) {
+    public void setDepartmentId(final Long departmentId) {
         this.departmentId = departmentId;
     }
+
     /**
      * getter for @getDepartmentName.
      * @return String - departmentName
@@ -63,6 +68,7 @@ public class Department {
     public String getDepartmentName() {
         return departmentName;
     }
+
     /**
      * setter for @setDepartmentName.
      * @param departmentName
@@ -70,6 +76,7 @@ public class Department {
     public void setDepartmentName(final String departmentName) {
         this.departmentName = departmentName;
     }
+
     /**
      * getter for @getUsers.
      * @return List<User> - users
@@ -77,6 +84,7 @@ public class Department {
     public List<User> getUsers() {
         return users;
     }
+
     /**
      * setter for @setUsers.
      * @param users
@@ -84,6 +92,7 @@ public class Department {
     public void setUsers(final List<User> users) {
         this.users = users;
     }
+
     /**
      * getter for @getTickets.
      * @return List<Ticket> - @getTickets
@@ -91,6 +100,7 @@ public class Department {
     public List<Ticket> getTickets() {
         return tickets;
     }
+
     /**
      * setter for @setTickets.
      * @param tickets
@@ -98,15 +108,17 @@ public class Department {
     public void setTickets(final List<Ticket> tickets) {
         this.tickets = tickets;
     }
+
     /**
-     *this is hashCode method.
+     * this is @hashCode method.
      */
     @Override
     public int hashCode() {
         return Objects.hash(departmentId, departmentName, tickets, users);
     }
+
     /**
-     *this is equals method.
+     * this is @equals method.
      */
     @Override
     public boolean equals(final Object obj) {
@@ -120,7 +132,7 @@ public class Department {
             return false;
         }
         Department other = (Department) obj;
-        return departmentId == other.departmentId && Objects.equals(departmentName, other.departmentName)
+        return departmentId.equals(other.departmentId) && Objects.equals(departmentName, other.departmentName)
                 && Objects.equals(tickets, other.tickets) && Objects.equals(users, other.users);
     }
 }

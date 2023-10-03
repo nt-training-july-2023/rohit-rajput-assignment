@@ -1,14 +1,15 @@
 package com.gms.dto;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import com.gms.entity.Role;
+import com.gms.entity.Department;
 
 public class DepartmentOutDTOTest {
 
@@ -17,11 +18,11 @@ public class DepartmentOutDTOTest {
     public void setUp() {
         departmentOutDTO = new DepartmentOutDTO();
     }
+    
     @Test
-    @DisplayName("DepartmentOutDTO getter & setter")
     public void testGetterAndSetter() {
-        assertEquals(0, departmentOutDTO.getId());
-        departmentOutDTO.setId(1);
+        assertNull(departmentOutDTO.getId());
+        departmentOutDTO.setId(1l);
         assertEquals(1, departmentOutDTO.getId());
         
         assertNull(departmentOutDTO.getDepartmentName());
@@ -30,25 +31,32 @@ public class DepartmentOutDTOTest {
     }
     
     @Test
-    @DisplayName("DepartmentOutDTO constructor")
     public void testConstructor() {
-        DepartmentOutDTO departmentOutDTO = new DepartmentOutDTO(1, "HR");
+        DepartmentOutDTO departmentOutDTO = new DepartmentOutDTO(1l, "HR");
         assertEquals(1, departmentOutDTO.getId());
         assertEquals("HR", departmentOutDTO.getDepartmentName());
     }
+    
     @Test
-    @DisplayName("DepartmentOutDTO toString, equals&hashCode")
     public void testEqualAndHashCodeAndToString() {
-        AddUserInDTO addUserInDTO1 = new AddUserInDTO("Rohit", "rohit.rajput@nucleusteq.com", Role.ADMIN, "Rohit@123",
-                1);
-        AddUserInDTO addUserInDTO2 = new AddUserInDTO("Rohit", "rohit.rajput@nucleusteq.com", Role.ADMIN, "Rohit@123",
-                1);
-        AddUserInDTO addUserInDTO3 = new AddUserInDTO("Rohit Rajput", "rohit.rajput@nucleusteq.com", Role.ADMIN, "Rohit@123",
-                1);
-        assertEquals(addUserInDTO1, addUserInDTO2);
-        assertNotEquals(addUserInDTO1, addUserInDTO3);
-        assertEquals(addUserInDTO1.hashCode(), addUserInDTO2.hashCode());
-        assertNotEquals(addUserInDTO1.hashCode(), addUserInDTO3.hashCode());
-        System.out.println(addUserInDTO1);
+        DepartmentOutDTO departmentOutDTO1 = new DepartmentOutDTO(1l,"HR");
+        DepartmentOutDTO departmentOutDTO2 = new DepartmentOutDTO(1l,"HR");
+        DepartmentOutDTO departmentOutDTO3 = new DepartmentOutDTO(2l,"HR");
+        
+        assertEquals(departmentOutDTO1.hashCode(), departmentOutDTO2.hashCode());
+        assertNotEquals(departmentOutDTO1.hashCode(), departmentOutDTO3.hashCode());
+        
+        assertTrue(departmentOutDTO1.equals(departmentOutDTO2));
+        assertFalse(departmentOutDTO1.equals(null));
+        assertFalse(departmentOutDTO1.equals(new Department()));
+        assertFalse(departmentOutDTO1.equals(departmentOutDTO3));
+        departmentOutDTO1= departmentOutDTO2;
+        assertTrue(departmentOutDTO2.equals(departmentOutDTO1));
+    }
+    
+    @Test
+    public void testToString() {
+        DepartmentOutDTO departmentOutDTO1 = new DepartmentOutDTO(1l,"HR");
+        assertEquals("DepartmentOutDTO [id=1, departmentName=HR]", departmentOutDTO1.toString());
     }
 }

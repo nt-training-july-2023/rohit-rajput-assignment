@@ -1,0 +1,108 @@
+.ticket-table-parent-container{
+   position: fixed;
+   margin-left: 19vw;
+}
+.ticket-table-container{
+   width: 77vw;
+   height: 100vh;
+   margin-left: auto;
+   margin-right: 1vw;
+}
+.ticket-table{
+    border-collapse: collapse;
+    /* font-size: 1.5vw; */
+    width: 100%;
+}
+.ticket-table td{
+    font-size: 1.3vw;
+    border: 1px solid #ddd;
+    padding: 7px;
+}
+.ticket-table th{
+    padding-top:12px ;
+    padding-bottom: 12px;
+    font-size: 1.8vw;
+    text-align: left;
+    color: white;
+    background-color:#024074 ;
+    border: 1px solid #ddd;
+    padding: 8px;
+}
+.ticket-table th :nth-child(even){
+    background-color: #f2f2f2;
+}
+.ticket-table tbody:hover{
+    background-color: #ddd;
+}
+.ticket-table tr:hover{
+    background-color: #ddd;
+}
+.ticket-table-data-update{
+    color: black;
+    font-size: 2vw;
+    background: white;
+    border: none;
+    text-align: center;
+    width: 7vw;
+}
+.ticket-table-data-update:hover{
+    cursor: pointer;
+    background-color: #ddd;
+}
+.ticket-table :hover .ticket-table-data-update{
+    background-color: #ddd;
+}
+.ticket-table-top-element{
+    text-align: end;
+    width: 80vw;
+    margin-left: auto;
+    margin-right: 1vw;
+    height: 7vh;
+    margin-bottom: 10px;
+}
+.ticket-table-top-element select{
+  font-size: 2rem;
+  margin-right: 1vw;
+  border-radius: 10px;
+  padding: 5px 10px;
+}
+.ticket-table-top-element option{
+    padding: 10px 10px;
+}
+.ticket-table-top-element .ticket-table-filter-btn
+{
+    height: 3.5rem;
+    width: 10vw;
+    color: #fff;
+    font-size: 2.5rem;
+    margin-top: 1rem;
+    cursor: pointer;
+    border-radius: 6px;
+     transition: all 0.2s ease; 
+    background-color: #024074;
+} 
+.ticket-table-prev-page-btn{
+    height: 4vh;
+    width: 7vw;
+    color: #fff;
+    font-size: 1.5vw;
+    margin-top: 1vh;
+    cursor: pointer;
+    border-radius: 6px; 
+    background-color: #024074;
+}
+.ticket-table-next-page-btn{
+    height: 4vh;
+    width: 7vw;
+    color: #fff;
+    font-size: 1.5vw;
+    margin-top: 1vh;
+    cursor: pointer;
+    border-radius: 6px;
+    background-color: #024074;
+}
+
+.ticket_btn{
+    display: flex;
+    justify-content: space-between;
+}

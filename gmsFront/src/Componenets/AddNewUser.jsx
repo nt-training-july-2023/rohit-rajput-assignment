@@ -1,63 +1,50 @@
 import { useEffect, useState } from "react";
 import "../Styles/AddNewUser.css";
-import Footer from "./Footer";
-import Header from "./Header";
-import loginService from "./service/loginService";
 import Alert from "./Alert";
 import AdminDashboard from "./AdminDashboard";
 import { useNavigate } from "react-router-dom";
+import APIService from "../Service/api";
 const AddNewUser = () => {
   const [show, setShow] = useState(false);
   const [alertMessage, setAlertMessage] = useState("");
   const [usernameErr, setUsernameErr] = useState("");
   const [nameErr, setNameErr] = useState("");
   const [passwordErr, setPasswordErr] = useState("");
-  const[isNavigate,setIsNavigate]=useState(false);
-  const [departmentErr, setDepartmentErr] = useState("");
+  const [departmentErr, setDepartmentErr] = useState(0);
   const [department, setDepartment] = useState([]);
-  const navigate = useNavigate();
+  const [currentPage, setCurrentPage] = useState(1);
+  const [isPaginated, setIsPaginated] = useState(false);
 
   useEffect(() => {
     fetchDepartment();
   }, []);
 
-  const [user, setUser] = useState({
+  const userState = {
     name: "",
     username: "",
     password: "",
     userType: "MEMBER",
     departmentId: 0,
-  });
+  };
 
-  // const fetchDepartment = async () => {
-  //   try {
-  //     const res = await loginService.getAllDepartment();
-  //     console.log(res);
-  //     if (res.data.hasdata) {
-  //       setDepartment(res.data.data);
-  //     }
-  //   } catch (error) {
-  //     alert(error);
-  //   }
-  //   // console.log(department);
-  // };
+  const [user, setUser] = useState(userState);
 
-  const fetchDepartment = async () =>{
-       await loginService.getAllDepartment()
-       .then((res)=>{
-          if(res.data.hasdata){
-            setDepartment(res.data.data)
-          }
-       })
-       .catch((error)=>{
-        setShow(true);
-        if(error.code==="ERR_NETWORK"){
-             setAlertMessage(error.message);
-        }else{
-        setAlertMessage(error.response.data.message);
+  const fetchDepartment = async () => {
+    await APIService.getAllDepartment(currentPage, isPaginated)
+      .then((res) => {
+        if (res.data.hasdata) {
+          setDepartment(res.data.data);
         }
-       })
-  }
+      })
+      .catch((error) => {
+        setShow(true);
+        if (error.code === "ERR_NETWORK") {
+          setAlertMessage(error.message);
+        } else {
+          setAlertMessage(error.response.data.message);
+        }
+      });
+  };
 
   const validateUsername = (username) => {
     const usernameRegex = /^[a-z0-9]{2,}\.[a-z]{2,}@nucleusteq\.com$/;
@@ -74,7 +61,7 @@ const AddNewUser = () => {
   };
 
   const validateDepartment = (departmentId) => {
-    if (departmentId===0) {
+    if (departmentId === 0) {
       return false;
     } else {
       return true;
@@ -88,11 +75,10 @@ const AddNewUser = () => {
     return isValid;
   };
 
-  const handleSubmit = async(e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(user);
     if (!validateUsername(user.username)) {
-       setUsernameErr("Please Enter valid username");
+      setUsernameErr("Please Enter valid username");
     } else {
       setUsernameErr("");
     }
@@ -106,50 +92,57 @@ const AddNewUser = () => {
     } else {
       setNameErr("");
     }
+
     if (!validatePassword(user.password)) {
       setPasswordErr("example Abc@1234 , must be 8 character long");
     } else {
       setPasswordErr("");
     }
-    if(validateName(user.name) && validateDepartment(user,department) && validatePassword(user.password) && validateUsername(user.username)){
-      console.log(user);
-      await loginService.addNewUser(user)
-      .then((res)=>{
-        e.preventDefault();
-        setShow(true)
-        setAlertMessage(res.data.message);
-        setIsNavigate(true);
-        // navigate("/add-user");
-      }).catch((error)=>{
-        setShow(true)
-        if(error.code==="ERR_NETWORK"){
-           setAlertMessage(error.message);
-        }
-        else{
-          setAlertMessage(error.response.data.message);
-        }
-      })
-    }
 
+    if (
+      validateName(user.name) &&
+      validateDepartment(user.departmentId) &&
+      validatePassword(user.password) &&
+      validateUsername(user.username)
+    ) {
+      const data = {
+        name: user.name,
+        username: user.username,
+        password: btoa(user.password),
+        userType: user.userType,
+        departmentId: user.departmentId,
+      };
+      await APIService.addNewUser(data)
+        .then((res) => {
+          e.preventDefault();
+          setShow(true);
+          setAlertMessage(res.data.message);
+          setUser(userState);
+        })
+        .catch((error) => {
+          setShow(true);
+          if (error.code === "ERR_NETWORK") {
+            setAlertMessage(error.message);
+          } else {
+            setAlertMessage(error.response.data.message);
+          }
+        });
+    }
   };
 
   const closeAlert = () => {
     setAlertMessage("");
     setShow(false);
-    if(isNavigate){
-    navigate("/add-user");
-    }
   };
 
   const handleChange = (e) => {
     const value = e.target.value;
     setUser({ ...user, [e.target.name]: value });
-    // console.log(user);
   };
 
   return (
     <>
-      <AdminDashboard/>
+      <AdminDashboard />
       <div className="parent-register-container">
         <div className="register-container">
           <form onSubmit={handleSubmit} className="form">
@@ -193,7 +186,7 @@ const AddNewUser = () => {
             <div className="input-box">
               <label className="addUser_lable">Password</label>
               <input
-                type="text"
+                type="password"
                 placeholder="Enter Password"
                 name="password"
                 onChange={(e) => handleChange(e)}
@@ -211,7 +204,7 @@ const AddNewUser = () => {
               <div className="select-box">
                 <select
                   name="departmentId"
-                  value={department.id}
+                  value={user.departmentId}
                   onChange={(e) => handleChange(e)}
                   style={{ fontSize: "1.5rem" }}
                 >
@@ -228,7 +221,7 @@ const AddNewUser = () => {
                     </option>
                   ))}
                 </select>
-                {departmentErr && (
+                {departmentErr !== 0 && (
                   <span
                     style={{
                       fontSize: "1.5rem",
@@ -250,9 +243,9 @@ const AddNewUser = () => {
                     name="userType"
                     value="MEMBER"
                     id="check-member"
-                    onChange={(e)=>{handleChange(e)}}
-                    // onChange={handleChange}
-
+                    onChange={(e) => {
+                      handleChange(e);
+                    }}
                     defaultChecked
                   />
                   <label className="addUser_lable" htmlFor="check-member">
@@ -264,8 +257,9 @@ const AddNewUser = () => {
                     type="radio"
                     name="userType"
                     value="ADMIN"
-                    onChange={(e)=>{handleChange(e)}}
-                    // onChange={(e) => handleChange(e)}
+                    onChange={(e) => {
+                      handleChange(e);
+                    }}
                     id="check-admin"
                   />
                   <label className="addUser_lable" htmlFor="check-admin">
@@ -280,7 +274,6 @@ const AddNewUser = () => {
           </form>
         </div>
       </div>
-      {/* <Footer /> */}
       {show && <Alert message={alertMessage} close={closeAlert} />}
     </>
   );

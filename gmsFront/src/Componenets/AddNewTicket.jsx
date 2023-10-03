@@ -1,23 +1,33 @@
 import React, { useEffect, useState } from "react";
 import "../Styles/AddNewTicket.css";
 import AdminDashboard from "./AdminDashboard";
-import loginService from "./service/loginService";
 import Alert from "./Alert";
+import APIService from "../Service/api";
+import MemberDashboard from "./MemberDashboard";
 
 export default function AddNewTicket() {
   const [show, setShow] = useState(false);
   const [alertMessage, setAlertMessage] = useState("");
   const[titleErr,setTitleErr]=useState('');
   const[descriptionErr,setDescriptionErr]=useState("")
-  const[departmentIdErr,setDepartmentIdErr]=useState("")
+  const[departmentIdErr,setDepartmentIdErr]=useState(0)
+  const [userRole, setUserRole] = useState("");
   const [department, setDepartment] = useState([]);
-  const [ticket, setTicket] = useState({
-    ticketType: "Grievance",
+  const [currentPage, setCurrentPage] = useState(1);
+  const [isPaginated, setIsPaginated] = useState(false);
+
+  const ticketState = {
+    ticketType: "GRIEVANCE",
     title: "",
     description: "",
     departmentId: 0,
     userId: JSON.parse(localStorage.getItem('user'))?.id
-  });
+  }
+  const [ticket, setTicket] = useState(ticketState);
+
+  useEffect(()=>{
+    setUserRole(localStorage.getItem('role'));
+  })
 
   const validateDepartmentId = (departmentId) => {
     if (departmentId===0) {
@@ -38,19 +48,16 @@ export default function AddNewTicket() {
   const handleChange = (e) => {
     const value = e.target.value;
     setTicket({ ...ticket, [e.target.name]: value });
-    // console.log(user);
   };
 
   const closeAlert = () => {
     setAlertMessage("");
     setShow(false);
-    // navigate("/admin");
-    
 };
 
   const fetchDepartment = async () => {
-    await loginService
-      .getAllDepartment()
+    await APIService
+      .getAllDepartment(currentPage, isPaginated)
       .then((res) => {
         if (res.data.hasdata) {
           setDepartment(res.data.data);
@@ -67,8 +74,6 @@ export default function AddNewTicket() {
   };
   const handleSubmit = async(e) => {
     e.preventDefault();
-    console.log(ticket);
-    alert(localStorage.getItem("user"))
     if (!validateDepartmentId(ticket.departmentId)) {
       setDepartmentIdErr("Select a department");
     } else {
@@ -80,10 +85,11 @@ export default function AddNewTicket() {
       setDescriptionErr("");
     }
     if(validateDepartmentId(ticket.departmentId) && validateDescription(ticket.description)){
-        await loginService.addNewTicket(ticket)
+        await APIService.addNewTicket(ticket)
         .then((res)=>{
           setShow(true)
           setAlertMessage(res.data.message)
+          setTicket(ticketState);
         }).catch((error)=>{
           setShow(true)
           if(error.code==="ERR_NETWORK"){
@@ -98,7 +104,7 @@ export default function AddNewTicket() {
   return (
     <>
       <div>
-        <AdminDashboard />
+        {userRole === 'ADMIN' ? <AdminDashboard />:<MemberDashboard/>}
         <div className="add-new-ticket-container">
           <div className="new-ticket-container">
             <form onSubmit={handleSubmit} className="form">
@@ -113,11 +119,10 @@ export default function AddNewTicket() {
                     handleChange(e);
                   }}
                 >
-                  {/* <option hidden>Select TicketType</option> */}
-                  <option name="ticketType" value="Grievance">
+                  <option name="ticketType" value="GRIEVANCE">
                     Grievance
                   </option>
-                  <option name="ticketType" value="Feedback">
+                  <option name="ticketType" value="FEEDBACK">
                     Feedback
                   </option>
                 </select>
@@ -138,12 +143,6 @@ export default function AddNewTicket() {
               </div>
               <div className="input-box">
                 <label className="addTicket_label">Description</label>
-                {/* <input
-                type="text"
-                placeholder="Enter Description"
-                required
-                className="addTicket_input"
-              /> */}
                 <textarea
                   type="text"
                   placeholder="Enter Description"
@@ -168,11 +167,6 @@ export default function AddNewTicket() {
                     *{descriptionErr}
                   </span>
                 )}
-
-              {/* <div className='column1'>
-            <label className="addTicket_label">Assigned To</label>
-            <label className="addTicket_label">Status</label>
-            </div> */}
               <div className="column">
                 <div className="assigned-to">
                   <label className="addTicket_label">Assigned To</label>
@@ -219,7 +213,7 @@ export default function AddNewTicket() {
                   </span>
                 )}
               <button className="newticket-btn" type="submit">
-                Generate Ticket
+                Raise Grievance
               </button>
             </form>
           </div>

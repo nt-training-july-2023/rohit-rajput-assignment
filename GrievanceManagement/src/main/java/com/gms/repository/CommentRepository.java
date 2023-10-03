@@ -5,6 +5,9 @@ import org.springframework.stereotype.Repository;
 
 import com.gms.entity.Comment;
 
+/**
+ * This is @CommentRepository to perform operation on comment table in database.
+ */
 @Repository
 public interface CommentRepository extends JpaRepository<Comment, Long> {
 

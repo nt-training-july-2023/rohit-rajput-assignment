@@ -6,10 +6,12 @@ import java.util.Objects;
  * this is DepartmentOutDTo.
  */
 public class DepartmentOutDTO {
+
     /**
      * this is id of department.
      */
-    private long id;
+    private Long id;
+
     /**
      * this is name of department.
      */
@@ -19,7 +21,7 @@ public class DepartmentOutDTO {
      * getter method for @getId.
      * @return long - id
      */
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
@@ -27,7 +29,7 @@ public class DepartmentOutDTO {
      * setter method for @setId.
      * @param id
      */
-    public void setId(final long id) {
+    public void setId(final Long id) {
         this.id = id;
     }
 
@@ -58,14 +60,14 @@ public class DepartmentOutDTO {
      * @param id
      * @param departmentName
      */
-    public DepartmentOutDTO(final long id, final String departmentName) {
+    public DepartmentOutDTO(final Long id, final String departmentName) {
         super();
         this.id = id;
         this.departmentName = departmentName;
     }
 
     /**
-     *this is hashCode method.
+     * this is @hashCode method.
      */
     @Override
     public int hashCode() {
@@ -73,7 +75,7 @@ public class DepartmentOutDTO {
     }
 
     /**
-     *this is equals method.
+     * this is @equals method.
      */
     @Override
     public boolean equals(final Object obj) {
@@ -87,11 +89,11 @@ public class DepartmentOutDTO {
             return false;
         }
         DepartmentOutDTO other = (DepartmentOutDTO) obj;
-        return Objects.equals(departmentName, other.departmentName) && id == other.id;
+        return Objects.equals(departmentName, other.departmentName) && id.equals(other.id);
     }
 
     /**
-     *this is toString method.
+     * this is @toString method.
      */
     @Override
     public String toString() {

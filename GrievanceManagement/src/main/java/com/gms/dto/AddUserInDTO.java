@@ -14,34 +14,38 @@ import com.gms.entity.Role;
  * this is AddUserInDTo class for details to save a new user.
  */
 public class AddUserInDTO {
+
     /**
      * This is name of user.
      */
     @NotEmpty(message = "Please Enter Name")
     @Pattern(regexp = "^[a-zA-Z ]{2,}$")
     private String name;
+
     /**
-     * this is username which represents email of user.
+     * This is username which represents email of user.
      */
     @NotEmpty(message = "please enter username ")
     @Pattern(regexp = "^[a-z0-9]{2,}[.][a-z]{2,}+@nucleusteq.com$", message = "please enter valid username")
     private String username;
+
     /**
-     * this is user role.
+     * This is user role.
      */
     @NotNull(message = "role required")
     @Enumerated(EnumType.STRING)
     private Role userType;
+
     /**
-     * this is password of user.
+     * This is password of user.
      */
-    @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])"
-            + "(?=.*[@$!%*?&])[A-Za-z0-9@$!%*?&]{8,20}$", message = "enter strong password")
     private String password;
+
     /**
-     * this is departmentId which user belongs.
+     * This is departmentId which user belongs.
      */
-    private long departmentId;
+    private Long departmentId;
+
     /**
      * getter method for @getName.
      * @return String - name
@@ -49,6 +53,7 @@ public class AddUserInDTO {
     public String getName() {
         return name;
     }
+
     /**
      * setter method for @setName.
      * @param name
@@ -56,6 +61,7 @@ public class AddUserInDTO {
     public void setName(final String name) {
         this.name = name;
     }
+
     /**
      * getter method for @getUsername.
      * @return String - username
@@ -63,6 +69,7 @@ public class AddUserInDTO {
     public String getUsername() {
         return username;
     }
+
     /**
      * setter method for @setUsername.
      * @param username
@@ -70,6 +77,7 @@ public class AddUserInDTO {
     public void setUsername(final String username) {
         this.username = username;
     }
+
     /**
      * getter method for @getUserType.
      * @return Role - userType
@@ -77,6 +85,7 @@ public class AddUserInDTO {
     public Role getUserType() {
         return userType;
     }
+
     /**
      * setter method for @setUserType.
      * @param userType
@@ -105,7 +114,7 @@ public class AddUserInDTO {
      * getter method for @getDepartmentId.
      * @return long - departmentId
      */
-    public long getDepartmentId() {
+    public Long getDepartmentId() {
         return departmentId;
     }
 
@@ -113,7 +122,7 @@ public class AddUserInDTO {
      * setter method for @setDepartmentId.
      * @param departmentId
      */
-    public void setDepartmentId(final long departmentId) {
+    public void setDepartmentId(final Long departmentId) {
         this.departmentId = departmentId;
     }
 
@@ -125,21 +134,20 @@ public class AddUserInDTO {
     }
 
     /**
+     * This is all-argument constructor.
      * @param name
      * @param username
      * @param userType
      * @param password
      * @param departmentId
      */
-    public AddUserInDTO(@NotEmpty(message = "Please Enter Username")
-            @Pattern(regexp = "^[a-zA-Z ]{2,}$")final String name,
-            @NotEmpty(message = "please enter username ")
-            @Pattern(regexp = "^[a-z0-9]{2,}[.][a-z]{2,}+@nucleusteq.com$",
-            message = "please enter valid username")final String username,
-            @NotNull(message = "role required")final Role userType,
-            @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[@$!%*?&])[A-Za-z0-9@$!%*?&]{8,20}$",
-            message = "enter strong password")final String password,
-            final long departmentId) {
+    public AddUserInDTO(
+            @NotEmpty(message = "Please Enter Username") @Pattern(regexp = "^[a-zA-Z ]{2,}$") final String name,
+            @NotEmpty(message = "please enter username ") @Pattern(regexp = "^[a-z0-9]{2,}[.][a-z]{2,}+@nucleusteq.com$",
+            message = "please enter valid username") final String username,
+            @NotNull(message = "role required") final Role userType,
+            final String password,
+            final Long departmentId) {
         super();
         this.name = name;
         this.username = username;
@@ -149,7 +157,7 @@ public class AddUserInDTO {
     }
 
     /**
-     *this is @toString method.
+     * This is @toString method.
      */
     @Override
     public String toString() {
@@ -158,7 +166,7 @@ public class AddUserInDTO {
     }
 
     /**
-     *this is @hashCode method.
+     * This is @hashCode method.
      */
     @Override
     public int hashCode() {
@@ -166,7 +174,7 @@ public class AddUserInDTO {
     }
 
     /**
-     *this is @equals method.
+     * This is @equals method.
      */
     @Override
     public boolean equals(final Object obj) {
@@ -180,7 +188,7 @@ public class AddUserInDTO {
             return false;
         }
         AddUserInDTO other = (AddUserInDTO) obj;
-        return departmentId == other.departmentId && Objects.equals(name, other.name)
+        return departmentId.equals(other.departmentId) && Objects.equals(name, other.name)
                 && Objects.equals(password, other.password) && userType == other.userType
                 && Objects.equals(username, other.username);
     }

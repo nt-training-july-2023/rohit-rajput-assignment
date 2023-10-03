@@ -24,7 +24,6 @@ public class UserTest {
     }
 
     @Test
-    @DisplayName("Getter & Setter for Name")
     public void testGetAndSetName() {
         assertNull(user.getName());
         user.setName("Rohit");
@@ -62,24 +61,37 @@ public class UserTest {
         user.setComments(list2);
         assertEquals(1, user.getComments().size());
     }
+    
     @Test
     public void testPersist() {
-        
+        User user = new User();
+        user.persist();
+        assertTrue(user.isFirst());
     }
+    
     @Test
     public void testEqualsAndHashCode() {
         User user1 = new User();
+        user1.setId(1l);
         user1.setName("Rohit");
         user1.setRole(Role.ADMIN);
         user1.setPassword("Rohit@123");
         User user2 = new User();
+        user2.setId(1l);
         user2.setName("Rohit");
         user2.setRole(Role.ADMIN);
         user2.setPassword("Rohit@123");
         User user3 = new User();
+        user3.setId(2l);
         user3.setName("Rohit");
         user3.setRole(Role.ADMIN);
         user3.setPassword("Rohit@1234");
+        
+        
+        assertTrue(user1.equals(user2));
+        assertFalse(user1.equals(null));
+        assertFalse(user1.equals(new Department()));
+        user2 = user1;
         assertTrue(user1.equals(user2));
         assertEquals(user1, user2);
         assertFalse(user1.equals(user3));

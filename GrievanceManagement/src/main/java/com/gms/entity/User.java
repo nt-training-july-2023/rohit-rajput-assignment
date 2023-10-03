@@ -13,110 +13,93 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.PrePersist;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.gms.constants.VariableConstant;
 
 /**
- * <p>This is User class for representing user_details
- * table in database<p>.
+ * This is User class for representing user_details table in database.
  */
 @Entity
 @Table(name = "user_details")
 public class User {
     /**
-     * This is minimum length of user name.
-     */
-    @Transient
-    private static final int NAME_MIN_LENGTH = 2;
-    /**
-     * This is maximum length of user name.
-     */
-    @Transient
-    private static final int NAME_MAX_LENGTH = 30;
-    /**
-     * This is minimum length of password.
-     */
-    @Transient
-    private static final int PASSWORD_MIN_LENGTH = 11;
-    /**
-     * This is maximum length of password.
-     */
-    @Transient
-    private static final int PASSWORD_MAX_LENGTH = 28;
-    /**
      * This is user id.
      */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
+
     /**
      * This is user name.
      */
     @NotEmpty
-    @Size(min = NAME_MIN_LENGTH, max = NAME_MAX_LENGTH,
-    message = "name must be in 2-30  characters long")
+    @Size(min = VariableConstant.NAME_MIN_LENGTH,
+          max = VariableConstant.NAME_MAX_LENGTH,
+          message = "name must be in 2-30  characters Long")
     private String name;
+
     /**
-     *This is user email.
+     * This is user email.
      */
     @NotEmpty
-    @Pattern(regexp = "^[a-z0-9]{2,}[.][a-z]{2,}+@nucleusteq.com$",
-    message = "please enter valid username ")
+    @Pattern(regexp = "^[a-z0-9]{2,}[.][a-z]{2,}+@nucleusteq.com$", message = "please enter valid username ")
     private String email;
+
     /**
      * This is user role.
      */
     @NotNull(message = "role can not be null")
     @Enumerated(EnumType.STRING)
     private Role role;
+
     /**
      * This is password.
      */
-    @Size(min = PASSWORD_MIN_LENGTH, max = PASSWORD_MAX_LENGTH,
-            message = "password must be 11-20 character long")
-    @NotEmpty(message = "password must be combination of uppercase,"
-            + "lowercase and special symbol")
     private String password;
+
     /**
      * This is for checking first time login.
      */
     private boolean isFirst;
+
     /**
-     * This is @List<Ticket> belongs to user.
+     * This is @List<Ticket> beLongs to user.
      */
-    @JsonIgnore
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", orphanRemoval = true)
     private List<Ticket> ticket;
+
     /**
-     * This is department belongs to user.
+     * This is department beLongs to user.
      */
     @ManyToOne
-    @JsonIgnore
     private Department department;
+
     /**
-     * This is @List<comment> belongs to a user.
+     * This is @List<comment> beLongs to a user.
      */
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", orphanRemoval = true)
     private List<Comment> comments;
+
     /**
      * getter method for @getId.
-     * @return long - id
+     * @return Long - id
      */
-     public long getId() {
+    public Long getId() {
         return id;
     }
+
     /**
      * setter method for @setId.
      * @param id
      */
-    public void setId(final long id) {
+    public void setId(final Long id) {
         this.id = id;
     }
+
     /**
      * getter method for @getName.
      * @return String - name
@@ -124,6 +107,7 @@ public class User {
     public String getName() {
         return name;
     }
+
     /**
      * setter method for @setName.
      * @param name
@@ -131,6 +115,7 @@ public class User {
     public void setName(final String name) {
         this.name = name;
     }
+
     /**
      * getter method for @getEmail.
      * @return String - email
@@ -138,6 +123,7 @@ public class User {
     public String getEmail() {
         return email;
     }
+
     /**
      * setter method for @setEmail.
      * @param email
@@ -145,6 +131,7 @@ public class User {
     public void setEmail(final String email) {
         this.email = email;
     }
+
     /**
      * getter method for @getRole.
      * @return Role - role
@@ -152,6 +139,7 @@ public class User {
     public Role getRole() {
         return role;
     }
+
     /**
      * setter method for @setRole.
      * @param role
@@ -159,6 +147,7 @@ public class User {
     public void setRole(final Role role) {
         this.role = role;
     }
+
     /**
      * getter method for @getPassword.
      * @return String - password
@@ -166,6 +155,7 @@ public class User {
     public String getPassword() {
         return password;
     }
+
     /**
      * setter method for @setPassword.
      * @param password
@@ -173,6 +163,7 @@ public class User {
     public void setPassword(final String password) {
         this.password = password;
     }
+
     /**
      * getter method for @isFirst.
      * @return boolean - isFirst
@@ -180,6 +171,7 @@ public class User {
     public boolean isFirst() {
         return isFirst;
     }
+
     /**
      * setter method for @setFirst.
      * @param isFirstLogin
@@ -187,6 +179,7 @@ public class User {
     public void setFirst(final boolean isFirstLogin) {
         this.isFirst = isFirstLogin;
     }
+
     /**
      * getter method for @getTicket.
      * @return List<Ticket> - ticket
@@ -194,6 +187,7 @@ public class User {
     public List<Ticket> getTicket() {
         return ticket;
     }
+
     /**
      * setter method for @setTicket.
      * @param ticket
@@ -201,6 +195,7 @@ public class User {
     public void setTicket(final List<Ticket> ticket) {
         this.ticket = ticket;
     }
+
     /**
      * getter method for @getDepartment.
      * @return Department - department
@@ -208,6 +203,7 @@ public class User {
     public Department getDepartment() {
         return department;
     }
+
     /**
      * setter method for @setDepartment.
      * @param department
@@ -215,6 +211,7 @@ public class User {
     public void setDepartment(final Department department) {
         this.department = department;
     }
+
     /**
      * getter method for @getComments.
      * @return List<Comment> - comments
@@ -222,6 +219,7 @@ public class User {
     public List<Comment> getComments() {
         return comments;
     }
+
     /**
      * setter method for @setComments.
      * @param comments
@@ -229,6 +227,7 @@ public class User {
     public void setComments(final List<Comment> comments) {
         this.comments = comments;
     }
+
     /**
      * This is @persist method for setting isFirst value by default.
      */
@@ -236,15 +235,17 @@ public class User {
     public void persist() {
         isFirst = true;
     }
+
     /**
-     *this is hashCode method.
+     * this is hashCode method.
      */
     @Override
     public int hashCode() {
         return Objects.hash(comments, department, email, id, isFirst, name, password, role, ticket);
     }
+
     /**
-     *this is equals method.
+     * this is equals method.
      */
     @Override
     public boolean equals(final Object obj) {
@@ -259,7 +260,7 @@ public class User {
         }
         User other = (User) obj;
         return Objects.equals(comments, other.comments) && Objects.equals(department, other.department)
-                && Objects.equals(email, other.email) && id == other.id && isFirst == other.isFirst
+                && Objects.equals(email, other.email) && id.equals(other.id) && isFirst == other.isFirst
                 && Objects.equals(name, other.name) && Objects.equals(password, other.password) && role == other.role
                 && Objects.equals(ticket, other.ticket);
     }

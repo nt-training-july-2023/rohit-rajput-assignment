@@ -4,33 +4,22 @@ import java.util.Objects;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Pattern;
-import javax.validation.constraints.Size;
 
 /**
  * this is @LoginRequestInDTO class for login.
  */
 public class LoginRequestInDTO {
-    /**
-     * This is minimum length of password.
-     */
-    private static final int PASSWORD_MIN_LENGTH = 8;
-    /**
-     * This is maximum length of password.
-     */
-    private static final int PASSWORD_MAX_LENGTH = 20;
+
     /**
      * This is email of user.
      */
     @NotEmpty(message = "please enter username ")
     @Pattern(regexp = "^[a-z0-9]{2,}[.][a-z]{2,}+@nucleusteq.com$", message = "please enter valid username")
     private String email;
+
     /**
      * This is password.
      */
-    @Size(min = PASSWORD_MIN_LENGTH, max = PASSWORD_MAX_LENGTH, message = "password must be 8-20 character long")
-    @NotEmpty(message = "please enter your password")
-    @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])"
-            + "(?=.*[@$!%*?&])[A-Za-z0-9@$!%*?&]{8,20}$", message = "enter strong password")
     private String password;
 
     /**
@@ -48,12 +37,7 @@ public class LoginRequestInDTO {
             @NotEmpty(message = "please enter username ")
             @Pattern(regexp = "^[a-z0-9]{2,}[.][a-z]{2,}+@nucleusteq.com$",
             message = "please enter valid username ") final String email,
-            @Size(min = PASSWORD_MIN_LENGTH, max = PASSWORD_MAX_LENGTH,
-            message = "password must be 8-20 character long")
-            @NotEmpty(message = "please enter your password")
-            @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])"
-                    + "(?=.*[@$!%*?&])[A-Za-z0-9@$!%*?&]{8,20}$",
-                    message = "enter strong password") final String password) {
+            final String password) {
         super();
         this.email = email;
         this.password = password;
@@ -92,7 +76,7 @@ public class LoginRequestInDTO {
     }
 
     /**
-     *this is @hashCode method.
+     * this is @hashCode method.
      */
     @Override
     public int hashCode() {
@@ -100,7 +84,7 @@ public class LoginRequestInDTO {
     }
 
     /**
-     *this is @equals method.
+     * this is @equals method.
      */
     @Override
     public boolean equals(final Object obj) {
@@ -118,7 +102,7 @@ public class LoginRequestInDTO {
     }
 
     /**
-     *this is @toString method.
+     * this is @toString method.
      */
     @Override
     public String toString() {
