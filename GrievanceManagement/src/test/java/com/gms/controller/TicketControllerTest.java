@@ -59,10 +59,10 @@ public class TicketControllerTest {
     public void testSaveTicketFailure() throws JsonProcessingException, Exception {
         TicketSaveInDTO ticketSaveInDTO = new TicketSaveInDTO("qwerty", TicketType.FEEDBACK, "getting problem", 1l, 1l);
         when(ticketService.saveTicket(ticketSaveInDTO)).thenThrow(NotFoundException.class);
-        MvcResult mvcResult = mockMvc.perform(post(UrlConstant.BASE_URL + UrlConstant.TICKET_URL)
+         mockMvc.perform(post(UrlConstant.BASE_URL + UrlConstant.TICKET_URL)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(ticketSaveInDTO)))
-        .andExpect(status().isNotFound()).andReturn();
+        .andExpect(status().isNotFound());
     }
     @Test
     public void testSaveTicketSuccessful() throws JsonProcessingException, Exception {
@@ -75,11 +75,11 @@ public class TicketControllerTest {
         ticket.setDepartment(department);
         ticket.setUser(user);
         when(ticketService.saveTicket(ticketSaveInDTO)).thenReturn(ticket);
-        MvcResult mvcResult = mockMvc.perform(post(UrlConstant.BASE_URL + UrlConstant.COMMON_URL + UrlConstant.TICKET_URL)
+        mockMvc.perform(post(UrlConstant.BASE_URL + UrlConstant.USER_URL + UrlConstant.TICKET_URL)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(ticketSaveInDTO)))
         .andExpect(status().isOk())
-        .andExpect(jsonPath("$.message",is(MessageConstant.ADDED))).andReturn();
+        .andExpect(jsonPath("$.message",is(MessageConstant.ADDED)));
     }
     
     @Test
@@ -93,7 +93,7 @@ public class TicketControllerTest {
     public void testGetAllTicketSuccess() throws Exception {        
         List<TicketTableOutDTO> list = Arrays.asList(new TicketTableOutDTO(1l ,"qwert", "HR", Status.OPEN, "Rohit",LocalDateTime.now()));
         when(ticketService.getAllTicket(1l,false, 1, Status.BEING_ADDRESSED)).thenReturn(list);
-        mockMvc.perform(get(UrlConstant.BASE_URL + UrlConstant.COMMON_URL + UrlConstant.TICKET_URL)
+        mockMvc.perform(get(UrlConstant.BASE_URL + UrlConstant.USER_URL + UrlConstant.TICKET_URL)
                 .param("userId","1")
                 .param("myTicket", "false")
                 .param("pageNumber", "0"))
@@ -104,7 +104,7 @@ public class TicketControllerTest {
     public void testUpdateTicket() throws JsonProcessingException, Exception {
         UpdateTicketInDTO updateTicketInDTO = new UpdateTicketInDTO(Status.BEING_ADDRESSED, 1l, 1l, "good");
         when(ticketService.updateTicket(updateTicketInDTO)).thenReturn(MessageConstant.UPDATED);
-        mockMvc.perform(put(UrlConstant.BASE_URL + UrlConstant.COMMON_URL
+        mockMvc.perform(put(UrlConstant.BASE_URL + UrlConstant.USER_URL
                 + UrlConstant.TICKET_URL ).contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(updateTicketInDTO)))
                 .andExpect(jsonPath("$.data", is(MessageConstant.UPDATED)))
@@ -118,7 +118,8 @@ public class TicketControllerTest {
         ticketInfoOutDTO.setAssignedTo("HR");
         ticketInfoOutDTO.setDescription("qwertyu");
         when(ticketService.getTicketById(1l, 1l)).thenReturn(ticketInfoOutDTO);
-        mockMvc.perform(get(UrlConstant.BASE_URL + UrlConstant.COMMON_URL + UrlConstant.TICKET_URL +"/1")
-                .param("userId", "1").contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk());
+        mockMvc.perform(get(UrlConstant.BASE_URL + UrlConstant.USER_URL + UrlConstant.TICKET_URL +"/1")
+                .param("userId", "1").contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().isOk());
     }
 }

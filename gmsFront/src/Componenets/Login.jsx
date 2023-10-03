@@ -5,7 +5,7 @@ import Footer from "./Footer";
 import Header from "./Header";
 import Alert from "./Alert";
 import APIService from "../Service/api";
-const Login = () => {
+const Login = ({ setUserRole }) => {
   const [emailErr, setEmailErr] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -19,9 +19,11 @@ const Login = () => {
     if (!validateEmail(email)) {
       setEmailErr("Invalid username");
     } else {
-      console.log(email);
-      await APIService
-        .login({ email, password })
+      const data = {
+        email: email,
+        password: btoa(password),
+      };
+      await APIService.login(data)
         .then((res) => {
           if (res.data.data.firstLogin) {
             localStorage.setItem("user", JSON.stringify(res.data.data));
@@ -31,10 +33,11 @@ const Login = () => {
             if (mockdata.hasOwnProperty("firstLogin")) {
               delete mockdata.firstLogin;
             }
-            console.log(mockdata);
             localStorage.setItem("user", JSON.stringify(mockdata));
             localStorage.setItem("role", mockdata.role);
+            setUserRole(localStorage.getItem("role"));
             if (localStorage.getItem("role") === "ADMIN") {
+              // setUserRole(localStorage.getItem("role"));
               navigate("/admin");
             } else {
               navigate("/member");
@@ -42,10 +45,9 @@ const Login = () => {
           }
         })
         .catch((error) => {
-          console.log(error);
           setShow(true);
           if (error.code === "ERR_NETWORK") {
-            setAlertMessage(error.message);
+            setAlertMessage("Invalid username or password");
           } else {
             setAlertMessage(error.response.data.message);
           }
@@ -107,7 +109,9 @@ const Login = () => {
             {emailErr !== "" && (
               <p style={{ color: "red", fontSize: "1.5rem" }}>{emailErr}</p>
             )}
-            {error && <p style={{ color: "red", fontSize:"1.5rem"}}>{error}</p>}
+            {error && (
+              <p style={{ color: "red", fontSize: "1.5rem" }}>{error}</p>
+            )}
             <input type="submit" className="btn" value="Login" />
           </form>
         </div>

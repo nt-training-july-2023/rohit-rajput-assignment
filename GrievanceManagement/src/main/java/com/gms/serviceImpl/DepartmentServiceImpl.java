@@ -1,6 +1,7 @@
 package com.gms.serviceImpl;
 
 import java.util.List;
+import java.util.Locale;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -10,6 +11,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.gms.constants.MessageConstant;
+import com.gms.constants.VariableConstant;
 import com.gms.dto.DepartmentOutDTO;
 import com.gms.entity.Department;
 import com.gms.exception.BadRequestException;
@@ -37,24 +39,23 @@ public class DepartmentServiceImpl implements DepartmentService {
 
     /**
      * this is @getAllDepartment() method for getting list of @Department.
-     * 
      * @return List<DepartmentOutDTO>
      */
     @Override
-    public List<DepartmentOutDTO> getAllDepartment(Integer pageNumber, Boolean isPaginate) {
+    public List<DepartmentOutDTO> getAllDepartment(final Integer pageNumber, final Boolean isPaginate) {
         if (!isPaginate) {
             List<DepartmentOutDTO> departmentList = departmentRepository.findAllDepartmentName();
             if (departmentList.isEmpty()) {
-                LOGGER.warn("[DepartmentServiceImpl]: Department not available");
+                LOGGER.error("[DepartmentServiceImpl]: Department not available");
                 throw new NotFoundException(MessageConstant.NOT_FOUND);
             }
             LOGGER.info("returning department list");
             return departmentList;
-        }else {
-            Pageable pageable = PageRequest.of(pageNumber, 10);
+        } else {
+            Pageable pageable = PageRequest.of(pageNumber, VariableConstant.LIMIT);
             List<DepartmentOutDTO> departmentList = departmentRepository.findAllDepartmentName(pageable);
             if (departmentList.isEmpty()) {
-                LOGGER.warn("[DepartmentServiceImpl]: Department not available");
+                LOGGER.error("[DepartmentServiceImpl]: Department not available");
                 throw new NotFoundException(MessageConstant.NOT_FOUND);
             }
             LOGGER.info("returning department list with pagination");
@@ -64,7 +65,6 @@ public class DepartmentServiceImpl implements DepartmentService {
 
     /**
      * this is @deleteDepartment for deleting a @Department.
-     * 
      * @param id
      */
     @Override
@@ -76,7 +76,7 @@ public class DepartmentServiceImpl implements DepartmentService {
             departmentRepository.deleteById(id);
             return MessageConstant.DELETED;
         } else if (!isExist) {
-            LOGGER.warn("[DepartmentServiceImpl]: Department id is not present");
+            LOGGER.error("[DepartmentServiceImpl]: Department id is not present");
             throw new BadRequestException(MessageConstant.NOT_FOUND);
         } else {
             LOGGER.warn("[DepartmentServiceImpl]: only 1 department, you can't delete");
@@ -86,17 +86,16 @@ public class DepartmentServiceImpl implements DepartmentService {
 
     /**
      * this is @saveDepartment method for saving a @Department.
-     * 
      * @return String - departmentName.
      */
     @Override
     public String saveDepartment(final String departmentName) {
-        if (departmentRepository.existsByDepartmentName(departmentName.toUpperCase())) {
-            LOGGER.warn("[DepartmentServiceImpl]: departmentName is already exists");
-            throw new BadRequestException(MessageConstant.EXISTS);
+        if (departmentRepository.existsByDepartmentName(departmentName.toUpperCase(Locale.ENGLISH))) {
+            LOGGER.error("[DepartmentServiceImpl]: departmentName is already exists");
+            throw new BadRequestException(MessageConstant.DATA_ALREADY_EXIST);
         }
         Department department = new Department();
-        department.setDepartmentName(departmentName.toUpperCase());
+        department.setDepartmentName(departmentName.toUpperCase(Locale.ENGLISH));
         LOGGER.info("[DepartmentServiceImpl]: department saved successfully");
         Department department2 = departmentRepository.save(department);
         return department2.getDepartmentName();

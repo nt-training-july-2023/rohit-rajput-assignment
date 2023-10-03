@@ -89,7 +89,7 @@ public class DepartmentOutDTO {
             return false;
         }
         DepartmentOutDTO other = (DepartmentOutDTO) obj;
-        return Objects.equals(departmentName, other.departmentName) && id == other.id;
+        return Objects.equals(departmentName, other.departmentName) && id.equals(other.id);
     }
 
     /**

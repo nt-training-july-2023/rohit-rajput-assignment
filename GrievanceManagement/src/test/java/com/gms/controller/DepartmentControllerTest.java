@@ -1,7 +1,6 @@
 package com.gms.controller;
 
 import static org.hamcrest.CoreMatchers.is;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -61,14 +60,16 @@ public class DepartmentControllerTest {
         when(departmentService.saveDepartment(departmentName)).thenReturn(departmentName);
         mockMvc.perform(post(UrlConstant.BASE_URL + UrlConstant.ADMIN_URL + UrlConstant.DEPARTMENT_URL).param("departmentName", departmentName)
                 .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk()).andReturn();
+        .andExpect(jsonPath("$.message", is(MessageConstant.ADDED)))
+        .andExpect(jsonPath("$.data", is(departmentName)))
+        .andExpect(status().isOk());
     }
     
     @Test
     public void testGetAllDepartmentSuccess() throws Exception {
         List<DepartmentOutDTO> departmentOutDTOs = Arrays.asList(new DepartmentOutDTO(1l, "HR"));
         when(departmentService.getAllDepartment(0,true)).thenReturn(departmentOutDTOs);
-         mockMvc.perform(get(UrlConstant.BASE_URL + UrlConstant.COMMON_URL + UrlConstant.DEPARTMENT_URL)
+         mockMvc.perform(get(UrlConstant.BASE_URL + UrlConstant.USER_URL + UrlConstant.DEPARTMENT_URL)
                  .param("pageNumber", "0")
                  .param("isPaginate", "true"))
         .andExpect(status().isOk())
@@ -79,10 +80,10 @@ public class DepartmentControllerTest {
     @Test
     public void testGetAllDepartmentFailure() throws Exception {        
         when(departmentService.getAllDepartment(0,false)).thenThrow(NotFoundException.class);
-         mockMvc.perform(get(UrlConstant.BASE_URL + UrlConstant.DEPARTMENT_URL)
+         mockMvc.perform(get(UrlConstant.BASE_URL + UrlConstant.USER_URL + UrlConstant.DEPARTMENT_URL)
                  .param("pageNumber", "0")
                  .param("isPaginate", "false"))
-        .andExpect(status().isNotFound());            
+         .andExpect(status().isNotFound());      
     }
     
     @Test

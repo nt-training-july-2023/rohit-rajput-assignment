@@ -132,7 +132,7 @@ public class Department {
             return false;
         }
         Department other = (Department) obj;
-        return departmentId == other.departmentId && Objects.equals(departmentName, other.departmentName)
+        return departmentId.equals(other.departmentId) && Objects.equals(departmentName, other.departmentName)
                 && Objects.equals(tickets, other.tickets) && Objects.equals(users, other.users);
     }
 }

@@ -163,7 +163,7 @@ public class Comment {
             return false;
         }
         Comment other = (Comment) obj;
-        return Objects.equals(comment, other.comment) && commentId == other.commentId
+        return Objects.equals(comment, other.comment) && commentId.equals(other.commentId)
                 && Objects.equals(commentTime, other.commentTime) && Objects.equals(ticket, other.ticket)
                 && Objects.equals(user, other.user);
     }

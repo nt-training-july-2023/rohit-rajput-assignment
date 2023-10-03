@@ -34,6 +34,10 @@ public class UserOutDTOTest {
         assertNull(userOutDTO.getDepartmentName());
         userOutDTO.setDepartmentName("HR");
         assertEquals("HR", userOutDTO.getDepartmentName());
+        
+        assertNull(userOutDTO.getUserRole());
+        userOutDTO.setUserRole(Role.ADMIN);
+        assertEquals(Role.ADMIN, userOutDTO.getUserRole());
     }
     
     

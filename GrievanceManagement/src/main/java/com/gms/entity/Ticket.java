@@ -120,7 +120,7 @@ public class Ticket {
     }
 
     /**
-     * getter method for @getDescription. 
+     * getter method for @getDescription.
      * @return String - description
      */
     public String getDescription() {
@@ -271,7 +271,7 @@ public class Ticket {
      * This is @equals method.
      */
     @Override
-    public boolean equals(Object obj) {
+    public boolean equals(final Object obj) {
         if (this == obj) {
             return true;
         }

@@ -7,7 +7,6 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 public class UpdatePasswordInDTOTest {
@@ -29,7 +28,7 @@ public class UpdatePasswordInDTOTest {
      }
     
     @Test
-    public void testEqualAndHashCodeAndToString() {
+    public void testEqualAndHashCode() {
         UpdatePasswordInDTO updatePasswordInDTO1 = new UpdatePasswordInDTO(1l, "Rohit@123","Rohit@1234");
         UpdatePasswordInDTO updatePasswordInDTO2 = new UpdatePasswordInDTO(1l, "Rohit@123", "Rohit@1234");
         UpdatePasswordInDTO updatePasswordInDTO3 = new UpdatePasswordInDTO(1l, "Rohit@1234","Rohit@1234");
@@ -46,6 +45,12 @@ public class UpdatePasswordInDTOTest {
         updatePasswordInDTO2 = updatePasswordInDTO1;
         assertTrue(updatePasswordInDTO1.equals(updatePasswordInDTO2));
         
+    }
+    
+    @Test
+    public void testToString() {
+        UpdatePasswordInDTO updatePasswordInDTO1 = new UpdatePasswordInDTO(1l, "Rohit@123","Rohit@1234");
         assertEquals("UpdatePasswordInDTO [userId=1, password=Rohit@123, newPassword=Rohit@1234]", updatePasswordInDTO1.toString());
+        
     }
 }

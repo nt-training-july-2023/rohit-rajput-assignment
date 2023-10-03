@@ -24,8 +24,7 @@ import com.gms.response.APIResponseEntity;
 import com.gms.service.UserService;
 
 /**
- * this is UserController for all the operation for user related operation.
- * 
+ * This is UserController for all the operation for user related operation.
  * @author rohit
  * @version 1.1
  */
@@ -89,13 +88,22 @@ public class UserController {
         LOGGER.info("[UserController] : sending delete user request to userService");
         return new APIResponseEntity(false, userService.deleteUser(userId));
     }
-    
+
+    /**
+     * This is @getAllUser method for getting list of user.
+     * @param pageNumber
+     * @param filterDepartment
+     * @return APIResponseEntity
+     */
     @GetMapping(UrlConstant.ADMIN_URL)
-    public APIResponseEntity getAllUser(@RequestParam Integer pageNumber, @RequestParam final String filterDepartment) {
-        if(pageNumber<=0) {
-            pageNumber = 1;
+    public APIResponseEntity getAllUser(@RequestParam final Integer pageNumber,
+            @RequestParam final String filterDepartment) {
+        Integer currentPage = pageNumber - 1;
+        if (currentPage < 0) {
+            currentPage = 0;
         }
         LOGGER.info("[UserController] : sending get-all-user request to userService");
-        return new APIResponseEntity(true, userService.getAllUser(pageNumber-1, filterDepartment), MessageConstant.SUCCESS);
+        return new APIResponseEntity(true, userService.getAllUser(currentPage, filterDepartment),
+                MessageConstant.SUCCESS);
     }
 }

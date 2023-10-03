@@ -139,8 +139,8 @@ public class UpdateTicketInDTO {
             return false;
         }
         UpdateTicketInDTO other = (UpdateTicketInDTO) obj;
-        return Objects.equals(comment, other.comment) && status == other.status && ticketId == other.ticketId
-                && userId == other.userId;
+        return Objects.equals(comment, other.comment) && status == other.status && ticketId.equals(other.ticketId)
+                && userId.equals(other.userId);
     }
 
     /**

@@ -9,15 +9,17 @@ import org.springframework.stereotype.Repository;
 
 import com.gms.dto.DepartmentOutDTO;
 import com.gms.entity.Department;
+
 /**
- * This is @Departmentrepository to perform operation on department table in database.
+ * This is @Departmentrepository to perform operation on department table in
+ * database.
  */
 @Repository
 public interface DepartmentRepository extends JpaRepository<Department, Long> {
 
     /**
-     * This custom method is for returning list of DepartmentOutDTO
-     * with two field departmentId and DepartmentName.
+     * This custom method is for returning list of DepartmentOutDTO with two field
+     * departmentId and DepartmentName.
      * @return List<DepartmentOutDTO>
      */
     @Query("select new com.gms.dto.DepartmentOutDTO(d.departmentId, d.departmentName) from Department d")
@@ -29,7 +31,7 @@ public interface DepartmentRepository extends JpaRepository<Department, Long> {
      * @return boolean
      */
     boolean existsByDepartmentName(String departmentName);
-    
+
     /**
      * This custom method for returning list of DepartmentOutDTO with pagination.
      * @param pageable

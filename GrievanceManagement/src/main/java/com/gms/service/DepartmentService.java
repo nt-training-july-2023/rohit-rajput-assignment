@@ -10,7 +10,9 @@ import com.gms.dto.DepartmentOutDTO;
 public interface DepartmentService {
 
     /**
-     * this is @getAllDepartment method.
+     * This is @getAllDepartment method.
+     * @param pageNumber
+     * @param isPaginate
      * @return List<DepartmentOutDTO>
      */
     List<DepartmentOutDTO> getAllDepartment(Integer pageNumber, Boolean isPaginate);

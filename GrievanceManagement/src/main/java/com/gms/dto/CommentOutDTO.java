@@ -13,7 +13,7 @@ public class CommentOutDTO {
     /**
      * This is the name of user who commented.
      */
-    private String userName;
+    private String name;
 
     /**
      * This is no-argument constructor.
@@ -25,12 +25,12 @@ public class CommentOutDTO {
     /**
      * This is all-argument constructor.
      * @param comment
-     * @param userName
+     * @param name
      */
-    public CommentOutDTO(final String comment, final String userName) {
+    public CommentOutDTO(final String comment, final String name) {
         super();
         this.comment = comment;
-        this.userName = userName;
+        this.name = name;
     }
 
     /**
@@ -50,31 +50,31 @@ public class CommentOutDTO {
     }
 
     /**
-     * getter method for @getUserName.
-     * @return String - userName
+     * getter method for @getName.
+     * @return String - name
      */
-    public String getUserName() {
-        return userName;
+    public String getName() {
+        return name;
     }
 
     /**
-     * setter method for @setUserName.
-     * @param userName
+     * setter method for @setName.
+     * @param name
      */
-    public void setUserName(final String userName) {
-        this.userName = userName;
+    public void setName(final String name) {
+        this.name = name;
     }
 
     /**
-     * This is @hashCode method
+     * This is @hashCode method.
      */
     @Override
     public int hashCode() {
-        return Objects.hash(comment, userName);
+        return Objects.hash(comment, name);
     }
 
     /**
-     * This is @equals method,
+     * This is @equals method.
      */
     @Override
     public boolean equals(final Object obj) {
@@ -88,7 +88,7 @@ public class CommentOutDTO {
             return false;
         }
         CommentOutDTO other = (CommentOutDTO) obj;
-        return Objects.equals(comment, other.comment) && Objects.equals(userName, other.userName);
+        return Objects.equals(comment, other.comment) && Objects.equals(name, other.name);
     }
 
     /**
@@ -96,7 +96,7 @@ public class CommentOutDTO {
      */
     @Override
     public String toString() {
-        return "CommentOutDTO [comment=" + comment + ", userName=" + userName +"]";
+        return "CommentOutDTO [comment=" + comment + ", name=" + name + "]";
     }
 
 }

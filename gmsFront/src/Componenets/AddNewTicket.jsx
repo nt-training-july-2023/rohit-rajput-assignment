@@ -15,13 +15,15 @@ export default function AddNewTicket() {
   const [department, setDepartment] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [isPaginated, setIsPaginated] = useState(false);
-  const [ticket, setTicket] = useState({
+
+  const ticketState = {
     ticketType: "GRIEVANCE",
     title: "",
     description: "",
     departmentId: 0,
     userId: JSON.parse(localStorage.getItem('user'))?.id
-  });
+  }
+  const [ticket, setTicket] = useState(ticketState);
 
   useEffect(()=>{
     setUserRole(localStorage.getItem('role'));
@@ -46,14 +48,11 @@ export default function AddNewTicket() {
   const handleChange = (e) => {
     const value = e.target.value;
     setTicket({ ...ticket, [e.target.name]: value });
-    // console.log(user);
   };
 
   const closeAlert = () => {
     setAlertMessage("");
     setShow(false);
-    // navigate("/admin");
-    
 };
 
   const fetchDepartment = async () => {
@@ -75,7 +74,6 @@ export default function AddNewTicket() {
   };
   const handleSubmit = async(e) => {
     e.preventDefault();
-    console.log(ticket);
     if (!validateDepartmentId(ticket.departmentId)) {
       setDepartmentIdErr("Select a department");
     } else {
@@ -91,6 +89,7 @@ export default function AddNewTicket() {
         .then((res)=>{
           setShow(true)
           setAlertMessage(res.data.message)
+          setTicket(ticketState);
         }).catch((error)=>{
           setShow(true)
           if(error.code==="ERR_NETWORK"){
@@ -120,7 +119,6 @@ export default function AddNewTicket() {
                     handleChange(e);
                   }}
                 >
-                  {/* <option hidden>Select TicketType</option> */}
                   <option name="ticketType" value="GRIEVANCE">
                     Grievance
                   </option>
@@ -145,12 +143,6 @@ export default function AddNewTicket() {
               </div>
               <div className="input-box">
                 <label className="addTicket_label">Description</label>
-                {/* <input
-                type="text"
-                placeholder="Enter Description"
-                required
-                className="addTicket_input"
-              /> */}
                 <textarea
                   type="text"
                   placeholder="Enter Description"
@@ -175,11 +167,6 @@ export default function AddNewTicket() {
                     *{descriptionErr}
                   </span>
                 )}
-
-              {/* <div className='column1'>
-            <label className="addTicket_label">Assigned To</label>
-            <label className="addTicket_label">Status</label>
-            </div> */}
               <div className="column">
                 <div className="assigned-to">
                   <label className="addTicket_label">Assigned To</label>

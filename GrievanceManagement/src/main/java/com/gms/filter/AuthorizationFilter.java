@@ -1,7 +1,7 @@
 package com.gms.filter;
 
 import java.io.IOException;
-import java.util.Enumeration;
+import java.util.Objects;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -39,7 +39,6 @@ public class AuthorizationFilter implements Filter {
             throws IOException, ServletException {
 
         HttpServletResponse httpServletResponse = (HttpServletResponse) response;
-
         HttpServletRequest httpServletRequest = (HttpServletRequest) request;
         if (httpServletRequest.getMethod().equals("OPTIONS")) {
             httpServletResponse.setHeader("Access-Control-Allow-Origin", "*");
@@ -49,20 +48,21 @@ public class AuthorizationFilter implements Filter {
             httpServletResponse.setContentType("application/json");
             httpServletResponse.setStatus(HttpServletResponse.SC_OK);
         } else {
-            System.out.println(httpServletRequest.getRequestURI());
             String username = httpServletRequest.getHeader("username");
             String password = httpServletRequest.getHeader("encodePassword");
             String path = httpServletRequest.getServletPath();
-            if (username == null || password == null || username == "" || password == "") {
+            if (path.equals("/gms/admin/department")) {
+                chain.doFilter(httpServletRequest, response);
+            } else if (Objects.isNull(username) || Objects.isNull(password) || username.equals("") || password.equals("")) {
                 ((HttpServletResponse) response).sendError(HttpServletResponse.SC_UNAUTHORIZED,
                         MessageConstant.INVALID_TOKEN);
             } else if (!userRepository.existsByEmailAndPassword(username, password)) {
                 ((HttpServletResponse) response).sendError(HttpServletResponse.SC_UNAUTHORIZED,
                         MessageConstant.UNAUTHORIZED);
-            } else if ((path.startsWith(UrlConstant.BASE_URL + UrlConstant.MEMBER_URL)
-                    && userRepository.existsByEmailAndPasswordAndRole(username, password, Role.ADMIN))
-                    || (path.startsWith(UrlConstant.BASE_URL + UrlConstant.ADMIN_URL)
-                            && userRepository.existsByEmailAndPasswordAndRole(username, password, Role.MEMBER))) {
+            } else if (path.startsWith(UrlConstant.BASE_URL + UrlConstant.MEMBER_URL)
+                    && userRepository.existsByEmailAndPasswordAndRole(username, password, Role.ADMIN)
+                    || path.startsWith(UrlConstant.BASE_URL + UrlConstant.ADMIN_URL)
+                            && userRepository.existsByEmailAndPasswordAndRole(username, password, Role.MEMBER)) {
                 ((HttpServletResponse) response).sendError(HttpServletResponse.SC_UNAUTHORIZED,
                         MessageConstant.ACCESS_DENIED);
             } else {

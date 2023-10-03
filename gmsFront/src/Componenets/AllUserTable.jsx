@@ -14,20 +14,19 @@ export default function AllUserTable() {
   const [isNextPage, setIsNextPage] = useState(true);
   const [alertMessage, setAlertMessage] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
-  const [logedInUserId,setLogedInUserId] = useState("");
+  const [logedInUserId, setLogedInUserId] = useState("");
   const [isPaginated, setIsPaginated] = useState(false);
 
   useEffect(() => {
-    setLogedInUserId(JSON.parse(localStorage.getItem('user'))?.id);
+    setLogedInUserId(JSON.parse(localStorage.getItem("user"))?.id);
     fetchDepartment();
   }, []);
 
   useEffect(() => {
     fetchAllUser();
-  }, [currentPage]);
+  }, [currentPage, filterDepartment]);
 
-  useEffect(()=>{
-  },[users])
+  useEffect(() => {}, [users]);
 
   const getNext = () => {
     if (isNextPage) {
@@ -51,30 +50,33 @@ export default function AllUserTable() {
   };
 
   const handleSubmit = () => {
-    fetchAllUser();
+    setIsNextPage(true);
+    setFilterDepartment();
   };
 
   const handleDepartment = (e) => {
-    // setCurrentPage(1);
+    setCurrentPage(1);
     setFilterDepartment(e.target.value);
   };
 
-  const handleDelete = async(userId) => {
-    console.log(userId);
+  const handleDelete = async (userId) => {
+    if(window.confirm("Are you sure ?") == false){
+          return;
+    }
     await APIService.deleteUserById(userId)
-    .then((res)=>{
+      .then((res) => {
         setShow(true);
         setAlertMessage(res.data.message);
-        setUsers(users.filter(user => user.userId !== userId));
-          
-    }).catch((error)=>{
+        setUsers(users.filter((user) => user.userId !== userId));
+      })
+      .catch((error) => {
         setShow(true);
-        if(error.code === "ERR_NETWORK"){
-           setAlertMessage(error.message);
-        }else{
-            setAlertMessage(error.response.data.message);
+        if (error.code === "ERR_NETWORK") {
+          setAlertMessage(error.message);
+        } else {
+          setAlertMessage(error.response.data.message);
         }
-    })
+      });
   };
 
   const fetchDepartment = async () => {
@@ -127,11 +129,11 @@ export default function AllUserTable() {
       <div className="ticket-table-parent-container">
         <div className="ticket-table-top-element">
           <select
+            value={filterDepartment === undefined ? '' : filterDepartment}
             onChange={(e) => {
               handleDepartment(e);
             }}
           >
-            Filter
             <option hidden>--Select Department--</option>
             {departments.map((dept) => (
               <option
@@ -145,7 +147,7 @@ export default function AllUserTable() {
           </select>
           <span>
             <button onClick={handleSubmit} className="ticket-table-filter-btn">
-              Filter
+              Clear
             </button>
           </span>
         </div>
@@ -173,10 +175,7 @@ export default function AllUserTable() {
                       className="ticket-table-data-update"
                       value={user.userId}
                       onClick={(e) => handleDelete(user.userId)}
-                      hidden=
-                      { user.userId === logedInUserId
-                        ? true
-                        : false}
+                      hidden={user.userId === logedInUserId ? true : false}
                     >
                       <RiDeleteBin6Line />
                     </button>

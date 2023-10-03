@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react'
-import AdminDashboard from './AdminDashboard';
-import APIService from '../Service/api';
+import React, { useEffect, useState } from "react";
+import AdminDashboard from "./AdminDashboard";
+import APIService from "../Service/api";
 import { RiDeleteBin6Line } from "react-icons/ri";
-import Alert from './Alert';
+import Alert from "./Alert";
 
 export default function AllDepartmentTable() {
   const [departments, setDepartments] = useState([]);
@@ -11,17 +11,17 @@ export default function AllDepartmentTable() {
   const [isNextPage, setIsNextPage] = useState(true);
   const [alertMessage, setAlertMessage] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
-  const [logedInUserDepart,setLogedInUserDepart] = useState("");
+  const [logedInUserDepart, setLogedInUserDepart] = useState("");
   const [isPaginated, setIsPaginated] = useState(true);
 
   useEffect(() => {
-    setLogedInUserDepart(JSON.parse(localStorage.getItem('user'))?.departmentName);
+    setLogedInUserDepart(
+      JSON.parse(localStorage.getItem("user"))?.departmentName
+    );
     fetchDepartment();
   }, [currentPage]);
 
-  useEffect(()=>{
-
-  },[departments]);
+  useEffect(() => {}, [departments]);
 
   const getNext = () => {
     if (isNextPage) {
@@ -44,22 +44,26 @@ export default function AllDepartmentTable() {
     setShow(false);
   };
 
-  const handleDelete = async(departmentId) => {
-    console.log(departmentId);
+  const handleDelete = async (departmentId) => {
+    if(window.confirm("Are you sure ?") == false){
+      return;
+    }
     await APIService.deleteDepartmentById(departmentId)
-    .then((res)=>{
+      .then((res) => {
         setShow(true);
         setAlertMessage(res.data.message);
-        setDepartments(departments.filter(department => department.id !== departmentId));
-          
-    }).catch((error)=>{
+        setDepartments(
+          departments.filter((department) => department.id !== departmentId)
+        );
+      })
+      .catch((error) => {
         setShow(true);
-        if(error.code === "ERR_NETWORK"){
-           setAlertMessage(error.message);
-        }else{
-            setAlertMessage(error.response.data.message);
+        if (error.code === "ERR_NETWORK") {
+          setAlertMessage(error.message);
+        } else {
+          setAlertMessage(error.response.data.message);
         }
-    })
+      });
   };
 
   const fetchDepartment = async () => {
@@ -75,22 +79,25 @@ export default function AllDepartmentTable() {
           setAlertMessage(error.message);
         } else {
           setIsNextPage(false);
-          setCurrentPage(currentPage-1);
+          setCurrentPage(currentPage - 1);
           setAlertMessage(error.response.data.message);
         }
       });
   };
   return (
     <>
-    <AdminDashboard />
-      <div className="ticket-table-parent-container" style={{marginLeft:"21vw"}}>
+      <AdminDashboard />
+      <div
+        className="ticket-table-parent-container"
+        style={{ marginLeft: "21vw" }}
+      >
         <div className="ticket-table-container">
           <table className="ticket-table">
             <thead>
               <tr>
                 <th>S.No</th>
                 <th>Department</th>
-                <th>Delete</th>
+                <th style={{ textAlign: "center" }}>Delete</th>
               </tr>
             </thead>
             {departments?.map((department, index) => {
@@ -103,10 +110,11 @@ export default function AllDepartmentTable() {
                       className="ticket-table-data-update"
                       value={department.id}
                       onClick={(e) => handleDelete(department.id)}
-                      hidden=
-                      { department.departmentName === logedInUserDepart
-                        ? true
-                        : false}
+                      hidden={
+                        department.departmentName === logedInUserDepart
+                          ? true
+                          : false
+                      }
                     >
                       <RiDeleteBin6Line />
                     </button>
@@ -127,5 +135,5 @@ export default function AllDepartmentTable() {
       </div>
       {show && <Alert message={alertMessage} close={closeAlert} />}
     </>
-  )
+  );
 }

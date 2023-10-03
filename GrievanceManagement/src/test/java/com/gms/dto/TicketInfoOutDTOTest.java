@@ -13,7 +13,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 
-import com.gms.entity.Comment;
 import com.gms.entity.Status;
 import com.gms.entity.TicketType;
 
@@ -75,15 +74,41 @@ public class TicketInfoOutDTOTest {
     
     @Test
     public void testingHashCodeAndEqualsAndToStringMethod() {
-        TicketInfoOutDTO ticketInfoOutDTO1 = new TicketInfoOutDTO(1l, "Keyboard",
-                "qwerty", TicketType.FEEDBACK, "HR", "Rohit", LocalDateTime.now().withNano(0),
-                LocalDateTime.now().withNano(0), Arrays.asList(new CommentOutDTO()), Status.BEING_ADDRESSED);
-        TicketInfoOutDTO ticketInfoOutDTO2 = new TicketInfoOutDTO(1l, "Keyboard",
-                "qwerty", TicketType.FEEDBACK, "HR", "Rohit", LocalDateTime.now().withNano(0),
-                LocalDateTime.now().withNano(0), Arrays.asList(new CommentOutDTO()), Status.BEING_ADDRESSED);
-        TicketInfoOutDTO ticketInfoOutDTO3 = new TicketInfoOutDTO(1l, "Keyboard Problem",
-                "qwerty", TicketType.FEEDBACK, "HR", "mohit", LocalDateTime.now().withNano(0),
-                LocalDateTime.now().withNano(0), Arrays.asList(new CommentOutDTO()), Status.BEING_ADDRESSED);
+        TicketInfoOutDTO ticketInfoOutDTO1 = new TicketInfoOutDTO();
+        ticketInfoOutDTO1.setAssignedBy("Rohit");
+        ticketInfoOutDTO1.setTitle("qwerty");
+        ticketInfoOutDTO1.setTicketType(TicketType.FEEDBACK);
+        ticketInfoOutDTO1.setTicketId(1l);
+        ticketInfoOutDTO1.setStatus(Status.BEING_ADDRESSED);
+        ticketInfoOutDTO1.setLastUpdatedTime(LocalDateTime.now().withNano(0));
+        ticketInfoOutDTO1.setDescription("good");
+        ticketInfoOutDTO1.setComments(Arrays.asList(new CommentOutDTO()));
+        ticketInfoOutDTO1.setAssignedTo("HR");
+        ticketInfoOutDTO1.setCreationTime(LocalDateTime.now().withNano(0));
+        
+        TicketInfoOutDTO ticketInfoOutDTO2 = new TicketInfoOutDTO();
+        ticketInfoOutDTO2.setAssignedBy("Rohit");
+        ticketInfoOutDTO2.setTitle("qwerty");
+        ticketInfoOutDTO2.setTicketType(TicketType.FEEDBACK);
+        ticketInfoOutDTO2.setTicketId(1l);
+        ticketInfoOutDTO2.setStatus(Status.BEING_ADDRESSED);
+        ticketInfoOutDTO2.setLastUpdatedTime(LocalDateTime.now().withNano(0));
+        ticketInfoOutDTO2.setDescription("good");
+        ticketInfoOutDTO2.setComments(Arrays.asList(new CommentOutDTO()));
+        ticketInfoOutDTO2.setAssignedTo("HR");
+        ticketInfoOutDTO2.setCreationTime(LocalDateTime.now().withNano(0));
+        
+        TicketInfoOutDTO ticketInfoOutDTO3 = new TicketInfoOutDTO();
+        ticketInfoOutDTO3.setAssignedBy("Mohit");
+        ticketInfoOutDTO3.setTitle("qwerty");
+        ticketInfoOutDTO3.setTicketType(TicketType.FEEDBACK);
+        ticketInfoOutDTO3.setTicketId(1l);
+        ticketInfoOutDTO3.setStatus(Status.BEING_ADDRESSED);
+        ticketInfoOutDTO3.setLastUpdatedTime(LocalDateTime.now().withNano(0));
+        ticketInfoOutDTO3.setDescription("good");
+        ticketInfoOutDTO3.setComments(Arrays.asList(new CommentOutDTO()));
+        ticketInfoOutDTO3.setAssignedTo("HR");
+        ticketInfoOutDTO3.setCreationTime(LocalDateTime.now().withNano(0));
               
         assertEquals(ticketInfoOutDTO1.hashCode(), ticketInfoOutDTO2.hashCode());
         assertNotEquals(ticketInfoOutDTO1.hashCode(), ticketInfoOutDTO3.hashCode());
@@ -98,11 +123,18 @@ public class TicketInfoOutDTOTest {
     
     @Test
     public void testToString() {
-        TicketInfoOutDTO ticketInfoOutDTO1 = new TicketInfoOutDTO(1l, "Keyboard",
-                "qwerty", TicketType.FEEDBACK, "HR", "Rohit", LocalDateTime.now().withNano(0),
-                LocalDateTime.now().withNano(0), Arrays.asList(new CommentOutDTO()), Status.BEING_ADDRESSED);
-        System.out.println(ticketInfoOutDTO1);
-        assertEquals("TicketInfoOutDTO [ticketId=1, title=Keyboard, description=qwerty, ticketType=FEEDBACK, assignedTo=HR, assignedBy=Rohit, comments=[CommentOutDTO [comment=null, userName=null]], status=BEING_ADDRESSED]"
-                + "", ticketInfoOutDTO1.toString());
+        TicketInfoOutDTO ticketInfoOutDTO = new TicketInfoOutDTO();
+        ticketInfoOutDTO.setAssignedBy("Rohit");
+        ticketInfoOutDTO.setTitle("qwerty");
+        ticketInfoOutDTO.setTicketType(TicketType.FEEDBACK);
+        ticketInfoOutDTO.setTicketId(1l);
+        ticketInfoOutDTO.setStatus(Status.BEING_ADDRESSED);
+        ticketInfoOutDTO.setLastUpdatedTime(LocalDateTime.now().withNano(0));
+        ticketInfoOutDTO.setDescription("good");
+        ticketInfoOutDTO.setComments(Arrays.asList(new CommentOutDTO()));
+        ticketInfoOutDTO.setAssignedTo("HR");
+        ticketInfoOutDTO.setCreationTime(LocalDateTime.now().withNano(0));
+        assertEquals("TicketInfoOutDTO [ticketId=1, title=qwerty, description=good, ticketType=FEEDBACK, assignedTo=HR, assignedBy=Rohit, comments=[CommentOutDTO [comment=null, name=null]], status=BEING_ADDRESSED]"
+                , ticketInfoOutDTO.toString());
     }
 }

@@ -23,28 +23,26 @@ public class AddUserInDTO {
     private String name;
 
     /**
-     * this is username which represents email of user.
+     * This is username which represents email of user.
      */
     @NotEmpty(message = "please enter username ")
     @Pattern(regexp = "^[a-z0-9]{2,}[.][a-z]{2,}+@nucleusteq.com$", message = "please enter valid username")
     private String username;
 
     /**
-     * this is user role.
+     * This is user role.
      */
     @NotNull(message = "role required")
     @Enumerated(EnumType.STRING)
     private Role userType;
 
     /**
-     * this is password of user.
+     * This is password of user.
      */
-    @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])"
-            + "(?=.*[@$!%*?&])[A-Za-z0-9@$!%*?&]{8,20}$", message = "enter strong password")
     private String password;
 
     /**
-     * this is departmentId which user belongs.
+     * This is departmentId which user belongs.
      */
     private Long departmentId;
 
@@ -65,7 +63,7 @@ public class AddUserInDTO {
     }
 
     /**
-     * getter method for @getUsername. 
+     * getter method for @getUsername.
      * @return String - username
      */
     public String getUsername() {
@@ -90,7 +88,6 @@ public class AddUserInDTO {
 
     /**
      * setter method for @setUserType.
-     * 
      * @param userType
      */
     public void setUserType(final Role userType) {
@@ -107,7 +104,6 @@ public class AddUserInDTO {
 
     /**
      * setter method for @setPassword.
-     * 
      * @param password
      */
     public void setPassword(final String password) {
@@ -116,7 +112,6 @@ public class AddUserInDTO {
 
     /**
      * getter method for @getDepartmentId.
-     * 
      * @return long - departmentId
      */
     public Long getDepartmentId() {
@@ -125,7 +120,6 @@ public class AddUserInDTO {
 
     /**
      * setter method for @setDepartmentId.
-     * 
      * @param departmentId
      */
     public void setDepartmentId(final Long departmentId) {
@@ -140,6 +134,7 @@ public class AddUserInDTO {
     }
 
     /**
+     * This is all-argument constructor.
      * @param name
      * @param username
      * @param userType
@@ -148,9 +143,10 @@ public class AddUserInDTO {
      */
     public AddUserInDTO(
             @NotEmpty(message = "Please Enter Username") @Pattern(regexp = "^[a-zA-Z ]{2,}$") final String name,
-            @NotEmpty(message = "please enter username ") @Pattern(regexp = "^[a-z0-9]{2,}[.][a-z]{2,}+@nucleusteq.com$", message = "please enter valid username") final String username,
+            @NotEmpty(message = "please enter username ") @Pattern(regexp = "^[a-z0-9]{2,}[.][a-z]{2,}+@nucleusteq.com$",
+            message = "please enter valid username") final String username,
             @NotNull(message = "role required") final Role userType,
-            @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[@$!%*?&])[A-Za-z0-9@$!%*?&]{8,20}$", message = "enter strong password") final String password,
+            final String password,
             final Long departmentId) {
         super();
         this.name = name;
@@ -161,7 +157,7 @@ public class AddUserInDTO {
     }
 
     /**
-     * this is @toString method.
+     * This is @toString method.
      */
     @Override
     public String toString() {
@@ -170,7 +166,7 @@ public class AddUserInDTO {
     }
 
     /**
-     * this is @hashCode method.
+     * This is @hashCode method.
      */
     @Override
     public int hashCode() {
@@ -178,7 +174,7 @@ public class AddUserInDTO {
     }
 
     /**
-     * this is @equals method.
+     * This is @equals method.
      */
     @Override
     public boolean equals(final Object obj) {
@@ -192,7 +188,7 @@ public class AddUserInDTO {
             return false;
         }
         AddUserInDTO other = (AddUserInDTO) obj;
-        return departmentId == other.departmentId && Objects.equals(name, other.name)
+        return departmentId.equals(other.departmentId) && Objects.equals(name, other.name)
                 && Objects.equals(password, other.password) && userType == other.userType
                 && Objects.equals(username, other.username);
     }

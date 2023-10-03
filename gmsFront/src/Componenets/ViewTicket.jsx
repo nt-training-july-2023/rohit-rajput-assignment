@@ -15,7 +15,7 @@ export default function ViewTicket() {
   const [startingStatus, setStartingStatus] = useState("");
   const [updatedStatus, setUpdatedStatus] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
-  const [err,setErr] = useState("");
+  const [err, setErr] = useState("");
   const navigate = useNavigate();
   const param = useParams();
   const ticketId = param.ticketId;
@@ -23,8 +23,6 @@ export default function ViewTicket() {
   const userDepartment = JSON.parse(
     localStorage.getItem("user")
   )?.departmentName;
-  console.log(userDepartment);
-   
 
   useEffect(() => {
     fetchTicketById();
@@ -33,19 +31,17 @@ export default function ViewTicket() {
   const handleStatus = (e) => {
     setErr("");
     setStatusErr("");
-    console.log(e.target.value);
     setUpdatedStatus(e.target.value);
   };
 
   const handleComment = (e) => {
     setErr("");
     setErrorMessage("");
-    console.log(e.target.value);
     const comment = e.target.value;
     setUpdateComment(comment);
   };
 
-  const isCommentValid = () =>{
+  const isCommentValid = () => {
     if (startingStatus === "OPEN" && updateComment === "") {
       setErrorMessage("Please add a comment");
       return false;
@@ -53,19 +49,19 @@ export default function ViewTicket() {
       setErrorMessage("");
       return true;
     }
-  }
+  };
 
-  const isErrValid = () =>{
-    if(startingStatus === updatedStatus && updateComment === ""){
+  const isErrValid = () => {
+    if (startingStatus === updatedStatus && updateComment === "") {
       setErr("Nothing to update");
       return false;
-   }else{
-     setErr("");
-     return true;
-   }
-  }
+    } else {
+      setErr("");
+      return true;
+    }
+  };
 
-  const isStatusValid = () =>{
+  const isStatusValid = () => {
     if (updatedStatus === "OPEN") {
       setStatusErr("Please update the status");
       return false;
@@ -73,12 +69,11 @@ export default function ViewTicket() {
       setStatusErr("");
       return true;
     }
-  }
+  };
 
   const fetchTicketById = async () => {
     await APIService.getTicketById(ticketId)
       .then((res) => {
-        console.log(res.data.data);
         setTicketInfo(res.data.data);
         setTicketDepartmentName(res.data.data.assignedTo);
         setStartingStatus(res.data.data.status);
@@ -86,44 +81,39 @@ export default function ViewTicket() {
       })
       .catch((error) => {
         setShow(true);
-        if(error.code==="ERR_NETWORK"){
+        if (error.code === "ERR_NETWORK") {
           setAlertMessage(error.message);
-        }else{
+        } else {
           setAlertMessage(error.response.data.message);
         }
       });
   };
-  console.log(ticketInfo);
 
-  const handleSubmit = async(e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if(isStatusValid() && isCommentValid() && isErrValid()){
+    if (isStatusValid() && isCommentValid() && isErrValid()) {
       await APIService.updateTicket(updatedStatus, ticketId, updateComment)
-      .then((res)=>{
-        setUpdateComment("");
-        setIsUpdate(!isUpdate);
-        setShow(true);
-        setAlertMessage(res.data.data);
-        console.log(res);
-      }).catch((error)=>{
-        setShow(true);
-        console.log(error);
-        if(error.code==="ERR_NETWORK"){
-          setAlertMessage(error.message);
-        }else{
-          setAlertMessage(error.response.data.message);
-        }
-      })
+        .then((res) => {
+          setUpdateComment("");
+          setIsUpdate(!isUpdate);
+          setShow(true);
+          setAlertMessage(res.data.data);
+        })
+        .catch((error) => {
+          setShow(true);
+          if (error.code === "ERR_NETWORK") {
+            setAlertMessage(error.message);
+          } else {
+            setAlertMessage(error.response.data.message);
+          }
+        });
       setUpdateComment("");
     }
   };
 
   const closeAlert = () => {
-    // setUpdateComment("");
     setAlertMessage("");
     setShow(false);
-
-    // navigate('/get-all-ticket');
   };
 
   return (
@@ -136,10 +126,8 @@ export default function ViewTicket() {
               <h2 className="heading">Ticket Information</h2>
             </div>
             {err !== "" && (
-                  <span style={{ fontSize: "1.5rem", color: "red" }}>
-                    *{err}
-                  </span>
-                )}
+              <span style={{ fontSize: "1.5rem", color: "red" }}>*{err}</span>
+            )}
             <div className="view-ticket-content">
               <div className="ticket-info">
                 <div className="view-ticket-input-box">
@@ -243,7 +231,7 @@ export default function ViewTicket() {
                   {ticketInfo.comments?.map((comment) => (
                     <div className="ticket-info-comment-input-div">
                       <label className="ticket-info-comment-input-lable">
-                        {comment.userName} :
+                        {comment.name} :
                       </label>
                       <span className="ticket-info-comment-input">
                         {comment.comment}
@@ -259,7 +247,24 @@ export default function ViewTicket() {
               </div>
             </div>
             <div className="view-comment-add">
-              <button
+             
+              <input
+                className="ticket-info-input"
+                type="text"
+                onChange={(e) => {
+                  handleComment(e);
+                }}
+                value={updateComment}
+                placeholder="Write comment here"
+                disabled={updatedStatus === "OPEN" ? true : false}
+                hidden={
+                  startingStatus === "RESOLVED" ||
+                  ticketDepartmentName !== userDepartment
+                    ? true
+                    : false
+                }
+              />
+               <button
                 className="view-ticket-btn"
                 type="submit"
                 hidden={
@@ -271,20 +276,6 @@ export default function ViewTicket() {
               >
                 Update Ticket
               </button>
-              <input
-                className="ticket-info-input"
-                type="text"
-                onChange={(e)=>{handleComment(e)}}
-                value={updateComment}
-                placeholder="Write comment here"
-                disabled={updatedStatus === "OPEN" ? true : false}
-                hidden={
-                  startingStatus === "RESOLVED" ||
-                  ticketDepartmentName !== userDepartment
-                    ? true
-                    : false
-                }
-              />
             </div>
           </form>
         </div>

@@ -5,14 +5,10 @@ const BASEURL = "http://localhost:8080/gms/";
 
 const APIService = {
   login(loginCredentials) {
-    const header = {
-      username: loginCredentials.email,
-      encodedPassword: btoa(loginCredentials.password),
-    };
     return axios.post(BASEURL + "auth/login", loginCredentials, {
       headers: {
         username: loginCredentials.email,
-        encodePassword: btoa(loginCredentials.password),
+        encodePassword: loginCredentials.password,
       },
     });
   },
@@ -48,11 +44,12 @@ const APIService = {
 
   changePassword(password, newPassword) {
     const userId = JSON.parse(localStorage.getItem('user'))?.id;
-    return axios.post(BASEURL + "auth/change-password", {
-      userId,
-      password,
-      newPassword,
-    },{headers:AuthHeader()});
+    const data={
+      userId:userId,
+      password:btoa(password),
+      newPassword:btoa(newPassword),
+    };
+    return axios.post(BASEURL + "auth/change-password", data,{headers:AuthHeader()});
   },
 
 
@@ -64,20 +61,16 @@ const APIService = {
 
 
   addNewUser(user) {
-    console.log(user);
     return axios.post(BASEURL + "admin/adduser", user,{headers:AuthHeader()});
   },
 
 
   addNewTicket(ticket) {
-    console.log(ticket);
     return axios.post(BASEURL + "user/ticket", ticket,{headers:AuthHeader()});
   },
 
   updateTicket(status, ticketId, comment){
     const userId = JSON.parse(localStorage.getItem('user'))?.id;
-    console.log(userId);
-    console.log(comment);
     return axios.put(BASEURL + "user/ticket",{status, ticketId, userId, comment},{headers:AuthHeader()});
   },
 

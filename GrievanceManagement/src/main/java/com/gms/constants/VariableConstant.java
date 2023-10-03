@@ -23,6 +23,22 @@ public class VariableConstant {
      * This is maximum length of password.
      */
     public static final int PASSWORD_MAX_LENGTH = 20;
-    
+
+    /**
+     * This is all user for get all the user.
+     */
     public static final Object ALL_USER = "all";
+
+    /**
+     * This is limit of a @Pageable page.
+     */
+    public static final Integer LIMIT = 10;
+
+    /**
+     * This is no-argument constructor.
+     */
+    protected VariableConstant() {
+        super();
+    }
+
 }

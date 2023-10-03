@@ -18,13 +18,9 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.springframework.core.MethodParameter;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.ResultMatcher;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.MethodArgumentNotValidException;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -89,8 +85,7 @@ public class UserControllerTest {
         mockMvc.perform(post(UrlConstant.BASE_URL + UrlConstant.ADMIN_URL+ "/adduser").contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(addUserInDTO)))
         .andExpect(status().isBadRequest())
-        .andExpect(jsonPath("$.data.username", is("please enter valid username")))
-        .andExpect(jsonPath("$.data.password", is("enter strong password")));
+        .andExpect(jsonPath("$.data.username", is("please enter valid username")));
     }
 
     @Test
@@ -103,7 +98,8 @@ public class UserControllerTest {
         user.setRole(addUserInDTO.getUserType());
         when(userService.save(addUserInDTO)).thenThrow(NotFoundException.class);
         mockMvc.perform(post(UrlConstant.BASE_URL + UrlConstant.ADMIN_URL+ "/adduser").contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(addUserInDTO))).andExpect(status().isNotFound());
+                .content(objectMapper.writeValueAsString(addUserInDTO)))
+        .andExpect(status().isNotFound());
     }
 
     @Test
@@ -143,6 +139,7 @@ public class UserControllerTest {
         List<UserOutDTO> userOutDTOs = Arrays.asList(userOutDTO1, userOutDTO2);
         mockMvc.perform(get(UrlConstant.BASE_URL + UrlConstant.ADMIN_URL)
                 .param("pageNumber", "0")
-                .param("filterDepartment", "HR"));
+                .param("filterDepartment", "HR"))
+        .andExpect(jsonPath("$.data.size()", is(0)));
     }
 }

@@ -11,8 +11,7 @@ function MemberRoutes() {
   return (
     <>
       <Routes>
-        
-        <Route path="/member" element={<MemberDashboard/>}/>
+        <Route path="/member" element={<TicketTable/>}/>
         <Route path='/get-all-ticket' element={<TicketTable/>}/>
         <Route path='/add-ticket' element={<AddNewTicket/>}/>
         <Route path='/get-my-ticket' element={<TicketTable/>}/>

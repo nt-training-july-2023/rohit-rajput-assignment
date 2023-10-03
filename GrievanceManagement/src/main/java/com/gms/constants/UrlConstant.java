@@ -23,7 +23,7 @@ public class UrlConstant {
     /**
      * This is member url.
      */
-    public static final String COMMON_URL = "/user";
+    public static final String USER_URL = "/user";
 
     /**
      * This is auth url.
@@ -39,5 +39,12 @@ public class UrlConstant {
      * This is ticket url.
      */
     public static final String TICKET_URL = "/ticket";
+
+    /**
+     * This is no-argument constructor.
+     */
+    protected UrlConstant() {
+        super();
+    }
 
 }

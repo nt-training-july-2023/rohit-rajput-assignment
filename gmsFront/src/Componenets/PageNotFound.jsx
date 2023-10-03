@@ -1,9 +1,8 @@
-import React from 'react'
-
+import React from "react";
+import "../Styles/PageNotFound.css";
 export default function PageNotFound() {
   return (
-    <div>
-      <h1>PAGE NOT FOUND</h1>
+    <div className="not_found">
     </div>
-  )
+  );
 }

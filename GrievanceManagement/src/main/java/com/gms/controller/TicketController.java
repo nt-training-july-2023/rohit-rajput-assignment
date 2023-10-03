@@ -35,7 +35,7 @@ public class TicketController {
     /**
      * This is @Logger object.
      */
-    private static final Logger LOGGER = LogManager.getLogger(UserController.class);
+    private static final Logger LOGGER = LogManager.getLogger(TicketController.class);
 
     /**
      * This is TicketService reference.
@@ -48,7 +48,7 @@ public class TicketController {
      * @param ticketSaveInDTO
      * @return APIResponseEntity
      */
-    @PostMapping(UrlConstant.COMMON_URL + UrlConstant.TICKET_URL)
+    @PostMapping(UrlConstant.USER_URL + UrlConstant.TICKET_URL)
     public APIResponseEntity saveTicket(@RequestBody @Valid final TicketSaveInDTO ticketSaveInDTO) {
         LOGGER.info("[TicketController] : sending save ticket request to ticketService");
         ticketService.saveTicket(ticketSaveInDTO);
@@ -63,15 +63,17 @@ public class TicketController {
      * @param filterStatus
      * @return APIResponseEntity
      */
-    @GetMapping(UrlConstant.COMMON_URL + UrlConstant.TICKET_URL)
-    public APIResponseEntity getAllTicket(@RequestParam Long userId,
-            @RequestParam(defaultValue = "false", required = false) Boolean myTicket,
-            @RequestParam(defaultValue = "1") Integer pageNumber, @RequestParam(required = false) Status filterStatus) {
-        if (pageNumber <= 0) {
-            pageNumber = 1;
+    @GetMapping(UrlConstant.USER_URL + UrlConstant.TICKET_URL)
+    public APIResponseEntity getAllTicket(@RequestParam final Long userId,
+            @RequestParam(defaultValue = "false", required = false) final Boolean myTicket,
+            @RequestParam(defaultValue = "1") final Integer pageNumber,
+            @RequestParam(required = false) final Status filterStatus) {
+        Integer currentPage = pageNumber - 1;
+        if (currentPage < 0) {
+            currentPage = 0;
         }
         LOGGER.info("[TicketController] : sending get-all-ticket request to ticketService");
-        return new APIResponseEntity(true, ticketService.getAllTicket(userId, myTicket, pageNumber - 1, filterStatus),
+        return new APIResponseEntity(true, ticketService.getAllTicket(userId, myTicket, currentPage, filterStatus),
                 MessageConstant.SUCCESS);
     }
 
@@ -82,8 +84,8 @@ public class TicketController {
      * @param userId
      * @return APIResponseEntity
      */
-    @GetMapping(UrlConstant.COMMON_URL + UrlConstant.TICKET_URL + "/{ticketId}")
-    public APIResponseEntity getTicketById(@PathVariable Long ticketId, @RequestParam Long userId) {
+    @GetMapping(UrlConstant.USER_URL + UrlConstant.TICKET_URL + "/{ticketId}")
+    public APIResponseEntity getTicketById(@PathVariable final Long ticketId, @RequestParam final Long userId) {
         LOGGER.info("[TicketController] : sending get-ticket by id request to ticketService");
         return new APIResponseEntity(true, ticketService.getTicketById(ticketId, userId), MessageConstant.SUCCESS);
     }
@@ -91,10 +93,10 @@ public class TicketController {
     /**
      * This is @updateTicket for update a ticket.
      * @param updateTicketInDTO
-     * @return
+     * @return APIResponseEntity
      */
-    @PutMapping(UrlConstant.COMMON_URL + UrlConstant.TICKET_URL)
-    public APIResponseEntity updateTicket(@RequestBody @Valid UpdateTicketInDTO updateTicketInDTO) {
+    @PutMapping(UrlConstant.USER_URL + UrlConstant.TICKET_URL)
+    public APIResponseEntity updateTicket(@RequestBody @Valid final UpdateTicketInDTO updateTicketInDTO) {
         LOGGER.info("[TicketController] : sending update ticket request to ticketService");
         return new APIResponseEntity(false, ticketService.updateTicket(updateTicketInDTO), MessageConstant.SUCCESS);
     }

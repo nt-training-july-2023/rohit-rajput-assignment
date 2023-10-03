@@ -13,13 +13,11 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.PrePersist;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.gms.constants.VariableConstant;
 
 /**
@@ -28,16 +26,6 @@ import com.gms.constants.VariableConstant;
 @Entity
 @Table(name = "user_details")
 public class User {
-    /**
-     * This is minimum length of password.
-     */
-    @Transient
-    private static final int PASSWORD_MIN_LENGTH = 11;
-    /**
-     * This is maximum length of password.
-     */
-    @Transient
-    private static final int PASSWORD_MAX_LENGTH = 28;
     /**
      * This is user id.
      */
@@ -49,7 +37,7 @@ public class User {
      * This is user name.
      */
     @NotEmpty
-    @Size(min =VariableConstant.NAME_MIN_LENGTH,
+    @Size(min = VariableConstant.NAME_MIN_LENGTH,
           max = VariableConstant.NAME_MAX_LENGTH,
           message = "name must be in 2-30  characters Long")
     private String name;
@@ -71,8 +59,6 @@ public class User {
     /**
      * This is password.
      */
-    @Size(min = PASSWORD_MIN_LENGTH, max = PASSWORD_MAX_LENGTH, message = "password must be 11-20 character Long")
-    @NotEmpty(message = "password must be combination of uppercase," + "lowercase and special symbol")
     private String password;
 
     /**
@@ -123,7 +109,7 @@ public class User {
     }
 
     /**
-     * setter method for @setName. 
+     * setter method for @setName.
      * @param name
      */
     public void setName(final String name) {
@@ -274,7 +260,7 @@ public class User {
         }
         User other = (User) obj;
         return Objects.equals(comments, other.comments) && Objects.equals(department, other.department)
-                && Objects.equals(email, other.email) && id == other.id && isFirst == other.isFirst
+                && Objects.equals(email, other.email) && id.equals(other.id) && isFirst == other.isFirst
                 && Objects.equals(name, other.name) && Objects.equals(password, other.password) && role == other.role
                 && Objects.equals(ticket, other.ticket);
     }

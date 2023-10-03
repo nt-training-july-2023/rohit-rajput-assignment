@@ -1,13 +1,14 @@
 package com.gms.serviceImpl;
 
-import java.util.Base64;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -56,7 +57,7 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public LoginResponseOutDTO login(final LoginRequestInDTO loginDTO) {
-        String password = Base64.getEncoder().encodeToString(loginDTO.getPassword().getBytes());
+        String password = loginDTO.getPassword();
         Optional<User> user = userRepository.findByEmail(loginDTO.getEmail());
         if (user.isPresent() && password.equals(user.get().getPassword())) {
             LOGGER.info("user is present");
@@ -89,7 +90,7 @@ public class UserServiceImpl implements UserService {
         User user = new User();
         user.setName(addUserInDTO.getName());
         user.setDepartment(departmentOptional.get());
-        user.setPassword(Base64.getEncoder().encodeToString(addUserInDTO.getPassword().getBytes()));
+        user.setPassword(addUserInDTO.getPassword());
         user.setRole(addUserInDTO.getUserType());
         user.setEmail(addUserInDTO.getUsername());
         LOGGER.info("user saved ....");
@@ -101,16 +102,16 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public String updatePassword(final UpdatePasswordInDTO passwordInDTO) {
-        String oldPassword = Base64.getEncoder().encodeToString(passwordInDTO.getPassword().getBytes());
+        String oldPassword = passwordInDTO.getPassword();
         Optional<User> user = userRepository.findById(passwordInDTO.getUserId());
         if (user.isPresent() && user.get().isFirst()) {
             user.get().setFirst(false);
-            user.get().setPassword(Base64.getEncoder().encodeToString(passwordInDTO.getNewPassword().getBytes()));
+            user.get().setPassword(passwordInDTO.getNewPassword());
             userRepository.save(user.get());
         } else if (!user.isPresent()) {
             throw new NotFoundException(MessageConstant.NOT_FOUND);
         } else if (oldPassword.equals(user.get().getPassword())) {
-            user.get().setPassword(Base64.getEncoder().encodeToString(passwordInDTO.getNewPassword().getBytes()));
+            user.get().setPassword(passwordInDTO.getNewPassword());
             return userRepository.save(user.get()).getPassword();
         } else {
             throw new BadRequestException(MessageConstant.INVALID_DATA);
@@ -135,15 +136,23 @@ public class UserServiceImpl implements UserService {
      * This is @getAllUser method.
      */
     @Override
-    public List<UserOutDTO> getAllUser(Integer pageNumber, String filterDepartment) {
-        Pageable pageable = PageRequest.of(pageNumber, 10);
+    public List<UserOutDTO> getAllUser(final Integer pageNumber, final String filterDepartment) {
+        Pageable pageable = PageRequest.of(pageNumber, VariableConstant.LIMIT);
         if (filterDepartment.equals(VariableConstant.ALL_USER)) {
-            List<UserOutDTO> userOutDTOs = userRepository.getAllUser(pageable);
-            if (userOutDTOs.isEmpty()) {
+            Page<User> userPage = userRepository.findAll(pageable);
+            if (Objects.isNull(userPage)) {
                 LOGGER.warn("[LoginResponseOutDTO]: there is no user");
                 throw new NotFoundException(MessageConstant.NOT_FOUND);
             }
-            LOGGER.info("[LoginResponseOutDTO]: User list without filteration");
+            List<UserOutDTO> userOutDTOs = userPage.getContent().stream().map(user -> {
+                UserOutDTO userOutDTO = new UserOutDTO();
+                userOutDTO.setDepartmentName(user.getDepartment().getDepartmentName());
+                userOutDTO.setName(user.getName());
+                userOutDTO.setUserId(user.getId());
+                userOutDTO.setUserRole(user.getRole());
+                return userOutDTO;
+            }).collect(Collectors.toList());
+            LOGGER.info("[LoginResponseOutDTO]: user list without filteration");
             return userOutDTOs;
         } else {
             List<UserOutDTO> userOutDTOs = userRepository.getAllUserByDepartment(filterDepartment, pageable);

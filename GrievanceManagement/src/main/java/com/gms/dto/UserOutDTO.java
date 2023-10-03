@@ -21,7 +21,7 @@ public class UserOutDTO {
      * This is departmentName.
      */
     private String departmentName;
-    
+
     /**
      * This is user role.
      */
@@ -39,6 +39,7 @@ public class UserOutDTO {
      * @param userId
      * @param name
      * @param departmentName
+     * @param userRole
      */
     public UserOutDTO(final Long userId, final String name, final String departmentName, final Role userRole) {
         super();
@@ -95,8 +96,7 @@ public class UserOutDTO {
     public void setDepartmentName(final String departmentName) {
         this.departmentName = departmentName;
     }
-    
-    
+
     /**
      * getter method for @getUserRole.
      * @return Role - userRole
@@ -139,7 +139,6 @@ public class UserOutDTO {
         return Objects.equals(departmentName, other.departmentName) && Objects.equals(name, other.name)
                 && Objects.equals(userId, other.userId) && userRole == other.userRole;
     }
-    
 
     /**
      * This is @toString method.
@@ -148,5 +147,5 @@ public class UserOutDTO {
     public String toString() {
         return "UserOutDTO [userId=" + userId + ", name=" + name + ", departmentName=" + departmentName + ", userRole="
                 + userRole + "]";
-    }   
+    }
 }

@@ -7,7 +7,6 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import com.gms.entity.TicketType;
@@ -40,7 +39,7 @@ public class TicketSaveInDTOTest {
     }
     
     @Test
-    public void testEqualAndHashCodeAndToString() {
+    public void testEqualAndHashCode() {
         TicketSaveInDTO ticketSaveInDTO1 = new TicketSaveInDTO("qwerty", TicketType.FEEDBACK, "qwertyu", 1l, 1l);
         TicketSaveInDTO ticketSaveInDTO2 = new TicketSaveInDTO("qwerty", TicketType.FEEDBACK, "qwertyu", 1l, 1l);
         TicketSaveInDTO ticketSaveInDTO3 = new TicketSaveInDTO("qwerty", TicketType.FEEDBACK, "qwertyu", 1l, 2l);
@@ -50,8 +49,6 @@ public class TicketSaveInDTOTest {
         assertEquals(ticketSaveInDTO1.hashCode(), ticketSaveInDTO2.hashCode());
         assertNotEquals(ticketSaveInDTO1.hashCode(), ticketSaveInDTO3.hashCode());
         
-        assertEquals("TicketSaveInDTO [title=qwerty, ticketType=FEEDBACK, description=qwertyu, departmentId=1, userId=1]"
-                + "", ticketSaveInDTO1.toString());
         
         assertTrue(ticketSaveInDTO1.equals(ticketSaveInDTO2));
         assertFalse(ticketSaveInDTO1.equals(null));
@@ -59,6 +56,13 @@ public class TicketSaveInDTOTest {
         assertFalse(ticketSaveInDTO1.equals(ticketSaveInDTO3));
         ticketSaveInDTO2 = ticketSaveInDTO1;
         assertTrue(ticketSaveInDTO1.equals(ticketSaveInDTO2));
+    }
+    
+    @Test
+    public void testToString() {
+        TicketSaveInDTO ticketSaveInDTO1 = new TicketSaveInDTO("qwerty", TicketType.FEEDBACK, "qwertyu", 1l, 1l);
+        assertEquals("TicketSaveInDTO [title=qwerty, ticketType=FEEDBACK, description=qwertyu, departmentId=1, userId=1]"
+                + "", ticketSaveInDTO1.toString());
     }
     
 }

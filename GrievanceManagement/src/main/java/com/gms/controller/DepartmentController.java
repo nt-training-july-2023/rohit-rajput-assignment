@@ -25,11 +25,11 @@ import com.gms.service.DepartmentService;
 @RestController
 @RequestMapping(UrlConstant.BASE_URL)
 public class DepartmentController {
-    
+
     /**
-     * This is @Logger class object. 
+     * This is @Logger class object.
      */
-    private static final Logger LOGGER = LogManager.getLogger(UserController.class);
+    private static final Logger LOGGER = LogManager.getLogger(DepartmentController.class);
 
     /**
      * This is DepartmentService object.
@@ -38,16 +38,21 @@ public class DepartmentController {
     private DepartmentService departmentService;
 
     /**
+     * This is @getAllDepartment for getting list of department.
+     * @param pageNumber
+     * @param isPaginate
      * @return APIResponseEntity
      */
-    @GetMapping(UrlConstant.COMMON_URL + UrlConstant.DEPARTMENT_URL)
-    public APIResponseEntity getAllDepartment(@RequestParam(required = false) Integer pageNumber,
+    @GetMapping(UrlConstant.USER_URL + UrlConstant.DEPARTMENT_URL)
+    public APIResponseEntity getAllDepartment(@RequestParam(required = false)final Integer pageNumber,
             @RequestParam(defaultValue = "false") final Boolean isPaginate) {
-        if(pageNumber<=0) {
-            pageNumber = 1;
+        Integer currentPage = pageNumber - 1;
+        if (currentPage < 0) {
+            currentPage = 0;
         }
         LOGGER.info("[DepartmentController]: sending get-all-department request to departmentService");
-        return new APIResponseEntity(true, departmentService.getAllDepartment(pageNumber-1, isPaginate), MessageConstant.SUCCESS);
+        return new APIResponseEntity(true, departmentService.getAllDepartment(currentPage, isPaginate),
+                MessageConstant.SUCCESS);
     }
 
     /**
@@ -61,10 +66,10 @@ public class DepartmentController {
     }
 
     /**
-     * @param id - departmentId
+     * @param departmentId
      * @return APIResponseEntity
      */
-    @DeleteMapping(UrlConstant.ADMIN_URL + UrlConstant.DEPARTMENT_URL +"/{departmentId}")
+    @DeleteMapping(UrlConstant.ADMIN_URL + UrlConstant.DEPARTMENT_URL + "/{departmentId}")
     public APIResponseEntity deleteDepartment(@PathVariable final Long departmentId) {
         LOGGER.info("[DepartmentController]: sending delete department request to departmentService");
         return new APIResponseEntity(false, departmentService.deleteDepartment(departmentId));

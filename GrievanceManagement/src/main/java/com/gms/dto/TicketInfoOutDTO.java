@@ -8,7 +8,7 @@ import com.gms.entity.Status;
 import com.gms.entity.TicketType;
 
 /**
- * This is @TicketInfoOutDTO
+ * This is @TicketInfoOutDTO.
  */
 public class TicketInfoOutDTO {
 
@@ -58,36 +58,6 @@ public class TicketInfoOutDTO {
      */
     public TicketInfoOutDTO() {
         super();
-    }
-
-    /**
-     * This is all-argument constructor.
-     * @param ticketId
-     * @param title
-     * @param description
-     * @param ticketType
-     * @param assignedTo
-     * @param assignedBy
-     * @param creationTime
-     * @param lastUpdatedTime
-     * @param comments
-     * @param status
-     */
-    public TicketInfoOutDTO(final Long ticketId, final String title, final String description,
-            final TicketType ticketType, final String assignedTo, final String assignedBy,
-            final LocalDateTime creationTime, final LocalDateTime lastUpdatedTime, final List<CommentOutDTO> comments,
-            final Status status) {
-        super();
-        this.ticketId = ticketId;
-        this.title = title;
-        this.description = description;
-        this.ticketType = ticketType;
-        this.assignedTo = assignedTo;
-        this.assignedBy = assignedBy;
-        this.creationTime = creationTime;
-        this.lastUpdatedTime = lastUpdatedTime;
-        this.comments = comments;
-        this.status = status;
     }
 
     /**
@@ -211,8 +181,8 @@ public class TicketInfoOutDTO {
     }
 
     /**
-     * setter method for @setCreationTime.
-     * @param creationTime
+     * setter method for @setLastUpdatedTime.
+     * @param lastUpdatedTime
      */
     public void setLastUpdatedTime(final LocalDateTime lastUpdatedTime) {
         this.lastUpdatedTime = lastUpdatedTime;

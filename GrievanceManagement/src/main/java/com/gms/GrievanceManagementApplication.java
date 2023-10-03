@@ -16,7 +16,6 @@ public class GrievanceManagementApplication {
      public static void main(final String[] args) {
        SpringApplication.run(GrievanceManagementApplication.class, args);
      }
-     
      /**
      * This is constructor.
      */

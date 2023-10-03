@@ -148,7 +148,7 @@ public class TicketTableOutDTO {
      * @param lastUpdationTime
      */
     public TicketTableOutDTO(final Long ticketId, final String title, final String departmentName, final Status status,
-            final String assignedBy, LocalDateTime lastUpdationTime) {
+            final String assignedBy, final LocalDateTime lastUpdationTime) {
         super();
         this.ticketId = ticketId;
         this.title = title;

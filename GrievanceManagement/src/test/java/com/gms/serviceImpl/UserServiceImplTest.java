@@ -1,6 +1,5 @@
 package com.gms.serviceImpl;
 
-import static org.assertj.core.api.Assertions.useDefaultDateFormatsOnly;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -19,12 +18,12 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.mockito.stubbing.Answer;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 
 import com.gms.constants.MessageConstant;
-import com.gms.constants.VariableConstant;
 import com.gms.dto.AddUserInDTO;
 import com.gms.dto.LoginRequestInDTO;
 import com.gms.dto.LoginResponseOutDTO;
@@ -55,11 +54,11 @@ public class UserServiceImplTest {
     public void testLoginSuccessful() {
         LoginRequestInDTO requestInDTO = new LoginRequestInDTO("yash.sharma@nucleusteq.com", "Yash@123");
         LoginResponseOutDTO expected = new LoginResponseOutDTO(1l, Role.ADMIN, "Yash", false,
-                "yash.sharma@nucleusteq.com", "HR", "WWFzaEAxMjM=");
+                "yash.sharma@nucleusteq.com", "HR", "Yash@123");
         User user = new User();
         user.setName("Yash");
         user.setEmail("yash.sharma@nucleusteq.com");
-        user.setPassword("WWFzaEAxMjM=");
+        user.setPassword("Yash@123");
         user.setId(1l);
         user.setRole(Role.ADMIN);
         user.setDepartment(new Department());
@@ -114,6 +113,7 @@ public class UserServiceImplTest {
         Department department = new Department();
         department.setDepartmentId(1l);
         User user = new User();
+        user.setId(1l);
         user.setDepartment(department);
         user.setEmail(addUserInDTO.getUsername());
         user.setName(addUserInDTO.getName());
@@ -152,11 +152,10 @@ public class UserServiceImplTest {
     @Test
     public void testChangePasswordIfUserFoundAndFirstLoginFalse() {
         UpdatePasswordInDTO passwordInDTO = new UpdatePasswordInDTO(1l, "Rohit@123", "Rohit@1234");
-        String oldPassword = Base64.getEncoder().encodeToString(passwordInDTO.getPassword().getBytes());
         User user = new User();
         user.setId(1l);
         user.setFirst(false);
-        user.setPassword(oldPassword);
+        user.setPassword("Rohit@123");
         when(userRepository.findById(passwordInDTO.getUserId())).thenReturn(Optional.of(user));
         when(userRepository.save(user)).thenReturn(user);
         userServiceImpl.updatePassword(passwordInDTO);
@@ -196,28 +195,43 @@ public class UserServiceImplTest {
     
     @Test
     public void testGetAllUserIfListIsempty() {
-        Pageable pageable = PageRequest.of(1, 10);
-        when(userRepository.getAllUser(pageable)).thenReturn(Arrays.asList());
+        when(userRepository.findAll()).thenReturn(Arrays.asList());
         NotFoundException notFoundException = assertThrows(NotFoundException.class, ()->userServiceImpl.getAllUser(0, "all"));
         assertEquals(MessageConstant.NOT_FOUND, notFoundException.getMessage());
     }
     
     @Test
     public void testGetAllUserIfListIsNotEmpty() {
+        Department department = new Department();
+        department.setDepartmentName("HR");
+        User user = new User();
+        user.setId(1l);
+        user.setDepartment(department);
+        user.setName("Rohit");
+        user.setRole(Role.ADMIN);
         Pageable pageable = PageRequest.of(0, 10);
-        List<UserOutDTO> userOutDTOs = Arrays.asList(new UserOutDTO(1l,"Rohit","HR", Role.ADMIN));
-        when(userRepository.getAllUser(pageable)).thenReturn(userOutDTOs);
+        Page<User> userPage = new PageImpl<>(Arrays.asList(user));
+        when(userRepository.findAll(pageable)).thenReturn(userPage);
         List<UserOutDTO> userOutDTOs1 = userServiceImpl.getAllUser(0, "all");
         assertEquals(1, userOutDTOs1.size());
     }
+    
+
     
     @Test
     public void testGetAllUserIfListIsNotEmptyWithFilteration() {
         Pageable pageable = PageRequest.of(0, 10);
         String filterDepartment = "HR";
+        Department department = new Department();
+        department.setDepartmentName("HR");
+        User user = new User();
+        user.setId(1l);
+        user.setDepartment(department);
+        user.setName("Rohit");
+        user.setRole(Role.ADMIN);
         UserOutDTO userOutDTO1 = new UserOutDTO(1l,"Rohit","HR",Role.ADMIN);
         List<UserOutDTO> userOutDTOs = Arrays.asList(userOutDTO1);
-        when(userRepository.getAllUser(pageable)).thenReturn(userOutDTOs);
+        when(userRepository.findAll()).thenReturn(Arrays.asList(user));
         when(userRepository.getAllUserByDepartment(filterDepartment, pageable)).thenReturn(userOutDTOs);
         List<UserOutDTO> userOutDTOs1 = userServiceImpl.getAllUser(0, "HR");
         assertEquals(1, userOutDTOs1.size());

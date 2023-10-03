@@ -3,7 +3,6 @@ package com.gms.exception;
 /**
  * This is @NotFounddException for handle not found resources.
  */
-@SuppressWarnings("serial")
 public class NotFoundException extends RuntimeException {
 
     /**

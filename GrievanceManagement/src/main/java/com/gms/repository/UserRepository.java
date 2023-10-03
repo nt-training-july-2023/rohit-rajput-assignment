@@ -51,13 +51,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
      */
     boolean existsByEmailAndPassword(String email, String password);
 
-    /**
-     * This method returns List<UserOutDTO> that is all user.
-     * @param pageable
-     * @return List<UserOutDTO>
-     */
-    @Query("select new com.gms.dto.UserOutDTO(u.id, u.name, d.departmentName, u.role) from User u JOIN u.department d")
-    List<UserOutDTO> getAllUser(Pageable pageable);
 
     /**
      * This method returns List<UserOutDTO> that is all user sorted by department.
@@ -65,6 +58,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
      * @param pageable
      * @return List<UserOutDTO>
      */
-    @Query("select new com.gms.dto.UserOutDTO(u.id, u.name, d.departmentName, u.role) from User u JOIN u.department d where d.departmentName = ?1")
+    @Query("select new com.gms.dto.UserOutDTO(u.id, u.name, d.departmentName, u.role)"
+            + "from User u JOIN u.department d where d.departmentName = ?1")
     List<UserOutDTO> getAllUserByDepartment(String filterDepartment, Pageable pageable);
 }

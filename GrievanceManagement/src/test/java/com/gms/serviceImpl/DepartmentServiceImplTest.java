@@ -3,13 +3,16 @@ package com.gms.serviceImpl;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
 
+import org.hibernate.annotations.Any;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -42,18 +45,19 @@ public class DepartmentServiceImplTest {
         when(departmentRepository.existsByDepartmentName(departmentName)).thenReturn(true);
         BadRequestException ex = assertThrows(BadRequestException.class,
                 ()->departmentServiceImpl.saveDepartment(departmentName));
-        assertEquals(MessageConstant.EXISTS, ex.getMessage());
+        assertEquals(MessageConstant.DATA_ALREADY_EXIST, ex.getMessage());
     }
     
     @Test
     public void testSaveDepartmentSavedSuccessfully() {
         String departmentName = "HR";
         Department department = new Department();
-        department.setDepartmentName(departmentName);
-        when(departmentRepository.existsByDepartmentName(departmentName.toUpperCase())).thenReturn(false);
-        when(departmentRepository.save(department)).thenReturn(department);
-        String message = departmentServiceImpl.saveDepartment(departmentName);
-        assertEquals(message, departmentRepository.save(department).getDepartmentName());
+        department.setDepartmentId(1l);
+        department.setDepartmentName("HR");
+        when(departmentRepository.existsByDepartmentName(departmentName.toUpperCase(Locale.ENGLISH))).thenReturn(false);
+        when(departmentRepository.save(any(Department.class))).thenReturn(department);
+        String departName = departmentServiceImpl.saveDepartment(department.getDepartmentName());
+        assertEquals(departName, department.getDepartmentName());
     }
     
     @Test

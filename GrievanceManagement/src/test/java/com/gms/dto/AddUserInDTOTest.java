@@ -7,7 +7,6 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 
@@ -58,7 +57,7 @@ public class AddUserInDTOTest {
     }
     
     @Test
-    public void testEqualAndHashCodeAndToString() {
+    public void testEqualAndHashCode() {
         AddUserInDTO addUserInDTO1 = new AddUserInDTO("Rohit", "rohit.rajput@nucleusteq.com", Role.ADMIN, "Rohit@123",
                 1l);
         AddUserInDTO addUserInDTO2 = new AddUserInDTO("Rohit", "rohit.rajput@nucleusteq.com", Role.ADMIN, "Rohit@123",
@@ -70,7 +69,6 @@ public class AddUserInDTOTest {
         assertNotEquals(addUserInDTO1, addUserInDTO3);
         assertEquals(addUserInDTO1.hashCode(), addUserInDTO2.hashCode());
         assertNotEquals(addUserInDTO1.hashCode(), addUserInDTO3.hashCode());
-        assertEquals("AddUserInDTO [name=Rohit, username=rohit.rajput@nucleusteq.com, userType=ADMIN, password=Rohit@123, departmentId=1]", addUserInDTO1.toString());
        
         assertTrue(addUserInDTO1.equals(addUserInDTO2));
         assertFalse(false);
@@ -79,6 +77,13 @@ public class AddUserInDTOTest {
         assertFalse(addUserInDTO1.equals(addUserInDTO3));
         addUserInDTO2 =addUserInDTO1;
         assertTrue(addUserInDTO1.equals(addUserInDTO2));
+    }
+    
+    @Test
+    public void testToString() {
+        AddUserInDTO addUserInDTO1 = new AddUserInDTO("Rohit", "rohit.rajput@nucleusteq.com", Role.ADMIN, "Rohit@123",
+                1l);
+        assertEquals("AddUserInDTO [name=Rohit, username=rohit.rajput@nucleusteq.com, userType=ADMIN, password=Rohit@123, departmentId=1]", addUserInDTO1.toString());
     }
 
 }

@@ -28,7 +28,7 @@ public class LoginResponseOutDTO {
     /**
      *This is user email.
      */
-    private String email;    
+    private String email;
     /**
      * This is name of the department user belongs.
      */
@@ -54,7 +54,8 @@ public class LoginResponseOutDTO {
      * @param departmentName
      * @param encodePassword
      */
-    public LoginResponseOutDTO(final Long id, final Role role, final String name, final boolean firstLogin, final String email, final String departmentName,
+    public LoginResponseOutDTO(final Long id, final Role role, final String name,
+            final boolean firstLogin, final String email, final String departmentName,
             final String encodePassword) {
         super();
         this.id = id;
@@ -131,7 +132,7 @@ public class LoginResponseOutDTO {
     }
 
     /**
-     * getter method for @getRole. 
+     * getter method for @getRole.
      * @return Role - role
      */
     public Role getRole() {
@@ -201,9 +202,9 @@ public class LoginResponseOutDTO {
             return false;
         }
         LoginResponseOutDTO other = (LoginResponseOutDTO) obj;
-        return departmentName == other.departmentName && Objects.equals(email, other.email)
+        return departmentName.equals(other.departmentName) && Objects.equals(email, other.email)
                 && Objects.equals(encodePassword, other.encodePassword) && firstLogin == other.firstLogin
-                && id == other.id && Objects.equals(name, other.name) && role == other.role;
+                && id.equals(other.id) && Objects.equals(name, other.name) && role == other.role;
     }
 
     /**

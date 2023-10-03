@@ -5,9 +5,6 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.time.LocalDateTime;
@@ -17,13 +14,9 @@ import java.util.Optional;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.mockito.junit.jupiter.MockitoExtension;
-import org.mockito.junit.jupiter.MockitoSettings;
-import org.mockito.quality.Strictness;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 
@@ -529,6 +522,7 @@ public class TicketServiceImplTest {
         User user = new User();
         user.setDepartment(department1);
         Comment comment = new Comment();
+        comment.setCommentId(1l);
         comment.setComment(updateTicketInDTO.getComment());
         comment.setCommentTime(LocalDateTime.now().withNano(0));
         comment.setTicket(ticket);
@@ -569,16 +563,22 @@ public class TicketServiceImplTest {
     
     @Test
     public void testTicketByIdIfUserNotBelongToTicketDepartment() {
+        Department department1 = new Department();
+        department1.setDepartmentId(1l);
+        Department department2 = new Department();
+        department2.setDepartmentId(2l);
         Long ticketId = 1l;
         Long userId = 1l;
         User user1 = new User();
         user1.setId(userId);
         user1.setRole(Role.MEMBER);
+        user1.setDepartment(department1);
         User user2 = new User();
         user2.setId(2l);
         Ticket ticket = new Ticket();
         ticket.setTicketId(ticketId);
         ticket.setUser(user2);
+        ticket.setDepartment(department2);
         when(ticketRepository.findById(ticketId)).thenReturn(Optional.of(ticket));
         when(userRepository.findById(userId)).thenReturn(Optional.of(user1));
         BadRequestException badRequestException = assertThrows(BadRequestException.class, ()->
@@ -588,14 +588,15 @@ public class TicketServiceImplTest {
     
     @Test
     public void testTicketByIdSuccessfully() {
+        Department department = new Department();
+        department.setDepartmentId(1l);
         Long ticketId = 1l;
         Long userId = 1l;
         User user1 = new User();
         user1.setName("Rohit");
         user1.setId(userId);
         user1.setRole(Role.MEMBER);
-        Department department = new Department();
-        department.setDepartmentId(1l);
+        user1.setDepartment(department);
         Comment comment = new Comment();
         comment.setCommentId(1l);
         comment.setComment("good");

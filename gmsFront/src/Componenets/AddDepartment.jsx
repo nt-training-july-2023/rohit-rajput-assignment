@@ -22,11 +22,9 @@ export default function AddDepartment() {
         .then((res)=>{
           setShow(true)
           setAlertMessage(res.data.message);
-          // navigate("/admin");
           setIsNavigate(true);
         }).catch((error)=>{
           setShow(true)
-          console.log(error);
           if(error.code==="ERR_NETWORK"){
             setAlertMessage(error.message);
           }

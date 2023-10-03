@@ -162,8 +162,8 @@ public class TicketSaveInDTO {
             return false;
         }
         TicketSaveInDTO other = (TicketSaveInDTO) obj;
-        return departmentId == other.departmentId && Objects.equals(description, other.description)
-                && ticketType == other.ticketType && Objects.equals(title, other.title) && userId == other.userId;
+        return departmentId.equals(other.departmentId) && Objects.equals(description, other.description)
+                && ticketType == other.ticketType && Objects.equals(title, other.title) && userId.equals(other.userId);
     }
 
     /**

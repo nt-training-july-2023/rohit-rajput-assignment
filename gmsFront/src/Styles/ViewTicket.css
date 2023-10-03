@@ -24,7 +24,6 @@
 .view-ticket-content {
   display: flex;
   margin-bottom: 2vh;
-  /* margin: 20px; */
 }
 .ticket-info {
   width: 60%;
@@ -49,7 +48,6 @@
 .view-ticket-content .ticket-info-label {
   font-size: 18px;
   font-weight: 700;
-  /* margin: 0.1vh; */
 }
 .view-ticket-content .ticket-info-comment-label {
   font-size: 18px;
@@ -68,14 +66,12 @@
   position: relative;
   height: 5vh;
   width: 90%;
-  /* background: rgb(248, 243, 243); */
 }
 .view-ticket-content .ticket-info-comment-input-div  {
   padding: 0.5vw;
   border: 1px solid rgb(238, 236, 236);
 }
 .view-ticket-content .ticket-info-comment-input {
-  /* padding: 0.5vw; */
   font-size: 15px;
 }
 .view-ticket-content .ticket-info-comment-input-lable {
@@ -85,13 +81,14 @@
 }
 .view-comment-add {
     display: flex;
+    justify-content: space-between;
 }
 .view-comment-add input {
-    margin-left: 22vw;
+    margin-left: 1vw;
     margin-bottom: 10px;
     width: 30vw;
     font-size: 20px;
-    border: 1px solid rgb(238, 236, 236);
+    border: 1px solid rgb(126, 125, 125);
     border-radius: 36px;
     height: 7vh;
     padding-left: 10px;
@@ -99,8 +96,8 @@
 }
 .view-comment-add button {
     height: 4.5rem;
-    width: 30%;
-    margin-left: 1vh;
+    width: 38%;
+    margin-right: 1vh;
     color: aliceblue;
     font-size: 2rem;
     cursor: pointer;

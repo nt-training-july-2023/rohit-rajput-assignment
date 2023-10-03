@@ -1,12 +1,10 @@
 package com.gms.serviceImpl;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 import org.apache.logging.log4j.LogManager;
@@ -17,6 +15,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.gms.constants.MessageConstant;
+import com.gms.constants.VariableConstant;
 import com.gms.dto.CommentOutDTO;
 import com.gms.dto.TicketInfoOutDTO;
 import com.gms.dto.TicketSaveInDTO;
@@ -79,12 +78,12 @@ public class TicketServiceImpl implements TicketService {
     public Ticket saveTicket(final TicketSaveInDTO ticketSaveInDTO) {
         Optional<User> userOptional = userRepository.findById(ticketSaveInDTO.getUserId());
         if (!userOptional.isPresent()) {
-            LOGGER.warn("[TicketServiceImpl]: User Id not exists");
+            LOGGER.error("[TicketServiceImpl]: User Id not exists");
             throw new NotFoundException(MessageConstant.NOT_FOUND);
         }
         Optional<Department> departmentOptional = departmentRepository.findById(ticketSaveInDTO.getDepartmentId());
         if (!departmentOptional.isPresent()) {
-            LOGGER.warn("[TicketServiceImpl]: Department Id not exists");
+            LOGGER.error("[TicketServiceImpl]: Department Id not exists");
             throw new NotFoundException(MessageConstant.NOT_FOUND);
         }
         LOGGER.info("[TicketServiceImpl]: Ticket saved");
@@ -101,9 +100,9 @@ public class TicketServiceImpl implements TicketService {
      * This is @getAllTicket for getting list of @TicketTableOutDTO.
      */
     @Override
-    public List<TicketTableOutDTO> getAllTicket(final Long userId, final Boolean myTicket, Integer pageNumber,
-            Status filterStatus) {
-        Pageable pageable = PageRequest.of(pageNumber, 10);
+    public List<TicketTableOutDTO> getAllTicket(final Long userId, final Boolean myTicket, final Integer pageNumber,
+           final Status filterStatus) {
+        Pageable pageable = PageRequest.of(pageNumber, VariableConstant.LIMIT);
         List<TicketTableOutDTO> ticketTableOutDTOs;
         User user = userRepository.findById(userId).orElseThrow(() -> new NotFoundException(MessageConstant.NOT_FOUND));
         if (myTicket && user.getTicket().isEmpty()) {
@@ -126,13 +125,14 @@ public class TicketServiceImpl implements TicketService {
             return ticketTableOutDTOs;
         } else if (user.getRole().equals(Role.ADMIN) && !Objects.isNull(filterStatus)) {
             LOGGER.info("[TicketServiceImpl]: All Tickets for ADMIN role with filter by status");
-            ticketTableOutDTOs = ticketRepository.findAllTicketByStatus(pageable, filterStatus);
+            ticketTableOutDTOs = ticketRepository.findAllTicketByStatus(pageable, filterStatus).stream().sorted(comparator)
+                    .collect(Collectors.toList());
             return ticketTableOutDTOs;
         } else if (Objects.isNull(filterStatus)) {
             LOGGER.info("[TicketServiceImpl]: Tickets assigned to a department for Member role without filter");
             ticketTableOutDTOs = ticketRepository.findAllByDepartment(user.getDepartment().getDepartmentId(), pageable);
             if (ticketTableOutDTOs.isEmpty()) {
-                LOGGER.warn("[TicketServiceImpl]: No ticket is assigned to your department");
+                LOGGER.info("[TicketServiceImpl]: No ticket is assigned to your department");
                 throw new NotFoundException(MessageConstant.NOT_FOUND);
             }
             return ticketTableOutDTOs.stream().sorted(comparator).collect(Collectors.toList());
@@ -151,22 +151,23 @@ public class TicketServiceImpl implements TicketService {
     public TicketInfoOutDTO getTicketById(final Long ticketId, final Long userId) {
         Optional<Ticket> ticket = ticketRepository.findById(ticketId);
         if (!ticket.isPresent()) {
-            LOGGER.warn("[TicketServiceImpl]: Tickets id does not exists");
+            LOGGER.error("[TicketServiceImpl]: Tickets id does not exists");
             throw new NotFoundException(MessageConstant.NOT_FOUND);
         }
         Optional<User> user = userRepository.findById(userId);
         if (!user.isPresent()) {
-            LOGGER.warn("[TicketServiceImpl]: user id does not exists");
+            LOGGER.error("[TicketServiceImpl]: user id does not exists");
             throw new NotFoundException(MessageConstant.NOT_FOUND);
         }
-        if (ticket.get().getUser().getId() != userId && user.get().getRole() == Role.MEMBER) {
+        if (!(ticket.get().getDepartment().getDepartmentId().equals(user.get().getDepartment().getDepartmentId()))
+                && user.get().getRole().equals(Role.MEMBER)) {
             LOGGER.warn("[TicketServiceImpl]: you does not have rights to access this ticket");
             throw new BadRequestException(MessageConstant.ACCESS_DENIED);
         }
         List<CommentOutDTO> commentOutDTOs = ticket.get().getComments().stream().map(comment -> {
             CommentOutDTO commentOutDTO = new CommentOutDTO();
             commentOutDTO.setComment(comment.getComment());
-            commentOutDTO.setUserName(comment.getUser().getName());
+            commentOutDTO.setName(comment.getUser().getName());
             return commentOutDTO;
         }).collect(Collectors.toList());
         TicketInfoOutDTO ticketInfoOutDTO = new TicketInfoOutDTO();
@@ -184,6 +185,9 @@ public class TicketServiceImpl implements TicketService {
         return ticketInfoOutDTO;
     }
 
+    /**
+     *This is @updateTicket method for updating a ticket.
+     */
     @Override
     public String updateTicket(final UpdateTicketInDTO updateTicketInDTO) {
         Ticket ticket = ticketRepository.findById(updateTicketInDTO.getTicketId())
@@ -191,25 +195,32 @@ public class TicketServiceImpl implements TicketService {
         User user = userRepository.findById(updateTicketInDTO.getUserId())
                 .orElseThrow(() -> new NotFoundException(MessageConstant.NOT_FOUND));
         if (!ticket.getDepartment().equals(user.getDepartment())) {
+            LOGGER.error("[TicketServiceImpl]: you are not belonging to this department");
             throw new BadRequestException(MessageConstant.ACCESS_DENIED);
         }
         if (ticket.getStatus().equals(Status.RESOLVED)) {
+            LOGGER.warn("[TicketServiceImpl]: Ticket is resolved , you can't update");
             throw new BadRequestException("Ticket is Resolved, You can't update");
         }
         if (updateTicketInDTO.getStatus().equals(Status.OPEN)) {
+            LOGGER.warn("[TicketServiceImpl]: Ticket is open , you can't update");
             throw new BadRequestException("Updated status value can't be OPEN");
         }
         if (updateTicketInDTO.getStatus().equals(Status.RESOLVED) && Objects.isNull(updateTicketInDTO.getComment())
                 && ticket.getComments().isEmpty()) {
+            LOGGER.warn("[TicketServiceImpl]: Without a comment you can't RESOLVED ticket");
             throw new BadRequestException("Without a comment you can't RESOLVED ticket");
         }
         if (ticket.getStatus().equals(Status.OPEN) && Objects.isNull(updateTicketInDTO.getComment())) {
+            LOGGER.warn("[TicketServiceImpl]: Without comment Status value OPEN can't be change");
             throw new BadRequestException("Without comment Status value OPEN can't be change");
         }
         if (ticket.getStatus().equals(updateTicketInDTO.getStatus()) && Objects.isNull(updateTicketInDTO.getComment())) {
+            LOGGER.info("[TicketServiceImpl]: There is no content to update");
             throw new BadRequestException("There is no content to update");
         }
-        if (!Objects.isNull(updateTicketInDTO.getComment())&& updateTicketInDTO.getComment().trim()!="") {
+        if (!Objects.isNull(updateTicketInDTO.getComment()) && !updateTicketInDTO.getComment().trim().equals("")) {
+            LOGGER.info("[TicketServiceImpl]: Adding a comment");
             Comment comment = new Comment();
             comment.setComment(updateTicketInDTO.getComment());
             comment.setCommentTime(LocalDateTime.now().withNano(0));
@@ -217,6 +228,7 @@ public class TicketServiceImpl implements TicketService {
             comment.setUser(user);
             commentRepository.save(comment);
         }
+        LOGGER.info("[TicketServiceImpl]: Setting last updated time of ticket");
         ticket.setLastUpdationTime(LocalDateTime.now().withNano(0));
         ticket.setStatus(updateTicketInDTO.getStatus());
         ticketRepository.save(ticket);
@@ -224,7 +236,10 @@ public class TicketServiceImpl implements TicketService {
         return MessageConstant.UPDATED;
     }
 
-    Comparator<TicketTableOutDTO> comparator = (TicketTableOutDTO ticketTableOutDTO1,
+    /**
+     * This is implementation of @Comparator compare method.
+     */
+    private static Comparator<TicketTableOutDTO> comparator = (TicketTableOutDTO ticketTableOutDTO1,
             TicketTableOutDTO ticketTableOutDTO2) -> {
         if (ticketTableOutDTO1.getStatus().equals(ticketTableOutDTO2.getStatus())) {
             return ticketTableOutDTO2.getLastUpdationTime().compareTo(ticketTableOutDTO1.getLastUpdationTime());

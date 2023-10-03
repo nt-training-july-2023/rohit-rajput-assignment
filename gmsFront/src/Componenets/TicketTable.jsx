@@ -16,39 +16,28 @@ export default function TicketTable() {
   const [currentPage, setCurrentPage] = useState(1);
   const [userRole, setUserRole] = useState("");
 
-  
   const path = useLocation().pathname;
 
-  useEffect(()=>{
-    setUserRole(localStorage.getItem('role'));
-  })
+  useEffect(() => {
+    setUserRole(localStorage.getItem("role"));
+  });
 
   useEffect(() => {
-    if(path==="/get-my-ticket"){
-        fetchMyTickets();
-    } else{
-        fetchAllTickets();
+    if (path === "/get-my-ticket") {
+      fetchMyTickets();
+    } else {
+      fetchAllTickets();
     }
-},[currentPage,path]);
-
-  const handleSubmit = (e) =>{
-    e.preventDefault();
-    if(path === "/get-my-ticket"){
-        fetchMyTickets();
-    }else{
-        fetchAllTickets();
-    }
-  }
+  }, [currentPage, path, filterStatus]);
 
   const fetchAllTickets = async () => {
     if (currentPage <= 0) {
       setCurrentPage(1);
       return;
     }
-    
+
     await APIService.getAllTicket(currentPage, filterStatus, false)
       .then((res) => {
-        console.log(res);
         if (res.data.data.length == 0) {
           setCurrentPage(currentPage - 1);
           setIsNextPage(false);
@@ -73,10 +62,9 @@ export default function TicketTable() {
       setCurrentPage(1);
       return;
     }
-    
+
     await APIService.getAllTicket(currentPage, filterStatus, true)
       .then((res) => {
-        console.log(res);
         if (res.data.data.length == 0) {
           setCurrentPage(currentPage - 1);
           setIsNextPage(false);
@@ -114,17 +102,25 @@ export default function TicketTable() {
     setShow(false);
   };
 
-  const handleStatus = (e) =>{
+  const handleStatus = (e) => {
     setFilterStatus(e.target.value);
-    console.log(e.target.value);
-  }
+  };
+
+  const handleClear = () => {
+    setFilterStatus("");
+  };
 
   return (
     <>
-      {userRole === 'ADMIN' ? <AdminDashboard />:<MemberDashboard/>}
+      {userRole === "ADMIN" ? <AdminDashboard /> : <MemberDashboard />}
       <div className="ticket-table-parent-container">
         <div className="ticket-table-top-element">
-          <select onChange={(e)=>{handleStatus(e)}}>
+          <select
+            value={filterStatus}
+            onChange={(e) => {
+              handleStatus(e);
+            }}
+          >
             Filter
             <option hidden>Status</option>
             <option value="OPEN">OPEN</option>
@@ -132,7 +128,9 @@ export default function TicketTable() {
             <option value="RESOLVED">RESOLVED</option>
           </select>
           <span>
-              <button onClick={handleSubmit} className="ticket-table-filter-btn">Filter</button>
+            <button onClick={handleClear} className="ticket-table-filter-btn">
+              Clear
+            </button>
           </span>
         </div>
         <div className="ticket-table-container">
@@ -149,19 +147,19 @@ export default function TicketTable() {
             </thead>
 
             {tickets?.map((ticket) => {
-
               return (
                 <tr key={ticket.ticketId}>
                   <td>{ticket.title}</td>
                   <td>{ticket.departmentName}</td>
                   <td>{ticket.status}</td>
                   <td>{ticket.assignedBy}</td>
-                  <td>{ticket.lastUpdationTime.replace("T"," : ")}</td>
+                  <td>{ticket.lastUpdationTime.replace("T", " : ")}</td>
                   <td style={{ textAlign: "center" }}>
-                    <Link to={`/update-ticket/${ticket.ticketId}`} className="ticket-table-data-update">
-                     
-                        <AiOutlineEdit />
-                     
+                    <Link
+                      to={`/update-ticket/${ticket.ticketId}`}
+                      className="ticket-table-data-update"
+                    >
+                      <AiOutlineEdit />
                     </Link>
                   </td>
                 </tr>

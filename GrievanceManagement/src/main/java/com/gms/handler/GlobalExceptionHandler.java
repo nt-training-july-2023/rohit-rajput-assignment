@@ -19,7 +19,7 @@ import com.gms.response.APIResponseEntity;
  */
 @RestControllerAdvice
 public class GlobalExceptionHandler {
-    
+
     /**
      * This is @handleInvalidException method for
      * handle @MethodArgumentNotValidException exception.
@@ -45,7 +45,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(BadRequestException.class)
     public APIResponseEntity badRequestExceptionHandler(final BadRequestException exception) {
         return new APIResponseEntity(false, exception.getMessage());
-    }    
+    }
 
     /**
      * This method is for handling @NotFoundException.

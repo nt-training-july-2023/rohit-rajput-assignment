@@ -17,8 +17,7 @@ function AdminRoutes() {
     <>
  
     <Routes>
-        
-       <Route path="/admin" element={<AdminDashboard/>}/>
+       <Route path="/admin" element={<TicketTable/>}/>
        <Route path='/get-all-user' element={<AllUserTable/>}/>
        <Route path="/add-user" element={<AddNewUser/>}/>
        <Route path="/add-department" element={<AddDepartment/>}/>

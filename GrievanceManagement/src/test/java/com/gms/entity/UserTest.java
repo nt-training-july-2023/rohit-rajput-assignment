@@ -72,14 +72,17 @@ public class UserTest {
     @Test
     public void testEqualsAndHashCode() {
         User user1 = new User();
+        user1.setId(1l);
         user1.setName("Rohit");
         user1.setRole(Role.ADMIN);
         user1.setPassword("Rohit@123");
         User user2 = new User();
+        user2.setId(1l);
         user2.setName("Rohit");
         user2.setRole(Role.ADMIN);
         user2.setPassword("Rohit@123");
         User user3 = new User();
+        user3.setId(2l);
         user3.setName("Rohit");
         user3.setRole(Role.ADMIN);
         user3.setPassword("Rohit@1234");

@@ -52,6 +52,13 @@ public class MessageConstant {
     /**
      * This is data already exists message.
      */
-    public static final String EXISTS = "Data already exists";
+    public static final String DATA_ALREADY_EXIST = "Data already exists";
+
+    /**
+     * This is no-argument constructor.
+     */
+    protected MessageConstant() {
+        super();
+    }
 
 }
