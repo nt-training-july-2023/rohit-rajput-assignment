@@ -27,7 +27,7 @@ public class VariableConstant {
     /**
      * This is all user for get all the user.
      */
-    public static final Object ALL_USER = "all";
+    public static final String ALL_USER = "all";
 
     /**
      * This is limit of a @Pageable page.

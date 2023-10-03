@@ -20,7 +20,7 @@ import com.gms.constants.UrlConstant;
 import com.gms.dto.TicketSaveInDTO;
 import com.gms.dto.UpdateTicketInDTO;
 import com.gms.entity.Status;
-import com.gms.response.APIResponseEntity;
+import com.gms.response.ResponseDTO;
 import com.gms.service.TicketService;
 
 /**
@@ -46,13 +46,13 @@ public class TicketController {
     /**
      * This is @saveTicket method for handle save ticket request.
      * @param ticketSaveInDTO
-     * @return APIResponseEntity
+     * @return ResponseDTO
      */
     @PostMapping(UrlConstant.USER_URL + UrlConstant.TICKET_URL)
-    public APIResponseEntity saveTicket(@RequestBody @Valid final TicketSaveInDTO ticketSaveInDTO) {
+    public ResponseDTO saveTicket(@RequestBody @Valid final TicketSaveInDTO ticketSaveInDTO) {
         LOGGER.info("[TicketController] : sending save ticket request to ticketService");
         ticketService.saveTicket(ticketSaveInDTO);
-        return new APIResponseEntity(false, MessageConstant.ADDED);
+        return new ResponseDTO(false, MessageConstant.ADDED);
     }
 
     /**
@@ -61,10 +61,10 @@ public class TicketController {
      * @param myTicket
      * @param pageNumber
      * @param filterStatus
-     * @return APIResponseEntity
+     * @return ResponseDTO
      */
     @GetMapping(UrlConstant.USER_URL + UrlConstant.TICKET_URL)
-    public APIResponseEntity getAllTicket(@RequestParam final Long userId,
+    public ResponseDTO getAllTicket(@RequestParam final Long userId,
             @RequestParam(defaultValue = "false", required = false) final Boolean myTicket,
             @RequestParam(defaultValue = "1") final Integer pageNumber,
             @RequestParam(required = false) final Status filterStatus) {
@@ -73,7 +73,7 @@ public class TicketController {
             currentPage = 0;
         }
         LOGGER.info("[TicketController] : sending get-all-ticket request to ticketService");
-        return new APIResponseEntity(true, ticketService.getAllTicket(userId, myTicket, currentPage, filterStatus),
+        return new ResponseDTO(true, ticketService.getAllTicket(userId, myTicket, currentPage, filterStatus),
                 MessageConstant.SUCCESS);
     }
 
@@ -82,22 +82,22 @@ public class TicketController {
      * This is @getTicketById for get a ticket by id.
      * @param ticketId
      * @param userId
-     * @return APIResponseEntity
+     * @return ResponseDTO
      */
     @GetMapping(UrlConstant.USER_URL + UrlConstant.TICKET_URL + "/{ticketId}")
-    public APIResponseEntity getTicketById(@PathVariable final Long ticketId, @RequestParam final Long userId) {
+    public ResponseDTO getTicketById(@PathVariable final Long ticketId, @RequestParam final Long userId) {
         LOGGER.info("[TicketController] : sending get-ticket by id request to ticketService");
-        return new APIResponseEntity(true, ticketService.getTicketById(ticketId, userId), MessageConstant.SUCCESS);
+        return new ResponseDTO(true, ticketService.getTicketById(ticketId, userId), MessageConstant.SUCCESS);
     }
 
     /**
      * This is @updateTicket for update a ticket.
      * @param updateTicketInDTO
-     * @return APIResponseEntity
+     * @return ResponseDTO
      */
     @PutMapping(UrlConstant.USER_URL + UrlConstant.TICKET_URL)
-    public APIResponseEntity updateTicket(@RequestBody @Valid final UpdateTicketInDTO updateTicketInDTO) {
+    public ResponseDTO updateTicket(@RequestBody @Valid final UpdateTicketInDTO updateTicketInDTO) {
         LOGGER.info("[TicketController] : sending update ticket request to ticketService");
-        return new APIResponseEntity(false, ticketService.updateTicket(updateTicketInDTO), MessageConstant.SUCCESS);
+        return new ResponseDTO(false, ticketService.updateTicket(updateTicketInDTO), MessageConstant.SUCCESS);
     }
 }

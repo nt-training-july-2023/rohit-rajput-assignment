@@ -10,7 +10,7 @@ export default function AddNewTicket() {
   const [alertMessage, setAlertMessage] = useState("");
   const[titleErr,setTitleErr]=useState('');
   const[descriptionErr,setDescriptionErr]=useState("")
-  const[departmentIdErr,setDepartmentIdErr]=useState("")
+  const[departmentIdErr,setDepartmentIdErr]=useState(0)
   const [userRole, setUserRole] = useState("");
   const [department, setDepartment] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);

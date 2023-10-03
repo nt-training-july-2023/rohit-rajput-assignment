@@ -31,12 +31,14 @@
 .ticket-table th :nth-child(even){
     background-color: #f2f2f2;
 }
+.ticket-table tbody:hover{
+    background-color: #ddd;
+}
 .ticket-table tr:hover{
     background-color: #ddd;
 }
 .ticket-table-data-update{
     color: black;
-    text-align:center;
     font-size: 2vw;
     background: white;
     border: none;

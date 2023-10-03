@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.gms.constants.MessageConstant;
 import com.gms.constants.UrlConstant;
-import com.gms.response.APIResponseEntity;
+import com.gms.response.ResponseDTO;
 import com.gms.service.DepartmentService;
 
 /**
@@ -41,38 +41,38 @@ public class DepartmentController {
      * This is @getAllDepartment for getting list of department.
      * @param pageNumber
      * @param isPaginate
-     * @return APIResponseEntity
+     * @return ResponseDTO
      */
     @GetMapping(UrlConstant.USER_URL + UrlConstant.DEPARTMENT_URL)
-    public APIResponseEntity getAllDepartment(@RequestParam(required = false)final Integer pageNumber,
+    public ResponseDTO getAllDepartment(@RequestParam(required = false)final Integer pageNumber,
             @RequestParam(defaultValue = "false") final Boolean isPaginate) {
         Integer currentPage = pageNumber - 1;
         if (currentPage < 0) {
             currentPage = 0;
         }
         LOGGER.info("[DepartmentController]: sending get-all-department request to departmentService");
-        return new APIResponseEntity(true, departmentService.getAllDepartment(currentPage, isPaginate),
+        return new ResponseDTO(true, departmentService.getAllDepartment(currentPage, isPaginate),
                 MessageConstant.SUCCESS);
     }
 
     /**
      * @param departmentName
-     * @return APIResponseEntity
+     * @return ResponseDTO
      */
     @PostMapping(UrlConstant.ADMIN_URL + UrlConstant.DEPARTMENT_URL)
-    public APIResponseEntity saveDepartment(@RequestParam final String departmentName) {
+    public ResponseDTO saveDepartment(@RequestParam final String departmentName) {
         LOGGER.info("[DepartmentController]: sending save department request to departmentService");
-        return new APIResponseEntity(true, departmentService.saveDepartment(departmentName), MessageConstant.ADDED);
+        return new ResponseDTO(true, departmentService.saveDepartment(departmentName), MessageConstant.ADDED);
     }
 
     /**
      * @param departmentId
-     * @return APIResponseEntity
+     * @return ResponseDTO
      */
     @DeleteMapping(UrlConstant.ADMIN_URL + UrlConstant.DEPARTMENT_URL + "/{departmentId}")
-    public APIResponseEntity deleteDepartment(@PathVariable final Long departmentId) {
+    public ResponseDTO deleteDepartment(@PathVariable final Long departmentId) {
         LOGGER.info("[DepartmentController]: sending delete department request to departmentService");
-        return new APIResponseEntity(false, departmentService.deleteDepartment(departmentId));
+        return new ResponseDTO(false, departmentService.deleteDepartment(departmentId));
     }
 
 }

@@ -20,7 +20,7 @@ import com.gms.constants.UrlConstant;
 import com.gms.dto.AddUserInDTO;
 import com.gms.dto.LoginRequestInDTO;
 import com.gms.dto.UpdatePasswordInDTO;
-import com.gms.response.APIResponseEntity;
+import com.gms.response.ResponseDTO;
 import com.gms.service.UserService;
 
 /**
@@ -47,63 +47,63 @@ public class UserController {
     /**
      * This is @login method for login a user.
      * @param loginRequestInDTO
-     * @return APIResponseEntity
+     * @return ResponseDTO
      */
     @PostMapping(UrlConstant.AUTH_URL + "/login")
-    public APIResponseEntity login(@RequestBody @Valid final LoginRequestInDTO loginRequestInDTO) {
+    public ResponseDTO login(@RequestBody @Valid final LoginRequestInDTO loginRequestInDTO) {
         LOGGER.info("[UserController] : sending login request to userService");
-        return new APIResponseEntity(true, userService.login(loginRequestInDTO), MessageConstant.SUCCESS);
+        return new ResponseDTO(true, userService.login(loginRequestInDTO), MessageConstant.SUCCESS);
     }
 
     /**
      * This is @save method for add new user.
      * @param addUserInDTO
-     * @return APIResponseEntity
+     * @return ResponseDTO
      */
     @PostMapping(UrlConstant.ADMIN_URL + "/adduser")
-    public APIResponseEntity save(@RequestBody @Valid final AddUserInDTO addUserInDTO) {
+    public ResponseDTO save(@RequestBody @Valid final AddUserInDTO addUserInDTO) {
         LOGGER.info("[UserController] : sending add new user request to userService");
         userService.save(addUserInDTO);
-        return new APIResponseEntity(false, MessageConstant.ADDED);
+        return new ResponseDTO(false, MessageConstant.ADDED);
     }
 
     /**
      * This is @updatePassword method for update the password.
      * @param updatePasswordInDTO
-     * @return APIResponseEntity
+     * @return ResponseDTO
      */
     @PostMapping(UrlConstant.AUTH_URL + "/change-password")
-    public APIResponseEntity updatePassword(@RequestBody @Valid final UpdatePasswordInDTO updatePasswordInDTO) {
+    public ResponseDTO updatePassword(@RequestBody @Valid final UpdatePasswordInDTO updatePasswordInDTO) {
         LOGGER.info("[UserController] : sending change password request to userService");
-        return new APIResponseEntity(true, userService.updatePassword(updatePasswordInDTO), MessageConstant.UPDATED);
+        return new ResponseDTO(true, userService.updatePassword(updatePasswordInDTO), MessageConstant.UPDATED);
     }
 
     /**
      * This is @deleteUser for deleting a user.
      * @param userId
-     * @return APIResponseEntity
+     * @return ResponseDTO
      */
     @DeleteMapping(UrlConstant.ADMIN_URL + "/{userId}")
-    public APIResponseEntity deleteUser(@PathVariable final Long userId) {
+    public ResponseDTO deleteUser(@PathVariable final Long userId) {
         LOGGER.info("[UserController] : sending delete user request to userService");
-        return new APIResponseEntity(false, userService.deleteUser(userId));
+        return new ResponseDTO(false, userService.deleteUser(userId));
     }
 
     /**
      * This is @getAllUser method for getting list of user.
      * @param pageNumber
      * @param filterDepartment
-     * @return APIResponseEntity
+     * @return ResponseDTO
      */
     @GetMapping(UrlConstant.ADMIN_URL)
-    public APIResponseEntity getAllUser(@RequestParam final Integer pageNumber,
+    public ResponseDTO getAllUser(@RequestParam final Integer pageNumber,
             @RequestParam final String filterDepartment) {
         Integer currentPage = pageNumber - 1;
         if (currentPage < 0) {
             currentPage = 0;
         }
         LOGGER.info("[UserController] : sending get-all-user request to userService");
-        return new APIResponseEntity(true, userService.getAllUser(currentPage, filterDepartment),
+        return new ResponseDTO(true, userService.getAllUser(currentPage, filterDepartment),
                 MessageConstant.SUCCESS);
     }
 }

@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import com.gms.constants.MessageConstant;
 import com.gms.exception.BadRequestException;
 import com.gms.exception.NotFoundException;
-import com.gms.response.APIResponseEntity;
+import com.gms.response.ResponseDTO;
 
 /**
  * This is @GlobalExceptionHandler class.
@@ -28,12 +28,12 @@ public class GlobalExceptionHandler {
      */
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public APIResponseEntity handleInvalidException(final MethodArgumentNotValidException exception) {
+    public ResponseDTO handleInvalidException(final MethodArgumentNotValidException exception) {
         Map<String, String> errMap = new HashMap<>();
         exception.getBindingResult().getFieldErrors()
                 .forEach(err -> errMap.put(err.getField(), err.getDefaultMessage()));
         System.out.println(errMap);
-        return new APIResponseEntity(true, errMap, MessageConstant.INVALID_DATA);
+        return new ResponseDTO(true, errMap, MessageConstant.INVALID_DATA);
     }
 
     /**
@@ -43,8 +43,8 @@ public class GlobalExceptionHandler {
      */
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(BadRequestException.class)
-    public APIResponseEntity badRequestExceptionHandler(final BadRequestException exception) {
-        return new APIResponseEntity(false, exception.getMessage());
+    public ResponseDTO badRequestExceptionHandler(final BadRequestException exception) {
+        return new ResponseDTO(false, exception.getMessage());
     }
 
     /**
@@ -54,7 +54,7 @@ public class GlobalExceptionHandler {
      */
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @ExceptionHandler(NotFoundException.class)
-    public APIResponseEntity notFoundExceptionHandler(final NotFoundException exception) {
-        return new APIResponseEntity(false, exception.getMessage());
+    public ResponseDTO notFoundExceptionHandler(final NotFoundException exception) {
+        return new ResponseDTO(false, exception.getMessage());
     }
 }

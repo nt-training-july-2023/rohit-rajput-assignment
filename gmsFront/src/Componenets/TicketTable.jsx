@@ -145,9 +145,9 @@ export default function TicketTable() {
                 <th>Update</th>
               </tr>
             </thead>
-
             {tickets?.map((ticket) => {
               return (
+                <tbody>
                 <tr key={ticket.ticketId}>
                   <td>{ticket.title}</td>
                   <td>{ticket.departmentName}</td>
@@ -163,8 +163,11 @@ export default function TicketTable() {
                     </Link>
                   </td>
                 </tr>
+                </tbody>
               );
+              
             })}
+            
           </table>
           <div className="ticket_btn">
             <button className="ticket-table-prev-page-btn" onClick={getPrev}>

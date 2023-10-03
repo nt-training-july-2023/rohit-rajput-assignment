@@ -1,10 +1,10 @@
 package com.gms.response;
 
 /**
- * This is APIResponseEntity class for wrapping our data with specified data and
+ * This is ResponseDTO class for wrapping our data with specified data and
  * HttpStatus code as per requirement.
  */
-public class APIResponseEntity {
+public class ResponseDTO {
 
     /**
      * this is hasData field to check that data is present or not.
@@ -27,7 +27,7 @@ public class APIResponseEntity {
      * @param data
      * @param message
      */
-    public APIResponseEntity(final boolean hasdata, final Object data, final String message) {
+    public ResponseDTO(final boolean hasdata, final Object data, final String message) {
         this.hasdata = hasdata;
         this.data = data;
         this.message = message;
@@ -38,7 +38,7 @@ public class APIResponseEntity {
      * @param hasdata
      * @param message
      */
-    public APIResponseEntity(final boolean hasdata, final String message) {
+    public ResponseDTO(final boolean hasdata, final String message) {
         super();
         this.hasdata = hasdata;
         this.message = message;
