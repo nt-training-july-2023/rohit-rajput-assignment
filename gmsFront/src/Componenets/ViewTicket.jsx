@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "../Styles/ViewTicket.css";
 import AdminDashboard from "./AdminDashboard";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import APIService from "../Service/api";
 import Alert from "./Alert";
 export default function ViewTicket() {
@@ -17,7 +17,6 @@ export default function ViewTicket() {
   const [errorMessage, setErrorMessage] = useState("");
   const userId = JSON.parse(localStorage.getItem('user'))?.id;
   const [err, setErr] = useState("");
-  const navigate = useNavigate();
   const param = useParams();
   const ticketId = param.ticketId;
 

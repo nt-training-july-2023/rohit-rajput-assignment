@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import "../Styles/TicketTable.css";
 import { AiOutlineEdit } from "react-icons/ai";
 import AdminDashboard from "./AdminDashboard";
-import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import Alert from "./Alert";
 import APIService from "../Service/api";
 import MemberDashboard from "./MemberDashboard";
@@ -38,7 +38,7 @@ export default function TicketTable() {
 
     await APIService.getAllTicket(currentPage, filterStatus, false)
       .then((res) => {
-        if (res.data.data.length == 0) {
+        if (res.data.data.length === 0) {
           setCurrentPage(currentPage - 1);
           setIsNextPage(false);
           setShow(true);
@@ -65,7 +65,7 @@ export default function TicketTable() {
 
     await APIService.getAllTicket(currentPage, filterStatus, true)
       .then((res) => {
-        if (res.data.data.length == 0) {
+        if (res.data.data.length === 0) {
           setCurrentPage(currentPage - 1);
           setIsNextPage(false);
           setShow(true);
@@ -148,26 +148,24 @@ export default function TicketTable() {
             {tickets?.map((ticket) => {
               return (
                 <tbody key={ticket.ticketId}>
-                <tr key={ticket.ticketId}>
-                  <td>{ticket.title}</td>
-                  <td>{ticket.departmentName}</td>
-                  <td>{ticket.status}</td>
-                  <td>{ticket.assignedBy}</td>
-                  <td>{ticket.lastUpdationTime.replace("T", " : ")}</td>
-                  <td style={{ textAlign: "center" }}>
-                    <Link
-                      to={`/update-ticket/${ticket.ticketId}`}
-                      className="ticket-table-data-update"
-                    >
-                      <AiOutlineEdit />
-                    </Link>
-                  </td>
-                </tr>
+                  <tr key={ticket.ticketId}>
+                    <td>{ticket.title}</td>
+                    <td>{ticket.departmentName}</td>
+                    <td>{ticket.status}</td>
+                    <td>{ticket.assignedBy}</td>
+                    <td>{ticket.lastUpdationTime.replace("T", " : ")}</td>
+                    <td style={{ textAlign: "center" }}>
+                      <Link
+                        to={`/update-ticket/${ticket.ticketId}`}
+                        className="ticket-table-data-update"
+                      >
+                        <AiOutlineEdit />
+                      </Link>
+                    </td>
+                  </tr>
                 </tbody>
               );
-              
             })}
-            
           </table>
           <div className="ticket_btn">
             <button className="ticket-table-prev-page-btn" onClick={getPrev}>

@@ -1,5 +1,3 @@
-import React from 'react'
-
 export default function AuthHeader() {
     const username = JSON.parse(localStorage.getItem('user'))?.email;
     const encodedPassword = JSON.parse(localStorage.getItem('user'))?.encodePassword;
